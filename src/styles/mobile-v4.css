@@ -1,0 +1,296 @@
+/* ==========================================================================
+   MOBILE v4 — loaded LAST. Written for small phones (320–430px wide first).
+     1. product cards: add button + counter (− 1 +) rebuilt
+     2. visible scroll bars for every swipe row (own track + thumb, see ScrollBar.jsx)
+     3. product page: hero, price box, actions, store prices as cards, facts tiles
+     4. guest banner: samples are a swipe row with a visible bar
+     5. footer (phones)
+     6. footer + product info panel (laptops / desktop)
+   Phone rules sit inside max-width media queries; section 6 is min-width only.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 2. scroll bar widget (all sizes; hidden on desktop) */
+.nt-hs { position: relative; min-width: 0; }
+.nt-sbar { position: relative; height: 6px; margin: 6px 3px 0; border-radius: 99px; background: rgba(var(--accent-rgb), .2); touch-action: none; cursor: pointer; }
+.nt-sbar::before { content: ""; position: absolute; inset: -12px 0; } /* fat invisible hit area for thumbs */
+.nt-sbar i { position: absolute; top: 0; bottom: 0; min-width: 28px; border-radius: 99px; background: var(--accent); box-shadow: 0 0 0 1px rgba(var(--accent-rgb), .25); transition: left .06s linear; }
+.category-container .nt-sbar { margin-top: 2px; }
+
+@media (min-width: 641px) {
+  .nt-sbar:not(.is-v) { display: none; }
+}
+
+@media (max-width: 640px) {
+  /* the rows below use the widget above, so the native (hidden / auto-fading) bar is switched off */
+  html body .nt-hs > .nt-hs-scroll,
+  html body .category-container .category-list { scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; padding-bottom: 4px; }
+  html body .nt-hs > .nt-hs-scroll::-webkit-scrollbar,
+  html body .category-container .category-list::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  html body .category-section { padding-bottom: 2px; }
+  html body .nt-hs > .nt-hs-scroll.nt-grid.nt-grid-row { padding-bottom: 4px; }
+  html body .nt-hs > .nt-hs-scroll.nt-grid.nt-grid-row > * { flex: 0 0 min(58%, 210px); }
+}
+
+/* ------------------------------------------------------------------ 1. product cards (phones) */
+@media (max-width: 640px) {
+  html body .pc-foot { padding-top: 2px; }
+
+  html body .pc-add {
+    height: 38px; padding: 0 8px; gap: 6px; border-radius: 999px;
+    font-size: .8rem; font-weight: 800; line-height: 1; letter-spacing: 0; white-space: nowrap;
+  }
+  html body .pc-add svg { flex: none; width: 16px; height: 16px; }
+
+  /* the counter: one tidy pill — round minus, number in the middle, round plus */
+  html body .pc-step {
+    height: 38px; padding: 3px; gap: 0; border-radius: 999px;
+    grid-template-columns: 32px minmax(0, 1fr) 32px; align-items: center;
+    background: rgba(134, 214, 169, .32); box-shadow: inset 0 0 0 1px rgba(47, 143, 91, .22);
+  }
+  html body .pc-step button {
+    width: 32px; height: 32px; padding: 0; display: grid; place-items: center; border-radius: 50%;
+    background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, .16);
+  }
+  html body .pc-step button svg { width: 15px; height: 15px; flex: none; }
+  html body .pc-step output {
+    display: block; min-width: 0; text-align: center; font-size: .98rem; font-weight: 800; line-height: 32px;
+    color: #14502f; font-variant-numeric: tabular-nums;
+  }
+  html[data-theme="dark"] body .pc-step output { color: #bdf0d3; }
+  html body .pc-step button:active:not(:disabled) { transform: scale(.88); }
+
+  /* card body: slightly more air, sturdier title */
+  html body .pc { gap: 7px; padding: 7px 7px 9px; }
+  html body .pc-title { font-size: .8rem; font-weight: 700; }
+  html body .pc-offers li { min-height: 31px; font-size: .76rem; }
+  html body .pc-see { display: none; } /* the whole card is a link; the extra "see prices" row only added height */
+}
+
+/* very small phones (iPhone SE / mini, 320–375px) */
+@media (max-width: 375px) {
+  html body .nt-main { padding-left: 12px; padding-right: 12px; }
+  html body .pc { padding: 6px 6px 8px; border-radius: 16px; }
+  html body .pc-add { font-size: .76rem; gap: 5px; padding: 0 6px; }
+  html body .pc-add svg { width: 15px; height: 15px; }
+  html body .pc-step { grid-template-columns: 30px minmax(0, 1fr) 30px; }
+  html body .pc-step button { width: 30px; height: 30px; }
+  html body .pc-step output { font-size: .92rem; line-height: 30px; }
+  html body .pc-offers li { padding: 3px 7px; font-size: .72rem; }
+  html body .nt-hs > .nt-hs-scroll.nt-grid.nt-grid-row > * { flex-basis: min(64%, 190px); }
+}
+
+/* ------------------------------------------------------------------ 3. product page (phones) */
+@media (max-width: 640px) {
+  html body .nt-detail { gap: 10px; }
+
+  /* photo: big plate, eye in the corner */
+  html body .nt-detail-img { aspect-ratio: 4 / 3; min-height: 0; border-radius: 22px; }
+  html body .nt-detail-img img { width: 80%; max-height: 88%; }
+  html body .nt-detail-eye { right: 10px; bottom: 10px; width: 38px; height: 38px; }
+
+  /* info card */
+  html body .nt-detail-info { padding: 16px 14px 14px; border-radius: 22px; gap: 0; }
+  html body .nt-detail-info h1 { font-size: 1.32rem; margin: 10px 0 4px; }
+  html body .nt-detail-info .nt-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  html body .nt-detail-info .nt-desc { -webkit-line-clamp: 4; line-clamp: 4; font-size: .82rem; }
+
+  /* price box: price left, store chip right; wraps instead of squeezing on 320px */
+  html body .nt-detail-info .nt-best.big { flex-wrap: wrap; gap: 8px 12px; padding: 13px 14px; }
+  html body .nt-detail-info .nt-best.big .nt-best-price { font-size: 1.7rem; }
+  html body .nt-detail-info .nt-best.big .nt-best-store { max-width: 100%; }
+
+  /* actions: full-width, thumb-sized */
+  html body .nt-actions { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 10px; margin-top: 14px; }
+  html body .nt-actions > .nt-btn,
+  html body .nt-actions .nt-add-main { width: 100%; min-height: 48px; justify-content: center; border-radius: 15px; font-size: .92rem; }
+  html body .nt-actions .nt-btn-ghost { flex: none; min-height: 46px; padding: 11px 14px; }
+  html body .nt-incart { display: flex; flex-wrap: nowrap; align-items: stretch; gap: 10px; width: 100%; }
+  html body .nt-incart .nt-qty { flex: none; align-self: stretch; padding: 4px; gap: 0; }
+  html body .nt-detail-info .nt-qty button { width: 40px; height: 40px; }
+  html body .nt-detail-info .nt-qty output { min-width: 38px; font-size: 1rem; font-weight: 800; }
+  html body .nt-incart .nt-btn { flex: 1 1 auto; min-width: 0; min-height: 48px; justify-content: center; padding: 10px 12px; border-radius: 15px; white-space: nowrap; }
+  html body .nt-linetotal { margin: 10px 0 0; text-align: center; width: 100%; }
+  html body .nt-alertbox { width: 100%; justify-content: space-between; }
+
+  /* store prices: one card per supermarket instead of a squeezed 3-column table */
+  html body .nt-table, html body .nt-table tbody { display: block; width: 100%; }
+  html body .nt-table { padding: 4px; border-radius: 20px; }
+  html body .nt-table thead { display: none; }
+  html body .nt-table tbody { display: grid; gap: 6px; }
+  html body .nt-table tr {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "store price" "stock price";
+    align-items: center; gap: 4px 12px; padding: 11px 12px; border-radius: 15px;
+    background: var(--surface-2); border: 1px solid var(--border-soft, var(--border));
+  }
+  html body .nt-table tr.is-best { background: var(--green-tint); border-color: rgba(var(--green-rgb), .4); box-shadow: inset 4px 0 0 var(--price-best); }
+  /* the brown bar: revamp.css paints inset 4px --accent on the first cell (specificity 0,4,3). Kill it on phones; the row itself carries the green bar. */
+  html[data-theme] body .nt-table tr.is-best td,
+  html[data-theme] body .nt-table tr.is-best td:first-child { background: none; box-shadow: none; border-bottom: 0; }
+  html body .nt-table td { display: block; padding: 0; border: 0; background: none; }
+  html body .nt-table td:nth-child(1) { grid-area: store; min-width: 0; }
+  html body .nt-table td:nth-child(2) { grid-area: price; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  html body .nt-table td:nth-child(3) { grid-area: stock; }
+  html body .nt-table td:first-child b { display: inline; margin: 0 6px 0 0; font-size: .96rem; }
+  html body .nt-table td strong { font-size: 1.06rem; line-height: 1.1; white-space: nowrap; }
+  html body .nt-table .nt-old { display: inline; margin-left: 0; font-size: .72rem; }
+  html body .nt-table .nt-badge { margin: 4px 0 0; display: inline-flex; }
+  html body .nt-table td:nth-child(1) .nt-badge { margin-left: 0; }
+  html body .nt-table .nt-diff, html body .nt-table .nt-promo { display: block; margin: 0; text-align: right; }
+  html body .nt-table .nt-stock { font-size: .72rem; }
+
+  /* facts: two tiles per row with a round icon */
+  html body .nt-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  html body .nt-facts > div { padding: 10px 11px; border-radius: 15px; display: grid; gap: 4px; align-content: start; }
+  html body .nt-facts dt { margin: 0; font-size: .68rem; line-height: 1.2; align-items: flex-start; }
+  html body .nt-facts dt svg { flex: none; box-sizing: border-box; width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: rgba(var(--accent-rgb), .14); }
+  html body .nt-facts dd { font-size: .92rem; line-height: 1.2; }
+}
+
+/* ------------------------------------------------------------------ 4. guest banner samples (phones) */
+@media (max-width: 640px) {
+  html body .nt-hs > .nt-teasers { display: flex; grid-template-columns: none; gap: 10px; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 4px; scroll-snap-type: x proximity; }
+  html body .nt-hs > .nt-teasers > .nt-teaser { flex: 0 0 min(66%, 250px); }
+  html body .nt-show .nt-hs { margin: 0 -2px; }
+}
+@media (max-width: 375px) {
+  html body .nt-hs > .nt-teasers > .nt-teaser { flex-basis: 72%; }
+  html body .nt-steps { gap: 8px; }
+  html[data-theme] body .nt-steps li { padding: 9px 8px; gap: 8px; }
+  html body .nt-steps b { font-size: .74rem; }
+  html body .nt-show-feats { font-size: .76rem; }
+}
+
+/* ------------------------------------------------------------------ 5. footer (phones) */
+@media (max-width: 640px) {
+  html body .nf { padding: 18px 10px 14px; }
+  html body .nf-card { border-radius: 22px; }
+  html body .nf-edge { display: block; height: 3px; }
+  html body .nf-mega { display: none; }
+
+  html body .nf-main { display: grid; grid-template-columns: 1fr; gap: 14px; padding: 20px 16px 6px; }
+  html body .nf-brand { display: grid; gap: 8px; }
+  html body .nf-brand p { font-size: .8rem; line-height: 1.5; -webkit-line-clamp: 3; line-clamp: 3; max-width: none; margin: 0; }
+
+  /* quick links as three equal pills */
+  html body .nf-main .nf-col { display: block; }
+  html body .nf-main .nf-col h4 { display: none; }
+  html body .nf-main .nf-col ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  html body .nf-main .nf-col ul a {
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 40px; padding: 8px 6px; border-radius: 13px;
+    border: 1px solid var(--border); background: rgba(var(--accent-rgb), .08); color: var(--text); font-size: .82rem; font-weight: 700; text-align: center; transform: none;
+  }
+  html body .nf-main .nf-col ul a:active { background: rgba(var(--accent-rgb), .2); }
+  /* categories are one tap away on the home page; keep the footer short */
+  html body .nf-main .nf-cats { display: none; }
+  html body .nf-col .nf-contact { display: flex; width: 100%; min-height: 46px; justify-content: center; margin: 0; padding: 11px 16px; border-radius: 14px; font-size: .9rem; }
+
+  html body .nf-bar { flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px; padding: 12px 16px 14px; text-align: left; }
+  html body .nf-bar p { flex: 1 1 auto; min-width: 0; margin: 0; font-size: .7rem; line-height: 1.35; color: var(--muted); }
+  html body .nf-top { flex: none; min-height: 34px; padding: 6px 12px; font-size: .74rem; gap: 6px; }
+}
+@media (max-width: 375px) {
+  html body .nf-main { padding: 16px 12px 4px; }
+  html body .nf-main .nf-col ul { gap: 6px; }
+  html body .nf-main .nf-col ul a { font-size: .76rem; min-height: 38px; }
+  html body .nf-bar { padding: 10px 12px 12px; }
+}
+
+/* ------------------------------------------------------------------ 6. laptops / desktop: footer + product info panel */
+@media (min-width: 641px) {
+  /* footer: clear 4-column layout, readable type, quiet bottom bar */
+  html body .nf { padding-top: 48px; }
+  html body .nf-card { border-radius: 30px; }
+  html body .nf-main { grid-template-columns: minmax(240px, 1.6fr) repeat(2, minmax(150px, 1fr)) minmax(190px, 1.1fr); align-items: start; gap: 28px clamp(24px, 4vw, 56px); padding: clamp(28px, 3.4vw, 40px) clamp(24px, 3.6vw, 44px) 10px; }
+  html body .nf-brand p { max-width: 36ch; margin: 12px 0 0; font-size: .9rem; line-height: 1.6; color: var(--muted); }
+  html body .nf-col h4 { margin: 4px 0 12px; font-family: var(--font-body); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  html body .nf-col ul { gap: 2px; }
+  html body .nf-col ul a { padding: 5px 0; font-size: .94rem; font-weight: 500; }
+  html body .nf-col .nf-contact { margin-top: 2px; padding: 11px 20px; font-size: .92rem; border-radius: 14px; }
+  html body .nf-bar { margin-top: 6px; padding: 16px clamp(24px, 3.6vw, 44px); font-size: .82rem; border-top: 1px solid var(--border-soft, var(--border)); background: rgba(var(--accent-rgb), .05); }
+  html body .nf-bar p { color: var(--muted); }
+  html body .nf-top { padding: 8px 16px; font-size: .82rem; }
+  html[data-theme] .nf-card .nf-mega { margin: 4px 0 -6px; opacity: .9; }
+}
+@media (min-width: 641px) and (max-width: 980px) {
+  html body .nf-main { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  html body .nf-brand { grid-column: 1 / -1; }
+}
+
+@media (min-width: 641px) {
+  /* product info: tidier price box, round icons in the fact tiles, softer store table */
+  html body .nt-detail-info .nt-best.big { align-items: center; }
+  html body .nt-facts > div { display: grid; gap: 6px; }
+  html body .nt-facts dt svg { flex: none; box-sizing: border-box; width: 28px; height: 28px; padding: 6px; border-radius: 50%; background: rgba(var(--accent-rgb), .14); }
+  html body .nt-detail-eye { right: 18px; bottom: 18px; }
+}
+
+/* ==========================================================================
+   7. v4.1 — product page on phones (bigger photo, no alt-text leak) + 4th quick tile (Contact)
+   ========================================================================== */
+
+/* broken / missing photo: a quiet icon instead of alt text or a browser "broken image" glyph */
+.nt-detail-noimg { display: grid; place-items: center; width: 100%; height: 100%; color: rgba(var(--accent-rgb), .55); }
+.nt-detail-img img { font-size: 0; color: transparent; text-indent: -9999px; } /* never paint alt text inside the plate */
+
+@media (max-width: 640px) {
+  /* photo: square-ish and large, full width of the card */
+  html body .nt-detail-img { aspect-ratio: 1 / 1; max-height: 58svh; width: 100%; border-radius: 24px; }
+  html body .nt-detail-img img { width: 86%; height: 86%; max-height: none; object-fit: contain; }
+  html body .nt-detail-noimg svg { width: 64px; height: 64px; }
+  html body .nt-detail-flag { left: 12px; top: 12px; }
+
+  /* info card: roomier type */
+  html body .nt-detail-info { padding: 18px 16px 16px; }
+  html body .nt-detail-info h1 { font-size: 1.5rem; line-height: 1.15; margin: 12px 0 6px; overflow-wrap: anywhere; text-wrap: balance; }
+  html body .nt-detail-info .nt-meta { font-size: .8rem; }
+  html body .nt-detail-info .nt-desc { font-size: .9rem; line-height: 1.55; -webkit-line-clamp: 5; line-clamp: 5; }
+  html body .nt-detail-info .nt-best.big { margin-top: 14px; padding: 15px 16px; border-radius: 18px; }
+  html body .nt-detail-info .nt-best.big .nt-best-price { font-size: 1.95rem; }
+  html body .nt-detail-info .nt-best.big .nt-best-label { font-size: .78rem; }
+  html body .nt-detail-info .nt-best-store { font-size: .78rem; }
+  html body .nt-detail-info .nt-unitprice, html body .nt-detail-info .nt-save, html body .nt-linetotal { font-size: .82rem; }
+  html body .nt-detail-info .nt-qty button { width: 44px; height: 44px; }
+  html body .nt-actions > .nt-btn, html body .nt-actions .nt-add-main, html body .nt-incart .nt-btn { min-height: 52px; font-size: 1rem; }
+
+  /* store prices + facts */
+  html body .nt-table tr { padding: 13px 14px; }
+  html body .nt-table td:first-child b { font-size: 1.02rem; }
+  html body .nt-table td strong { font-size: 1.15rem; }
+  html body .nt-table .nt-stock { font-size: .78rem; }
+  html body .nt-facts > div { padding: 12px 13px; }
+  html body .nt-facts dt { font-size: .74rem; }
+  html body .nt-facts dd { font-size: 1rem; }
+}
+@media (max-width: 375px) {
+  html body .nt-detail-info h1 { font-size: 1.35rem; }
+  html body .nt-detail-info .nt-best.big .nt-best-price { font-size: 1.7rem; }
+}
+
+/* quick tiles: four items. phones = 2x2, tablets = 2x2, desktop = one row of four */
+.nt-quick ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1000px) and (min-width: 641px) {
+  .nt-quick ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  html body .nt-quick ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  html body .nt-quick ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html body .nt-quick a { padding: 7px 9px; gap: 7px; border-radius: 14px; min-height: 44px; }
+  html body .nt-quick-ico { width: 28px; height: 28px; border-radius: 9px; }
+  html body .nt-quick-ico svg { width: 16px; height: 16px; }
+  html body .nt-quick-txt small { font-size: .68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body .nt-quick-txt b { font-size: .84rem; }
+  html body .nt-cart-btn { width: 40px; height: 40px; min-width: 40px; padding: 8px; }
+  html body .nt-cart-btn svg { width: 18px; height: 18px; }
+  html body .pc-img,
+  html body .pc[data-density="compact"] .pc-img { aspect-ratio: 1 / 1; }
+  html body .pc-offers { display: none !important; }
+  html body .pc-offers-mobile { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; list-style: none; margin: 0; padding: 0; }
+  html body .pc-offers-mobile li { display: flex; min-width: 0; min-height: 30px; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 2px; border-radius: 7px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 11px; font-variant-numeric: tabular-nums; line-height: 1.1; white-space: nowrap; }
+  html body .pc-offers-mobile li.is-best { background: var(--green-tint); border-color: var(--price-best); color: var(--price-best); }
+  html body .pc-offers-mobile li.is-out { opacity: .62; }
+  html body .pc-mobile-price { max-width: 100%; overflow: visible; font-size: clamp(10px, 2.9vw, 11px); }
+  html body .pc-offers-mobile .pc-mark { --s: 14px !important; width: 14px; height: 14px; }
+  html body .pc-see { display: flex !important; min-height: 26px; padding: 4px 6px; font-size: .68rem; }
+  html body .pc-meta { display: none; }
+  html body .pc { gap: 5px; padding: 6px 6px 8px; }
+}

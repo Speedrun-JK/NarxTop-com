@@ -1,0 +1,26 @@
+/* Fine-pointer-only cursor treatment. Assets are small transparent PNGs with the
+   hotspot at the arrow tip; native text, resize, and drag cursors remain intact. */
+@media (hover: hover) and (pointer: fine) {
+  html[data-theme="light"] body { cursor: url("/cursors/cursor-light.png") 2 1, auto; }
+  html[data-theme="dark"] body { cursor: url("/cursors/cursor-dark.png") 2 1, auto; }
+
+  html[data-theme="light"] body :is(a[href], button:not(:disabled), select:not(:disabled), summary, [role="button"], [role="menuitem"], [role="option"], input[type="button"], input[type="submit"], input[type="reset"]):not([aria-disabled="true"]) {
+    cursor: url("/cursors/cursor-hand-light.png") 12 2, pointer !important;
+  }
+  html[data-theme="dark"] body :is(a[href], button:not(:disabled), select:not(:disabled), summary, [role="button"], [role="menuitem"], [role="option"], input[type="button"], input[type="submit"], input[type="reset"]):not([aria-disabled="true"]) {
+    cursor: url("/cursors/cursor-hand-dark.png") 12 2, pointer !important;
+  }
+  html[data-theme="light"] body :is(a[href], button:not(:disabled), select:not(:disabled), summary, [role="button"], [role="menuitem"], [role="option"], input[type="button"], input[type="submit"], input[type="reset"]):not([aria-disabled="true"]):active {
+    cursor: url("/cursors/cursor-press-light.png") 16 14, pointer !important;
+  }
+  html[data-theme="dark"] body :is(a[href], button:not(:disabled), select:not(:disabled), summary, [role="button"], [role="menuitem"], [role="option"], input[type="button"], input[type="submit"], input[type="reset"]):not([aria-disabled="true"]):active {
+    cursor: url("/cursors/cursor-press-dark.png") 16 14, pointer !important;
+  }
+
+  html[data-theme] body :is(input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="date"]):not([type="datetime-local"]):not([type="month"]):not([type="time"]):not([type="week"]):not([type="color"]), textarea:not([data-resizable]), [contenteditable="true"], [contenteditable=""]):not(:disabled) {
+    cursor: text !important;
+  }
+  html[data-theme] body :is(input[type="range"], [role="slider"]) { cursor: ew-resize !important; }
+  html[data-theme] body :is([draggable="true"], .is-draggable) { cursor: grab !important; }
+  html[data-theme] body :is([draggable="true"], .is-draggable):active { cursor: grabbing !important; }
+}

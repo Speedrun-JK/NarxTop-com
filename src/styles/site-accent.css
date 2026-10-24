@@ -1,0 +1,36 @@
+/* Account-selected accent. This only changes action and highlight colours; neutral text and surfaces
+   stay theme-aware so every colour choice remains easy to read. */
+html[data-site-accent="brown"] { --accent: #805435; --accent-2: #aa7952; --accent-strong: #654026; --accent-rgb: 128, 84, 53; --on-accent: #fff; }
+html[data-site-accent="blue"] { --accent: #245dba; --accent-2: #477fd8; --accent-strong: #17438f; --accent-rgb: 36, 93, 186; --on-accent: #fff; }
+html[data-site-accent="green"] { --accent: #167247; --accent-2: #309564; --accent-strong: #0f5735; --accent-rgb: 22, 114, 71; --on-accent: #fff; }
+html[data-site-accent="violet"] { --accent: #6641bb; --accent-2: #8868db; --accent-strong: #4e309a; --accent-rgb: 102, 65, 187; --on-accent: #fff; }
+html[data-site-accent="purple"] { --accent: #7c3fb4; --accent-2: #9959d0; --accent-strong: #5e2d8d; --accent-rgb: 124, 63, 180; --on-accent: #fff; }
+html[data-site-accent="red"] { --accent: #b52e36; --accent-2: #d34e56; --accent-strong: #8e1e27; --accent-rgb: 181, 46, 54; --on-accent: #fff; }
+html[data-site-accent="yellow"] { --accent: #946600; --accent-2: #b88712; --accent-strong: #704d00; --accent-rgb: 148, 102, 0; --on-accent: #fff; }
+
+html[data-theme="dark"][data-site-accent="brown"] { --accent: #d1a581; --accent-2: #e6c3a3; --accent-strong: #b88561; --accent-rgb: 209, 165, 129; --on-accent: #1c120b; }
+html[data-theme="dark"][data-site-accent="blue"] { --accent: #8db4ff; --accent-2: #b3ceff; --accent-strong: #5d89e0; --accent-rgb: 141, 180, 255; --on-accent: #111a2b; }
+html[data-theme="dark"][data-site-accent="green"] { --accent: #73d6a3; --accent-2: #9be5be; --accent-strong: #4eb782; --accent-rgb: 115, 214, 163; --on-accent: #102319; }
+html[data-theme="dark"][data-site-accent="violet"] { --accent: #b39aff; --accent-2: #d0c1ff; --accent-strong: #8e70e0; --accent-rgb: 179, 154, 255; --on-accent: #21183b; }
+html[data-theme="dark"][data-site-accent="purple"] { --accent: #d1a0ff; --accent-2: #e2c1ff; --accent-strong: #ad72e0; --accent-rgb: 209, 160, 255; --on-accent: #29183b; }
+html[data-theme="dark"][data-site-accent="red"] { --accent: #ff8e92; --accent-2: #ffb1b4; --accent-strong: #e4666c; --accent-rgb: 255, 142, 146; --on-accent: #341516; }
+html[data-theme="dark"][data-site-accent="yellow"] { --accent: #e8c468; --accent-2: #f2d992; --accent-strong: #c59a3b; --accent-rgb: 232, 196, 104; --on-accent: #2a210d; }
+
+html[data-site-accent] {
+  --line-strong: rgba(var(--accent-rgb), .5);
+  --glass-edge: rgba(var(--accent-rgb), .18);
+  --mesh-a: rgba(var(--accent-rgb), .34);
+  --mesh-c: rgba(var(--accent-rgb), .22);
+  --auth-panel-a: var(--accent-strong);
+  --auth-panel-b: var(--accent);
+}
+
+.nt-accent-options { display: flex; flex-wrap: wrap; gap: 10px; }
+.nt-accent-option { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 6px 11px 6px 7px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); cursor: pointer; transition: border-color .18s, box-shadow .18s, transform .18s; }
+.nt-accent-option:hover { transform: translateY(-1px); border-color: rgba(var(--accent-rgb), .58); }
+.nt-accent-option[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .16); }
+.nt-accent-option i { width: 22px; height: 22px; flex: none; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255,255,255,.42), 0 1px 3px rgba(0,0,0,.2); }
+.plus-embedded { width: 100%; min-width: 0; }
+.plus-embedded-content { max-width: 100%; }
+.plus-embedded .plus-plan { position: static; }
+@media (max-width: 760px) { .plus-embedded .plus-body { grid-template-columns: 1fr; } }

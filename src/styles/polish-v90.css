@@ -1,0 +1,106 @@
+/* ==========================================================================
+   v90 — layered, more complex styling
+   · Footer: the big "NarxTop" wordmark is fully visible again (cream "Narx", glowing amber "Top"),
+     footer card gets layered glows, a dotted lattice and an animated conic edge.
+   · Product cards: animated conic-gradient border on hover.
+   · /products sidebar (now lists every admin category): layered glass, scroll area, shimmer on the active item.
+   · Whole page: fine dot lattice + colour fields behind the content; gradient section headings.
+   Imported after polish-v89.css.
+   ========================================================================== */
+@property --v90-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+
+/* ----------------------------------------------------------- footer wordmark --- */
+/* the footer card is always dark cocoa (both themes), so its lettering is always light */
+html[data-theme] body #root .nf-card .nt-ab-mega .nt-ab-l.is-narx {
+  background-image: linear-gradient(180deg, #fffaf1 0%, #f6dcc0 55%, #d9aa80 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, .45));
+}
+html[data-theme] body #root .nf-card .nt-ab-mega .nt-ab-l.is-top {
+  background-image: linear-gradient(100deg, #ffe7ae 0%, #ffb23f 34%, #ff7a1a 62%, #ffd27a 100%);
+  background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 26px rgba(255, 140, 30, .5)) drop-shadow(0 6px 18px rgba(0, 0, 0, .45));
+  animation: nt-ab-flow 8s linear infinite;
+}
+html[data-theme] body #root .nf-mega { -webkit-mask-image: linear-gradient(#000 78%, rgba(0, 0, 0, .55) 100%); mask-image: linear-gradient(#000 78%, rgba(0, 0, 0, .55) 100%); }
+/* the small footer logo wordmark (variant "footer") sits on the same dark card */
+html[data-theme] body #root .nf-card .nt-ab-footer .nt-ab-l.is-narx, html[data-theme] body #root .nf-card .nt-logo .nt-ab-l.is-narx { color: #fff4e4; -webkit-text-fill-color: #fff4e4; }
+html[data-theme] body #root .nf-card .nt-logo .nt-ab-l.is-top {
+  background-image: linear-gradient(100deg, #ffe7ae, #ffb23f 45%, #ff9a2a); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* ---------------------------------------------------------------- footer card --- */
+html[data-theme] body #root .nf-card {
+  background:
+    radial-gradient(520px 300px at 100% 0%, rgba(255, 130, 60, .24), transparent 62%),
+    radial-gradient(520px 340px at 0% 100%, rgba(214, 160, 118, .22), transparent 62%),
+    radial-gradient(rgba(255, 220, 180, .09) 1px, transparent 1.4px) 0 0 / 20px 20px,
+    linear-gradient(165deg, #34200f 0%, #22140a 58%, #180e07 100%);
+  border: 1.5px solid rgba(255, 200, 140, .34);
+  box-shadow: 0 44px 90px -34px rgba(40, 18, 6, .85), 0 0 0 1px rgba(255, 170, 80, .08), inset 0 1px 0 rgba(255, 235, 215, .22), inset 0 -40px 80px -50px rgba(255, 140, 40, .25);
+}
+html[data-theme] body #root .nf-card::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; padding: 1.5px; border-radius: inherit; pointer-events: none;
+  background: conic-gradient(from var(--v90-a), transparent 0 62%, rgba(255, 178, 63, .9) 78%, transparent 92%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: v90-spin 9s linear infinite;
+}
+@keyframes v90-spin { to { --v90-a: 360deg; } }
+html[data-theme] body #root .nf-col h4 { display: flex; align-items: center; gap: 8px; }
+html[data-theme] body #root .nf-col h4::before { content: ""; width: 14px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, #ff9a2a, #ffd27a); }
+html[data-theme] body #root .nf-col ul a { position: relative; }
+html[data-theme] body #root .nf-col ul a::before { content: "→"; position: absolute; left: -16px; opacity: 0; color: #ffb23f; transition: opacity .2s, transform .2s; transform: translateX(-4px); }
+html[data-theme] body #root .nf-col ul a:hover { padding-left: 4px; color: #ffe0b8; }
+html[data-theme] body #root .nf-col ul a:hover::before { opacity: 1; transform: none; }
+
+/* -------------------------------------------------- product card: conic border --- */
+html[data-theme] body #root .tc::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; padding: 2px; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s;
+  background: conic-gradient(from var(--v90-a), transparent 0 55%, rgba(255, 150, 40, .95) 72%, rgba(255, 220, 140, .95) 80%, transparent 92%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+}
+html[data-theme] body #root .tc:hover::after, html[data-theme] body #root .tc:focus-within::after { opacity: 1; animation: v90-spin 3.2s linear infinite; }
+
+/* ------------------------------------------------ /products category sidebar --- */
+html[data-theme] body #root .pcat { position: sticky; overflow: hidden; }
+@media (min-width: 761px) {
+  html[data-theme] body #root .pcat-list { max-height: calc(100vh - 210px); overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: rgba(var(--accent-rgb), .5) transparent; }
+}
+html[data-theme="light"] body #root .pcat {
+  background: radial-gradient(240px 160px at 0% 0%, rgba(255, 150, 60, .22), transparent 70%), linear-gradient(180deg, #ecd3b3, #e2c6a3);
+  border: 1.5px solid rgba(150, 78, 28, .5); box-shadow: 0 24px 40px -28px rgba(70, 42, 20, .65), inset 0 1px 0 rgba(255, 244, 228, .7);
+}
+html[data-theme="dark"] body #root .pcat {
+  background: radial-gradient(240px 160px at 0% 0%, rgba(255, 150, 60, .14), transparent 70%), linear-gradient(180deg, rgba(40, 32, 26, .9), rgba(22, 16, 12, .92));
+  border: 1.5px solid rgba(255, 190, 110, .26);
+}
+html[data-theme] body #root .pcat-title { padding-bottom: 8px; border-bottom: 1.5px dashed rgba(var(--accent-rgb), .35); }
+html[data-theme] body #root .pcat-item { border: 1.5px solid transparent; transition: transform .22s var(--ease-out, ease), background .22s, border-color .22s, box-shadow .22s; }
+html[data-theme] body #root .pcat-item.is-active {
+  background: linear-gradient(115deg, var(--_a), var(--_b) 55%, var(--_a)); background-size: 220% 100%; animation: v90-sheen 4.5s linear infinite;
+  box-shadow: 0 12px 22px -10px rgba(var(--_rgb), .85), inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+@keyframes v90-sheen { to { background-position: -220% 0; } }
+html[data-theme] body #root .pcat-item:not(.is-active):hover { border-color: rgba(var(--_rgb), .55); box-shadow: 0 10px 18px -14px rgba(var(--_rgb), .9); }
+
+/* ------------------------------------------------ page lattice + colour fields --- */
+html[data-theme="light"] body #root {
+  background-image:
+    radial-gradient(rgba(95, 55, 28, .16) 1px, transparent 1.4px),
+    radial-gradient(60% 40% at 10% 0%, rgba(150, 90, 45, .22), transparent 70%),
+    radial-gradient(50% 40% at 100% 30%, rgba(130, 75, 38, .18), transparent 70%);
+  background-size: 24px 24px, auto, auto; background-attachment: fixed;
+}
+html[data-theme="dark"] body #root {
+  background-image: radial-gradient(rgba(255, 210, 160, .06) 1px, transparent 1.4px), radial-gradient(55% 40% at 10% 0%, rgba(255, 140, 40, .09), transparent 70%);
+  background-size: 24px 24px, auto; background-attachment: fixed;
+}
+
+/* gradient section headings */
+html[data-theme="light"] body #root .nt-home .nt-section-head h2 { background-image: linear-gradient(100deg, #2b1b10 35%, #b4490c 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+html[data-theme="dark"] body #root .nt-home .nt-section-head h2 { background-image: linear-gradient(100deg, #fff 35%, #ffc56e 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body #root .nf-card::after, html[data-theme] body #root .tc:hover::after, html[data-theme] body #root .pcat-item.is-active, html[data-theme] body #root .nf-card .nt-ab-mega .nt-ab-l.is-top { animation: none !important; }
+}
+html[data-motion="off"] .nf-card::after, html[data-motion="off"] .tc::after, html[data-motion="off"] .pcat-item.is-active, html[data-motion="off"] .nf-card .nt-ab-l.is-top { animation: none !important; }

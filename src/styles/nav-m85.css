@@ -1,0 +1,117 @@
+/* ==========================================================================
+   v85d — MOBILE NAVBAR + BURGER MENU (<= 860px, the range where the burger shows). Desktop is not touched.
+   Theme-aware: warm cream glass with dark brown text in the white theme, warm dark glass with light text in the dark theme.
+   All colours come from the --nm-* tokens below, so logo, buttons, menu and dropdown always match the bar.
+   ========================================================================== */
+@media (max-width: 860px) {
+  html[data-theme="dark"] body #root .nt-nav {
+    --nm-bar: linear-gradient(160deg, rgba(40, 30, 23, .9), rgba(20, 14, 10, .9));
+    --nm-bar-solid: linear-gradient(160deg, rgba(34, 25, 19, .97), rgba(18, 13, 9, .97));
+    --nm-sheet: linear-gradient(165deg, rgba(42, 32, 24, .99), rgba(22, 16, 11, .99));
+    --nm-border: rgba(255, 232, 205, .2); --nm-text: #fff4e6; --nm-soft: rgba(255, 246, 234, .78);
+    --nm-chip: rgba(255, 255, 255, .08); --nm-chip-hi: rgba(255, 255, 255, .16); --nm-chip-b: rgba(255, 232, 205, .16);
+    --nm-ico: #ffb45a; --nm-ico-bg: rgba(255, 150, 50, .14); --nm-active: rgba(255, 150, 50, .15);
+    --nm-ring: #1b130e; --nm-shadow: 0 18px 38px -22px rgba(0, 0, 0, .85); --nm-shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, .8);
+    --nm-line: rgba(255, 150, 50, .55); --nm-narx: #fff8ee; --nm-top: linear-gradient(100deg, #ffd78f, #f4a83e 55%, #ffe1a5);
+  }
+  html[data-theme="light"] body #root .nt-nav {
+    --nm-bar: linear-gradient(160deg, rgba(255, 252, 247, .95), rgba(247, 236, 223, .95));
+    --nm-bar-solid: linear-gradient(160deg, rgba(255, 252, 247, .99), rgba(245, 233, 219, .99));
+    --nm-sheet: linear-gradient(165deg, #fffbf6, #f6ebdd);
+    --nm-border: rgba(120, 80, 48, .22); --nm-text: #2e1d11; --nm-soft: #6a5038;
+    --nm-chip: rgba(120, 80, 48, .07); --nm-chip-hi: rgba(120, 80, 48, .14); --nm-chip-b: rgba(120, 80, 48, .16);
+    --nm-ico: #d65a00; --nm-ico-bg: rgba(255, 122, 20, .13); --nm-active: rgba(255, 122, 20, .12);
+    --nm-ring: #fbf3ea; --nm-shadow: 0 16px 34px -24px rgba(65, 40, 23, .55); --nm-shadow-lg: 0 28px 54px -22px rgba(65, 40, 23, .5);
+    --nm-line: rgba(255, 106, 0, .5); --nm-narx: #342216; --nm-top: linear-gradient(100deg, #ff9a1a, #e8590a 60%, #ff8a1a);
+  }
+
+  /* bar */
+  html[data-theme] body #root .nt-nav {
+    width: calc(100% - 14px); margin-top: 7px; border-radius: 22px;
+    background: var(--nm-bar); border: 1px solid var(--nm-border);
+    box-shadow: var(--nm-shadow), inset 0 1px 0 rgba(255, 255, 255, .22);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25); backdrop-filter: blur(18px) saturate(1.25);
+    transition: background .25s ease, box-shadow .25s ease;
+  }
+  html[data-theme] body #root .nt-nav.is-scrolled { background: var(--nm-bar-solid); box-shadow: var(--nm-shadow-lg), inset 0 1px 0 rgba(255, 255, 255, .2); }
+  html[data-theme] body #root .nt-nav::after { /* thin accent line along the bottom edge */
+    content: ""; position: absolute; left: 24px; right: 24px; bottom: 0; height: 1.5px; border-radius: 2px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--nm-line), transparent);
+  }
+  html[data-theme] body #root .nt-nav .nt-nav-in { min-height: 56px; padding: 7px 9px 7px 12px; gap: 6px; }
+
+  /* logo */
+  html[data-theme] body #root .nt-nav .nt-mark { width: 32px; height: 32px; }
+  html[data-theme] body #root .nt-nav .nt-ab-nav { font-size: 1.16rem; letter-spacing: -.02em; }
+  html[data-theme] body #root .nt-nav .nt-ab-l.is-narx { color: var(--nm-narx); }
+  html[data-theme] body #root .nt-nav .nt-ab-l.is-top { background: var(--nm-top); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* round glass buttons */
+  html[data-theme] body #root .nt-nav .nt-nav-actions { gap: 6px; }
+  html[data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn,
+  html[data-theme] body #root .nt-nav .nt-burger {
+    width: 38px; height: 38px; border-radius: 13px; color: var(--nm-text);
+    background: var(--nm-chip); border: 1px solid var(--nm-chip-b); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
+    transition: transform .15s ease, background .2s, border-color .2s, color .2s;
+  }
+  html[data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn:active,
+  html[data-theme] body #root .nt-nav .nt-burger:active { transform: scale(.92); background: var(--nm-chip-hi); }
+  html[data-theme] body #root .nt-nav .nt-burger[aria-expanded="true"] { color: var(--nm-ico); background: var(--nm-ico-bg); border-color: rgba(255, 140, 40, .55); }
+  html[data-theme] body #root .nt-nav .nt-cart-btn em,
+  html[data-theme] body #root .nt-nav .nt-user-btn em { background: linear-gradient(135deg, #ff9a2a, #ff5a00); color: #fff; box-shadow: 0 0 0 2px var(--nm-ring); }
+  html[data-theme] body #root .nt-nav .nt-user-btn { color: var(--nm-text); background: var(--nm-chip); border: 1px solid var(--nm-chip-b); }
+
+  /* guests: glowing sign-in pill */
+  html[data-theme] body #root .nt-nav .nt-nav-login {
+    min-height: 38px; padding: 0 16px; border: 0; border-radius: 13px; color: #fff; font-weight: 800; letter-spacing: -.005em;
+    background: linear-gradient(135deg, #ff9a2a, #ff6a00 60%, #e84f00);
+    box-shadow: 0 12px 22px -12px rgba(255, 98, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .38);
+  }
+  html[data-theme] body #root .nt-nav .nt-nav-login:active { transform: scale(.95); }
+
+  /* menu sheet */
+  html[data-theme] body #root .nt-nav .nt-nav-links {
+    left: 0; right: 0; margin-top: 8px; padding: 8px; gap: 3px; border-radius: 22px;
+    background: var(--nm-sheet); border: 1px solid var(--nm-border); box-shadow: var(--nm-shadow-lg), inset 0 1px 0 rgba(255, 255, 255, .2);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  html[data-theme] body #root .nt-nav .nt-nav-links.is-open { animation: nm85-drop .22s cubic-bezier(.22, 1, .36, 1) both; }
+  html[data-theme] body #root .nt-nav .nt-nav-links a,
+  html[data-theme] body #root .nt-nav .nt-nav-extra a,
+  html[data-theme] body #root .nt-nav .nt-nav-theme {
+    min-height: 48px; padding: 8px 12px 8px 10px; gap: 12px; border-radius: 16px; color: var(--nm-soft); font-size: .92rem; font-weight: 650;
+  }
+  html[data-theme] body #root .nt-nav .nt-nav-links .nt-nav-ico {
+    display: grid; flex: none; width: 32px; height: 32px; padding: 7px; box-sizing: border-box; place-items: center; border-radius: 11px;
+    color: var(--nm-ico); background: var(--nm-ico-bg); transition: background .2s, color .2s;
+  }
+  html[data-theme] body #root .nt-nav .nt-nav-links a.is-active { color: var(--nm-text); background: var(--nm-active); box-shadow: inset 3px 0 0 #ff7a1a; }
+  html[data-theme] body #root .nt-nav .nt-nav-links a.is-active .nt-nav-ico { color: #fff; background: linear-gradient(135deg, #ff9a2a, #ff6a00); }
+  html[data-theme] body #root .nt-nav .nt-nav-links a.is-active .nt-nav-pill { display: none; }
+  html[data-theme] body #root .nt-nav .nt-nav-links a.nt-nav-admin { color: var(--nm-ico); }
+  html[data-theme] body #root .nt-nav .nt-nav-links a:active,
+  html[data-theme] body #root .nt-nav .nt-nav-theme:active { background: var(--nm-chip-hi); }
+  html[data-theme] body #root .nt-nav .nt-nav-links a em { margin-left: auto; min-width: 20px; padding: 2px 7px; border-radius: 999px; background: linear-gradient(135deg, #ff9a2a, #ff5a00); color: #fff; font-size: .7rem; font-style: normal; font-weight: 800; text-align: center; }
+  html[data-theme] body #root .nt-nav .nt-nav-extra { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--nm-chip-b); }
+  html[data-theme] body #root .nt-nav .nt-nav-theme[aria-pressed="true"] .nt-nav-ico { color: #fff; background: linear-gradient(135deg, #ff9a2a, #ff6a00); }
+  html[data-theme] body #root .nt-nav .nt-nav-lang { margin-top: 4px; padding: 10px 10px 6px 12px; color: var(--nm-soft); font-size: .86rem; font-weight: 650; }
+  html[data-theme] body #root .nt-nav .nt-nav-lang .nt-seg { background: var(--nm-chip); border: 1px solid var(--nm-chip-b); }
+  html[data-theme] body #root .nt-nav .nt-nav-lang .nt-seg button { color: var(--nm-soft); }
+  html[data-theme] body #root .nt-nav .nt-nav-lang .nt-seg button.is-on { color: #fff; background: linear-gradient(135deg, #ff9a2a, #ff6a00); box-shadow: 0 6px 14px -8px rgba(255, 98, 0, .9); }
+
+  /* profile dropdown matches the sheet */
+  html[data-theme] body #root .nt-nav .nt-drop { color: var(--nm-text); background: var(--nm-sheet); border: 1px solid var(--nm-border); border-radius: 18px; box-shadow: var(--nm-shadow-lg); }
+  html[data-theme] body #root .nt-nav .nt-drop a, html[data-theme] body #root .nt-nav .nt-drop button { color: var(--nm-text); border-radius: 12px; }
+  html[data-theme] body #root .nt-nav .nt-drop a:active, html[data-theme] body #root .nt-nav .nt-drop button:active { background: var(--nm-chip-hi); }
+}
+@media (max-width: 380px) {
+  html[data-theme] body #root .nt-nav .nt-nav-in { padding-left: 9px; gap: 4px; }
+  html[data-theme] body #root .nt-nav .nt-mark { width: 29px; height: 29px; }
+  html[data-theme] body #root .nt-nav .nt-ab-nav { font-size: 1.02rem; }
+  html[data-theme] body #root .nt-nav .nt-nav-actions { gap: 4px; }
+  html[data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn, html[data-theme] body #root .nt-nav .nt-burger { width: 35px; height: 35px; border-radius: 12px; }
+  html[data-theme] body #root .nt-nav .nt-nav-login { padding: 0 12px; }
+}
+@keyframes nm85-drop { from { opacity: 0; transform: translateY(-8px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { html[data-theme] body #root .nt-nav .nt-nav-links.is-open { animation: none; } html[data-theme] body #root .nt-nav, html[data-theme] body #root .nt-nav .nt-icon-btn { transition: none; } }
+html[data-motion="off"] .nt-nav-links.is-open { animation: none !important; }

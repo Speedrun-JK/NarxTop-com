@@ -1,0 +1,476 @@
+/* ==========================================================================
+   v91 — NEW NAVBAR (dark + light, from the supplied mock-ups) + PAGE BACKGROUND PHOTOS + site polish.
+
+   1. Page background: the whole site sits on the supermarket photo (dark photo in the dark theme, bright photo in
+      the light theme). It is ONE fixed layer behind everything (body::before), so it never scrolls, works on iOS
+      (no background-attachment: fixed) and is NOT drawn on the navbar or the main banner — those keep their own look.
+   2. Navbar (desktop, > 860px): floating pill, orange glow border + leaves in dark, white frosted pill in light,
+      grouped links with an orange underline, UZ/RU/EN switch, round icon buttons with orange badges, user pill.
+      Phones (<= 860px) keep the burger layout from nav-m85.css.
+   3. Small site-wide polish (selection, scrollbar, focus ring, card hover).
+
+   Imported LAST (after staff-tools.css). Every selector uses a doubled [data-theme] so it out-ranks the older layers.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- 1. page background --- */
+html[data-theme="dark"][data-theme] { background-color: #100905; }
+html[data-theme="light"][data-theme] { background-color: #d4bb9a; }
+
+/* the older layers painted solid colours / dot lattices on body, #root and the shell: they must be see-through now */
+html[data-theme][data-theme] body,
+html[data-theme][data-theme] body #root,
+html[data-theme][data-theme] body #root .nt-shell { background: transparent; }
+
+html[data-theme][data-theme] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+/* the photo gets a soft brown wash (it follows the accent colour the user picked: brown by default) */
+html[data-theme="dark"][data-theme] body::before {
+  background-image:
+    linear-gradient(180deg, rgba(var(--accent-rgb), .09), rgba(var(--accent-rgb), .13)),
+    linear-gradient(180deg, rgba(16, 9, 5, .44) 0%, rgba(16, 9, 5, .6) 45%, rgba(16, 9, 5, .8) 100%),
+    url("../assets/bg/bg-dark.webp");
+  background-color: #100905;
+}
+html[data-theme="light"][data-theme] body::before {
+  background-image:
+    linear-gradient(180deg, rgba(var(--accent-rgb), .16), rgba(var(--accent-rgb), .22)),
+    linear-gradient(180deg, rgba(214, 186, 152, .56) 0%, rgba(208, 178, 144, .76) 50%, rgba(198, 166, 130, .9) 100%),
+    url("../assets/bg/bg-light.webp");
+  background-color: #d4bb9a;
+}
+
+/* the photo already carries leaves, shelves and warm light, so the old drifting blobs / corner foliage / shop doodles go */
+html[data-theme][data-theme] body #root .nt-ambient { display: none; }
+
+/* ------------------------------------------------------------------ 2. navbar (desktop) --- */
+@keyframes v91-leaf-sway { from { rotate: -3deg; } to { rotate: 4deg; } }
+
+@media (min-width: 861px) {
+  /* ---- tokens ---- */
+  html[data-theme="dark"][data-theme] body #root .nt-nav {
+    --v-bar: linear-gradient(180deg, rgba(26, 26, 31, .84) 0%, rgba(11, 11, 14, .9) 100%);
+    --v-bar-solid: linear-gradient(180deg, rgba(24, 24, 29, .96) 0%, rgba(10, 10, 13, .97) 100%);
+    --v-edge: linear-gradient(100deg, rgba(255, 138, 42, .95) 0%, rgba(255, 255, 255, .16) 16%, rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .16) 84%, rgba(255, 138, 42, .95) 100%);
+    --v-glow: 0 0 0 1px rgba(255, 255, 255, .04), 0 14px 38px -14px rgba(255, 110, 20, .5), 0 22px 44px -26px rgba(0, 0, 0, .9);
+    --v-inner: inset 0 -2px 6px -1px rgba(255, 130, 30, .8), inset 10px 0 22px -14px rgba(255, 130, 30, .7), inset -10px 0 22px -14px rgba(255, 130, 30, .7), inset 0 1px 0 rgba(255, 255, 255, .07);
+    --v-ends: radial-gradient(60px 70px at 0% 100%, rgba(255, 120, 24, .28), transparent 100%), radial-gradient(60px 70px at 100% 100%, rgba(255, 120, 24, .28), transparent 100%);
+    --v-text: #f6f3ef;
+    --v-soft: rgba(255, 255, 255, .86);
+    --v-narx: #ffffff;
+    --v-group-bg: rgba(255, 255, 255, .035);
+    --v-group-line: rgba(255, 255, 255, .13);
+    --v-link-hover: rgba(255, 255, 255, .07);
+    --v-active-text: #ff9b28;
+    --v-active-bg: transparent;
+    --v-active-ring: transparent;
+    --v-sep: rgba(255, 150, 60, .55);
+    --v-chip-bg: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+    --v-chip-line: rgba(255, 168, 90, .42);
+    --v-chip-hover: rgba(255, 138, 42, .75);
+    --v-seg-text: rgba(255, 255, 255, .8);
+    --v-badge-ring: #0d0d10;
+    --v-ring: rgba(255, 138, 42, .9);
+    --v-drop-bg: rgba(18, 18, 22, .96);
+    --v-drop-line: rgba(255, 255, 255, .14);
+  }
+  html[data-theme="light"][data-theme] body #root .nt-nav {
+    --v-bar: linear-gradient(180deg, rgba(255, 255, 255, .94) 0%, rgba(253, 248, 243, .92) 100%);
+    --v-bar-solid: linear-gradient(180deg, #ffffff 0%, #fdf8f3 100%);
+    --v-edge: linear-gradient(100deg, rgba(255, 150, 70, .75) 0%, rgba(255, 255, 255, .95) 14%, rgba(255, 255, 255, .95) 86%, rgba(255, 150, 70, .75) 100%);
+    --v-glow: 0 0 0 1px rgba(255, 140, 60, .08), 0 18px 40px -16px rgba(255, 120, 40, .38), 0 8px 22px -12px rgba(90, 50, 20, .2);
+    --v-inner: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(120, 70, 30, .08);
+    --v-ends: radial-gradient(70px 80px at 0% 50%, rgba(255, 150, 70, .55), transparent 100%), radial-gradient(70px 80px at 100% 50%, rgba(255, 150, 70, .5), transparent 100%);
+    --v-text: #2b2f38;
+    --v-soft: #3a3f4a;
+    --v-narx: #1d1a17;
+    --v-group-bg: rgba(255, 255, 255, .55);
+    --v-group-line: rgba(60, 40, 20, .08);
+    --v-link-hover: rgba(255, 130, 40, .08);
+    --v-active-text: #b8420a;
+    --v-active-bg: linear-gradient(180deg, #fff6ec 0%, #ffe9d3 100%);
+    --v-active-ring: rgba(255, 140, 50, .5);
+    --v-sep: rgba(60, 40, 20, .12);
+    --v-chip-bg: linear-gradient(180deg, #ffffff, #f8f1ea);
+    --v-chip-line: rgba(150, 92, 42, .32);
+    --v-chip-hover: rgba(255, 122, 24, .6);
+    --v-seg-text: #6b6f78;
+    --v-badge-ring: #ffffff;
+    --v-ring: #ff7a18;
+    --v-drop-bg: rgba(255, 253, 250, .98);
+    --v-drop-line: rgba(60, 40, 20, .12);
+  }
+
+  /* ---- floating frame ---- */
+  html[data-theme][data-theme] body #root .nt-nav {
+    position: sticky;
+    top: 12px;
+    width: min(1360px, calc(100% - 44px));
+    margin: 14px auto 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    overflow: visible;
+  }
+  html[data-theme][data-theme] body #root .nt-nav.is-scrolled { background: transparent; box-shadow: none; }
+
+  /* the pill */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-in {
+    position: relative;
+    width: 100%;
+    min-height: 78px;
+    padding: 8px 14px 8px 26px;
+    gap: clamp(8px, 1.1vw, 16px);
+    border: 0;
+    border-radius: 999px;
+    background-image: var(--v-ends), var(--v-bar);
+    box-shadow: var(--v-glow), var(--v-inner);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    transition: box-shadow .3s ease, background .3s ease;
+  }
+  html[data-theme][data-theme] body #root .nt-nav.is-scrolled .nt-nav-in { background-image: var(--v-ends), var(--v-bar-solid); }
+  /* gradient hairline (orange at both ends) drawn with a mask so the pill stays see-through */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-in::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: var(--v-edge);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* leaves at both ends of the pill */
+  html[data-theme][data-theme] body #root .nt-nav::before,
+  html[data-theme][data-theme] body #root .nt-nav::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    width: 44px; height: 36px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c4f27a'/%3E%3Cstop offset='1' stop-color='%231f9a45'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 31C1.5 15 14 3 45 4c1 21-12 34-42 27Z' fill='url(%23g)'/%3E%3Cpath d='M6 30C16 21 28 13 41 7' fill='none' stroke='%23fff' stroke-opacity='.6' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .35));
+    pointer-events: none;
+    opacity: 1;
+    inset: auto;
+    box-shadow: none;
+    border-radius: 0;
+    transition: none;
+  }
+  html[data-theme][data-theme] body #root .nt-nav::before { left: -22px; top: -6px; transform-origin: 80% 90%; animation: v91-leaf-sway 6s ease-in-out infinite alternate; }
+  html[data-theme][data-theme] body #root .nt-nav::after { right: -24px; top: 16px; scale: -1 1; rotate: 12deg; }
+  html[data-theme="light"][data-theme] body #root .nt-nav::before,
+  html[data-theme="light"][data-theme] body #root .nt-nav::after { filter: drop-shadow(0 6px 8px rgba(120, 70, 20, .28)); }
+  html[data-motion="off"] body #root .nt-nav::before { animation: none; }
+
+  /* ---- logo ---- */
+  html[data-theme][data-theme] body #root .nt-nav .nt-logo { gap: 10px; flex: none; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-mark { width: 44px; height: 46px; filter: drop-shadow(0 6px 12px rgba(255, 110, 20, .45)); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-ab-nav { font-family: var(--font-display); font-size: 2.15rem; font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-ab-l.is-narx { color: var(--v-narx); -webkit-text-fill-color: var(--v-narx); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-ab-l.is-top {
+    background-image: linear-gradient(180deg, #ffb02e 0%, #ff8a1a 55%, #ff6a0c 100%);
+    background-size: 100% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    animation: none;
+  }
+  html[data-theme="light"][data-theme] body #root .nt-nav .nt-ab-l.is-top { background-image: linear-gradient(180deg, #ff8a1c 0%, #f0580a 100%); }
+
+  /* ---- link group ---- */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links {
+    flex: 0 1 auto;
+    margin-left: clamp(6px, 1.2vw, 20px);
+    padding: 5px 8px;
+    gap: 2px;
+    border: 1px solid var(--v-group-line);
+    border-radius: 999px;
+    background: var(--v-group-bg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a {
+    gap: 9px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    color: var(--v-soft);
+    font-family: var(--font-body);
+    font-size: .93rem;
+    font-weight: 650;
+    letter-spacing: -.005em;
+    white-space: nowrap;
+    background: transparent;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a:not(.is-active):hover { background: var(--v-link-hover); color: var(--v-text); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a .nt-nav-ico { color: currentColor; opacity: .95; }
+  /* the "Console" / admin link looks like the other links now */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a.nt-nav-admin,
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a.nt-nav-admin .nt-nav-ico { color: var(--v-soft); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a.is-active,
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a.is-active .nt-nav-ico,
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a.nt-nav-admin.is-active,
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a.nt-nav-admin.is-active .nt-nav-ico { color: var(--v-active-text); }
+  /* the moving highlight: a soft pill in the light theme, always an orange underline */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a .nt-nav-pill {
+    background: var(--v-active-bg);
+    box-shadow: inset 0 0 0 1px var(--v-active-ring);
+    overflow: visible;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a .nt-nav-pill::after {
+    content: "";
+    position: absolute;
+    left: 14px; right: 14px; bottom: -1px;
+    height: 2.5px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #ff6a14, #ffa83c);
+    box-shadow: 0 0 12px rgba(255, 122, 24, .85);
+  }
+
+  /* ---- right side: separator + switch + round buttons + user ---- */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions { position: relative; margin-left: auto; gap: 10px; padding-left: clamp(12px, 1.4vw, 22px); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions::before {
+    content: ""; position: absolute; left: 0; top: 50%; width: 1px; height: 36px; translate: 0 -50%;
+    background: linear-gradient(180deg, transparent, var(--v-sep), transparent);
+  }
+
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg {
+    display: inline-flex; flex: none; flex-wrap: nowrap; align-items: center;
+    padding: 4px; gap: 2px;
+    border: 1px solid var(--v-chip-line);
+    border-radius: 999px;
+    background: var(--v-group-bg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg button {
+    flex: none; min-width: 42px; padding: 9px 15px;
+    border-radius: 999px; white-space: nowrap;
+    color: var(--v-seg-text);
+    font-size: .88rem; font-weight: 750; letter-spacing: .01em;
+    background: transparent; box-shadow: none;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg button:not(.is-on):hover { color: var(--v-text); background: var(--v-link-hover); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg button.is-on {
+    color: #fff;
+    background: linear-gradient(135deg, #ff9232 0%, #ff5f12 100%);
+    box-shadow: 0 6px 16px -6px rgba(255, 98, 18, .85), inset 0 1px 0 rgba(255, 255, 255, .35);
+  }
+
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn {
+    position: relative;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    color: var(--v-text);
+    border: 1.5px solid var(--v-chip-line);
+    background: var(--v-chip-bg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 6px 14px -10px rgba(0, 0, 0, .6);
+    transition: transform .2s var(--ease-spring, ease), border-color .2s, box-shadow .2s, color .2s;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--v-chip-hover);
+    color: #ff7a18;
+    box-shadow: 0 10px 22px -10px rgba(255, 110, 20, .7), inset 0 1px 0 rgba(255, 255, 255, .1);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn:active { transform: scale(.93); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn .nt-icon { width: 21px; height: 21px; }
+  html[data-theme="light"][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn { box-shadow: inset 0 1px 0 #fff, 0 6px 14px -9px rgba(80, 45, 20, .35); }
+
+  /* count badges (favourites + cart) */
+  html[data-theme][data-theme] body #root .nt-nav .nt-icon-btn em,
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn > em {
+    position: absolute;
+    top: -5px; right: -5px;
+    min-width: 21px; height: 21px;
+    padding: 0 6px;
+    display: grid; place-items: center;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #ff7a2a, #ff4a0a);
+    color: #fff;
+    font: 800 .7rem/1 var(--font-body);
+    font-style: normal;
+    box-shadow: 0 0 0 2.5px var(--v-badge-ring), 0 4px 10px -2px rgba(255, 80, 10, .7);
+    animation: none;
+  }
+
+  /* user pill */
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn {
+    position: relative;
+    gap: 11px;
+    height: 52px;
+    padding: 5px 16px 5px 6px;
+    border-radius: 999px;
+    color: var(--v-text);
+    border: 1px solid var(--v-chip-line);
+    background: var(--v-chip-bg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 6px 14px -10px rgba(0, 0, 0, .6);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn:hover { border-color: var(--v-chip-hover); transform: translateY(-1px); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn .nt-avatar {
+    width: 40px; height: 40px; flex: none;
+    box-shadow: 0 0 0 2px var(--v-badge-ring), 0 0 0 3.5px var(--v-ring);
+    transform: none;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn .nt-avatar:not(img) { color: #fff; font-weight: 700; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-name { color: var(--v-text); font-size: .95rem; font-weight: 700; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn::after {
+    content: ""; width: 14px; height: 14px; flex: none; margin-left: -2px;
+    background: currentColor; opacity: .8;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform .2s ease;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn[aria-expanded="true"]::after { transform: rotate(180deg); }
+
+  /* signed-out buttons */
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-login {
+    height: 48px; padding: 0 22px; border: 0; border-radius: 999px;
+    color: #fff; font-weight: 750;
+    background: linear-gradient(135deg, #ff9232 0%, #ff5f12 100%);
+    box-shadow: 0 10px 22px -10px rgba(255, 98, 18, .9), inset 0 1px 0 rgba(255, 255, 255, .35);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-login:hover { transform: translateY(-2px); filter: brightness(1.05); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-reg {
+    height: 48px; padding: 0 20px; border-radius: 999px;
+    color: var(--v-text); font-weight: 700;
+    border: 1px solid var(--v-chip-line); background: var(--v-chip-bg);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-reg:hover { border-color: var(--v-chip-hover); }
+
+  /* account drop-down */
+  html[data-theme][data-theme] body #root .nt-nav .nt-drop {
+    top: calc(100% + 14px); right: 0;
+    min-width: 230px; padding: 8px;
+    border-radius: 22px;
+    background: var(--v-drop-bg);
+    border: 1px solid var(--v-drop-line);
+    color: var(--v-text);
+    box-shadow: 0 26px 54px -20px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 122, 24, .08);
+    -webkit-backdrop-filter: blur(22px) saturate(1.3); backdrop-filter: blur(22px) saturate(1.3);
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-drop a,
+  html[data-theme][data-theme] body #root .nt-nav .nt-drop button { color: var(--v-text); border-radius: 15px; font-weight: 600; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-drop a:hover,
+  html[data-theme][data-theme] body #root .nt-nav .nt-drop button:hover { background: rgba(255, 122, 24, .12); color: #ff7a18; }
+}
+
+/* medium desktops / small laptops: keep everything on one line */
+@media (min-width: 861px) and (max-width: 1220px) {
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-in { padding: 8px 12px 8px 20px; min-height: 70px; gap: 8px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-ab-nav { font-size: 1.75rem; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-mark { width: 38px; height: 40px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a { padding: 10px 12px; font-size: .88rem; gap: 7px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg button { min-width: 36px; padding: 8px 11px; font-size: .82rem; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions { gap: 8px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn { width: 44px; height: 44px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-name { display: none; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn { padding-right: 12px; gap: 6px; }
+}
+@media (min-width: 861px) and (max-width: 1060px) {
+  html[data-theme][data-theme] body #root .nt-nav { width: calc(100% - 28px); }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a .nt-nav-ico { display: none; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links { margin-left: 2px; padding: 4px 5px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-ab-nav { font-size: 1.55rem; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions { padding-left: 8px; gap: 6px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg button { min-width: 30px; padding: 7px 8px; font-size: .76rem; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn { width: 40px; height: 40px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-links a { padding: 9px 10px; font-size: .84rem; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-in { padding-left: 16px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions::before { display: none; }
+  html[data-theme][data-theme] body #root .nt-nav::before { left: -14px; }
+  html[data-theme][data-theme] body #root .nt-nav::after { right: -14px; }
+}
+
+/* ---------------------------------------------------- phones: only a gentler leaf-free tweak --- */
+@media (max-width: 860px) {
+  html[data-theme][data-theme] body #root .nt-nav::before { content: none; }
+}
+
+/* ------------------------------------------------------------------------ 3. site polish --- */
+html { scrollbar-color: rgba(255, 122, 24, .55) transparent; scrollbar-width: thin; }
+html[data-theme][data-theme] ::selection { background: rgba(255, 122, 24, .32); color: inherit; }
+html[data-theme][data-theme] :focus-visible { outline-color: #ff7a18; }
+@media (hover: hover) {
+  html[data-theme][data-theme] body #root .pc,
+  html[data-theme][data-theme] body #root .tc { transition: transform .28s var(--ease-out, ease), box-shadow .28s var(--ease-out, ease), border-color .2s; }
+  html[data-theme][data-theme] body #root .pc:hover,
+  html[data-theme][data-theme] body #root .tc:hover { transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme][data-theme] body #root .nt-nav::before { animation: none; }
+}
+
+/* ------------------------------------------------------- 4. visible brown borders (follow the accent) --- */
+html[data-theme="dark"][data-theme] {
+  --border: rgba(var(--accent-rgb), .34);
+  --line: rgba(var(--accent-rgb), .24);
+  --glass-border: rgba(var(--accent-rgb), .3);
+  --tc-line: rgba(var(--accent-rgb), .32);
+  --card-line: rgba(var(--accent-rgb), .38);
+  --card-line-hover: rgba(var(--accent-rgb), .72);
+  --card-glow: rgba(var(--accent-rgb), .2);
+  --plate-ring: rgba(var(--accent-rgb), .18);
+}
+html[data-theme="light"][data-theme] {
+  --border: rgba(var(--accent-rgb), .36);
+  --line: rgba(var(--accent-rgb), .26);
+  --glass-border: rgba(var(--accent-rgb), .32);
+  --tc-line: rgba(var(--accent-rgb), .36);
+  --plate-ring: rgba(var(--accent-rgb), .16);
+}
+
+/* ------------------------------------------------------------------ 5. main banner (hero) --- */
+html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb {
+  border: 1px solid rgba(var(--accent-rgb), .42);
+  border-radius: 30px;
+}
+html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb h1 { letter-spacing: -.042em; line-height: 1.03; }
+html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-eyebrow { border-color: rgba(var(--accent-rgb), .5); }
+html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-stats li { border-color: rgba(var(--accent-rgb), .4); }
+html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-action .nt-btn { border-radius: 999px; }
+
+@media (min-width: 861px) {
+  /* stat tiles: always one row, equal width, never cut off by the fixed-height banner */
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: stretch; }
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-stats li { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 9px 6px 7px; }
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-stats li div { min-width: 0; display: grid; gap: 2px; }
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb-stats li span { font-size: .64rem; line-height: 1.15; }
+}
+
+/* the orange swoosh under "tejang" is gone */
+html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad::after { content: none; display: none !important; animation: none; }
+
+@media (max-width: 767px) {
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb { border-radius: 26px; }
+  /* sign-up + sign-in side by side instead of two tall stacked buttons */
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action { display: flex; gap: 10px; }
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn { flex: 1 1 0; min-height: 52px; padding: 0 14px; font-size: .95rem; }
+  html[data-theme][data-theme] body #root .nt-home.nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn-primary { flex-grow: 1.35; }
+}
+
+/* phones: round icon buttons with a clear brown border too */
+@media (max-width: 860px) {
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn,
+  html[data-theme][data-theme] body #root .nt-nav .nt-burger {
+    border-radius: 50%;
+    border: 1.5px solid rgba(var(--accent-rgb), .55);
+  }
+}
+
+/* below ~1300px the long user name would run under the right leaf: show only the avatar there */
+@media (min-width: 861px) and (max-width: 1300px) {
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-name { display: none; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-user-btn { padding-right: 12px; gap: 6px; }
+}

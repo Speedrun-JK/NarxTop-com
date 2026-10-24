@@ -1,0 +1,104 @@
+/* ==========================================================================
+   FINAL LAYER (loaded last)
+   1. Performance: stop ambient loops and reduce unnecessary site animations.
+   2. Product grid: exactly four cards per row on desktop, responsive on smaller screens.
+   3. Counters (card stepper + cart quantity).
+   4. Smaller footer (the big wordmark stays).
+   5. About page banner + buttons.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 1. performance */
+html body .nt-nav { -webkit-backdrop-filter: blur(8px) !important; backdrop-filter: blur(8px) !important; } /* only the navbar keeps a (small) blur */
+html[data-theme] .nt-modal-bg { background: rgba(22, 11, 5, .74); }
+
+/* ambient background: soft gradients instead of 90px blurred, endlessly moving blobs */
+.nt-ambient i { filter: none !important; animation: none !important; opacity: 1 !important; border-radius: 50%; }
+.nt-ambient i:nth-child(1) { background: radial-gradient(closest-side, rgba(var(--accent-rgb), .2), transparent); }
+.nt-ambient i:nth-child(2) { background: radial-gradient(closest-side, rgba(var(--pink-rgb), .12), transparent); }
+.nt-ambient i:nth-child(3) { background: radial-gradient(closest-side, rgba(var(--accent-rgb), .14), transparent); }
+html[data-theme="light"] .nt-ambient i:nth-child(1) { background: radial-gradient(closest-side, rgba(var(--accent-rgb), .1), transparent); }
+html[data-theme="light"] .nt-ambient i:nth-child(2) { background: radial-gradient(closest-side, rgba(var(--pink-rgb), .07), transparent); }
+html[data-theme="light"] .nt-ambient i:nth-child(3) { background: radial-gradient(closest-side, rgba(var(--accent-rgb), .08), transparent); }
+.nt-footer-orb { filter: none; }
+
+/* endless decorative loops off (loading spinners stay) */
+html[data-theme] .nt-hero-orb-a, html[data-theme] .nt-hero-orb-b, .nt-hero::before,
+html[data-theme] .nf-edge, html[data-theme] .nt-teaser-lock::after, html[data-theme] .nt-show-cta::before,
+.nt-hero .nt-ab-l.is-top, .nt-ab-hero .nt-ab-l.is-top, .nt-ab-mega .nt-ab-l.is-top,
+.nt-ab-l, .nt-float-chip, .nt-state-icon, .nt-cart-btn em,
+.nt-skel, .nt-theme-btn:hover svg, .adm-hero::after, .adm-hero-orb,
+.locked-icon, .locked-icon::before, .locked-icon::after { animation: none !important; }
+.nt-skel { opacity: .7; }
+
+/* nothing animates in per product card / per footer column / per grid child */
+.nt-grid > *, .nt-footer-in > div, .nt-main > * { animation: none !important; }
+.nt-glass { transition: none; }
+
+/* ------------------------------------------------------------------ 2. product cards */
+
+/* ---- product grid: four cards per row on desktop ---- */
+@media (min-width: 900px) {
+  html body .nt-grid[data-density="comfortable"],
+  html body .nt-grid[data-density="compact"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    --gap: 18px;
+  }
+}
+@media (min-width: 641px) and (max-width: 899px) {
+  html body .nt-grid[data-density="comfortable"],
+  html body .nt-grid[data-density="compact"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    --gap: 12px;
+  }
+}
+@media (max-width: 640px) {
+  html body .nt-grid[data-density="comfortable"],
+  html body .nt-grid[data-density="compact"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    --gap: 10px;
+  }
+}
+
+/* ------------------------------------------------------------------ 3. counters */
+html body .nc-qty { padding: 3px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--border); border: 0; }
+html body .nc-qty button { width: 30px; height: 30px; box-shadow: 0 1px 3px rgba(var(--ink-rgb), .18); }
+html body .nc-qty output { min-width: 36px; font-size: .98rem; animation-duration: .15s; }
+
+/* product detail page: tidier panels */
+html body .nt-detail { gap: clamp(14px, 2.4vw, 28px); }
+html body .nt-detail-img { min-height: 300px; border-radius: 26px; }
+html body .nt-detail-info { border-radius: 26px; }
+
+/* ------------------------------------------------------------------ 4. footer: smaller, big wordmark kept */
+html body .nf-card { border-radius: 28px; }
+html body .nf-edge { height: 3px; }
+html body .nf-main { grid-template-columns: minmax(220px, 1.7fr) repeat(3, minmax(0, 1fr)); gap: 14px clamp(18px, 2.6vw, 34px); padding: 20px clamp(18px, 3vw, 32px) 0; }
+html body .nf-brand p { margin: 8px 0 0; font-size: .84rem; line-height: 1.5; }
+html body .nf-col h4 { margin-bottom: 6px; font-size: .88rem; }
+html body .nf-col ul a { padding: 2px 0; font-size: .84rem; }
+html body .nf-col .nf-contact { margin-top: 2px; }
+html[data-theme] .nf-card .nf-mega { margin: 0; }
+html[data-theme] .nf-card .nf-mega .nt-ab-mega { font-size: clamp(2.8rem, 12.5vw, 9.4rem); }
+html body .nf-bar { padding: 9px clamp(18px, 3vw, 32px); font-size: .78rem; }
+html body .nf-top { padding: 5px 12px; font-size: .78rem; }
+@media (max-width: 760px) { html body .nf-main { grid-template-columns: repeat(2, minmax(0, 1fr)); } html body .nf-brand { grid-column: 1 / -1; } }
+
+/* ------------------------------------------------------------------ 5. about page */
+.ab-hero { padding: clamp(22px, 3.4vw, 40px); border-radius: 28px; gap: clamp(16px, 2.6vw, 30px); }
+.ab-hero h1 { font-size: clamp(1.9rem, 3.8vw, 2.9rem); margin: 8px 0 4px; }
+.ab-hero p { font-size: .98rem; line-height: 1.55; }
+.ab-hero-btns { gap: 10px; margin-top: 14px; }
+.ab-stats { gap: 10px; }
+.ab-stats li { padding: 12px 16px; border-radius: 16px; }
+.ab-stats b { font-size: clamp(1.3rem, 2.2vw, 1.8rem); }
+
+.ab-btn-main, .ab-btn-alt { display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 46px; padding: 0 22px; border-radius: 999px; font: 700 .94rem var(--font-body); letter-spacing: -.005em; text-decoration: none; white-space: nowrap; cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s; }
+.ab-btn-main { color: #fff; border: 0; background: linear-gradient(135deg, #ff86ae, #e8527f); box-shadow: 0 10px 22px -10px rgba(232, 82, 127, .75); }
+.ab-btn-main:hover { transform: translateY(-1px); box-shadow: 0 14px 26px -10px rgba(232, 82, 127, .9); }
+.ab-btn-alt { color: #3d2314; border: 0; background: #fff3e8; box-shadow: 0 8px 20px -12px rgba(0, 0, 0, .6); }
+.ab-btn-alt:hover { transform: translateY(-1px); background: #fff; }
+.ab-btn-main svg, .ab-btn-alt svg { flex: none; }
+.ab-stores .ab-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; font-weight: 700; color: var(--text); border: 1.5px solid var(--card-line); background: rgba(var(--accent-rgb), .06); }
+@media (max-width: 560px) { .ab-hero-btns .ab-btn-main, .ab-hero-btns .ab-btn-alt, .ab-cta .ab-btn-main { flex: 1 1 100%; width: 100%; } }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

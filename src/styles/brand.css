@@ -1,0 +1,30 @@
+/* v83 — NarxTop logo + adaptive Plus crown (the navbar itself is untouched).
+   The crown sizes itself from the logo (--mark, set by <Logo size>) and works on light and dark bars. */
+.nt-logo-markwrap { --mark: 36px; }
+html[data-theme] body #root .nt-plus-crown {
+  left: auto;
+  right: calc(var(--mark) * -.3);
+  top: calc(var(--mark) * -.3);
+  width: calc(var(--mark) * .74);
+  height: calc(var(--mark) * .6);
+  transform: rotate(18deg);
+  transform-origin: 20% 100%;
+  color: inherit;
+  animation: brand-crown-float 4.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 calc(var(--mark) * .2) rgba(255, 190, 60, .55)) drop-shadow(0 2px 3px rgba(90, 45, 0, .5));
+}
+html[data-theme="light"] body #root .nt-plus-crown {
+  filter: drop-shadow(0 0 calc(var(--mark) * .12) rgba(220, 140, 20, .35)) drop-shadow(0 2px 3px rgba(90, 45, 0, .45));
+}
+html[data-theme] body #root .nt-plus-crown svg { width: 100%; height: 100%; }
+.nt-crown { overflow: visible; }
+.nt-crown-shine { transform: skewX(-20deg); animation: brand-crown-shine 3.6s ease-in-out infinite; }
+.nt-crown-twinkle { transform-box: fill-box; transform-origin: center; animation: brand-crown-twinkle 2.4s ease-in-out infinite; }
+@keyframes brand-crown-float { 0%, 100% { transform: rotate(18deg) translateY(0); } 50% { transform: rotate(14deg) translateY(-1.6px); } }
+@keyframes brand-crown-shine { 0%, 50% { transform: translateX(0) skewX(-20deg); } 100% { transform: translateX(78px) skewX(-20deg); } }
+@keyframes brand-crown-twinkle { 0%, 100% { opacity: .2; transform: scale(.6) rotate(0); } 50% { opacity: 1; transform: scale(1.1) rotate(45deg); } }
+/* Plus page: big logo, crown rests on the right corner (the tomato sits on the left) */
+html[data-theme] body #root .plus-logo-crown { left: 66%; top: -36px; filter: drop-shadow(0 10px 18px rgba(255, 150, 20, .55)) drop-shadow(0 3px 4px rgba(90, 45, 0, .5)); }
+html[data-theme] body #root .nt-logo:not(.is-plus) .nt-mark { filter: drop-shadow(0 4px 12px rgba(255, 138, 31, .35)); }
+@media (prefers-reduced-motion: reduce) { html[data-theme] body #root .nt-plus-crown, .nt-crown-shine, .nt-crown-twinkle { animation: none !important; } }
+html[data-motion="off"] .nt-plus-crown, html[data-motion="off"] .nt-crown-shine, html[data-motion="off"] .nt-crown-twinkle { animation: none !important; }

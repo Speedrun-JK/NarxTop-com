@@ -1,0 +1,168 @@
+/* ==========================================================================
+   v110 — TEAM CHAT
+   • side gaps around the whole chat (the navbar is full width, the chat is inset)
+   • sidebar and conversation are two separate rounded cards with a gap between them
+   • light theme matches the reference: cream panels, pale blue-grey conversation, white incoming bubbles,
+     light-blue own bubbles, peach "Clear history", orange Send
+   • Telegram-style emoji / sticker panel with pack names and a pack strip
+   Loaded after every older chat sheet.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 1. layout + gaps */
+html[data-theme] body #root .stc-page { padding-inline: clamp(10px, 1.7vw, 26px); padding-top: clamp(6px, 1vw, 14px); }
+html[data-theme][data-theme] body #root .stc-shell-main .stc {
+  gap: clamp(10px, 1.1vw, 16px);
+  grid-template-columns: clamp(250px, 23vw, 300px) minmax(0, 1fr);
+  border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible;
+}
+html[data-theme][data-theme] body #root .stc-shell-main .stc > :is(.stc-sidebar, .stc-main) {
+  min-height: 0; overflow: hidden; border: 1px solid var(--stc-line); border-radius: 22px; background: var(--stc-panel); box-shadow: var(--stc-shadow);
+}
+html[data-theme][data-theme] body #root .stc-shell-main .stc > .stc-sidebar { border-right: 1px solid var(--stc-line); }
+
+/* palettes */
+html[data-theme="light"] body #root .stc {
+  --stc-panel: #faf6f1; --stc-line: rgba(120, 90, 60, .14); --stc-shadow: 0 14px 34px -22px rgba(90, 60, 30, .35);
+  --stc-chat-bg: #dde5ee; --stc-in: #f8f9fc; --stc-in-line: rgba(80, 100, 130, .12); --stc-out: #deeafb; --stc-out-line: rgba(70, 120, 200, .2);
+  --stc-meta: #8a97a8; --stc-read: #3b82e6; --stc-field: #fdf9f4; --stc-peach: #fdebdc; --stc-peach-ink: #7a4a22;
+}
+html[data-theme="dark"] body #root .stc {
+  --stc-panel: #161b24; --stc-line: rgba(166, 186, 214, .14); --stc-shadow: 0 18px 40px -24px rgba(0, 0, 0, .7);
+  --stc-chat-bg: #10151d; --stc-in: #1e2733; --stc-in-line: rgba(166, 186, 214, .12); --stc-out: #1f3a5c; --stc-out-line: rgba(90, 160, 255, .25);
+  --stc-meta: #8fa0b6; --stc-read: #6db0ff; --stc-field: #1b222d; --stc-peach: rgba(255, 138, 42, .16); --stc-peach-ink: #ffc08a;
+}
+
+/* ------------------------------------------------------------------ 2. sidebar */
+html[data-theme] body #root .stc-sidebar { background: var(--stc-panel); }
+html[data-theme] body #root .stc-sidebar-head { min-height: 74px; padding: 14px 16px; border-bottom: 1px solid var(--stc-line); background: transparent; }
+html[data-theme] body #root .stc-sidebar-head .stc-mark {
+  display: grid; width: 42px; height: 42px; place-items: center; border-radius: 14px;
+  border: 1px solid var(--stc-line); background: var(--stc-field); color: var(--text); box-shadow: none;
+}
+html[data-theme] body #root .stc-sidebar-head b { font-size: 1rem; font-weight: 800; }
+html[data-theme] body #root .stc-sidebar-head small { color: var(--stc-meta); font-size: .78rem; }
+html[data-theme] body #root .stc-group-label { padding: 14px 18px 8px; color: var(--stc-meta); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: .7rem; }
+html[data-theme] body #root .stc-group-label > span:last-child { color: #1f9d63; }
+html[data-theme] body #root .stc-people > li { min-height: 64px; margin-inline: 4px; border-radius: 16px; }
+html[data-theme] body #root .stc-people > li:hover { border-color: transparent; background: rgba(var(--accent-rgb), .07); }
+html[data-theme] body #root .stc-sidebar-foot { border-top: 1px solid var(--stc-line); }
+
+/* ------------------------------------------------------------------ 3. conversation card */
+html[data-theme] body #root .stc-main { background: var(--stc-panel); grid-template-rows: auto minmax(0, 1fr) auto auto; }
+html[data-theme] body #root .stc-head { min-height: 74px; padding: 12px 20px; border-bottom: 1px solid var(--stc-line); background: var(--stc-panel); }
+html[data-theme] body #root .stc-head-title h1 { font-size: 1.02rem; font-weight: 800; }
+html[data-theme] body #root .stc-head-title p { color: var(--stc-meta); font-size: .8rem; }
+html[data-theme] body #root .stc-group-avatars { display: inline-flex; align-items: center; }
+html[data-theme] body #root .stc-group-avatars > * + * { margin-left: -10px; }
+html[data-theme] body #root .stc-group-avatars > * { border: 2px solid var(--stc-panel); border-radius: 50%; }
+html[data-theme] body #root .stc-clear {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px;
+  border: 1px solid rgba(var(--accent-rgb), .22); border-radius: 13px; background: var(--stc-peach); color: var(--stc-peach-ink); font-weight: 700;
+}
+html[data-theme] body #root .stc-clear:hover { border-color: rgba(var(--accent-rgb), .5); }
+
+html[data-theme] body #root .stc-messages { padding: 18px clamp(14px, 3vw, 30px) 14px; background: var(--stc-chat-bg); }
+html[data-theme="light"] body #root .stc[data-background="default"] .stc-messages,
+html[data-theme="light"] body #root .stc .stc-messages { background-color: var(--stc-chat-bg); }
+
+/* sender line: name + role badge */
+html[data-theme] body #root .stc-message-name { color: var(--text); font-size: .78rem; font-weight: 700; }
+html[data-theme] body #root .stc-message-meta { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+html[data-theme] body #root .stc-message-meta :is(.nt-role-badge, .stc-role, em, i) {
+  padding: 2px 7px; border-radius: 7px; background: #efe0cc; color: #8b5a2b; font: 800 .6rem/1.3 var(--font-body, inherit); letter-spacing: .05em; text-transform: uppercase;
+}
+html[data-theme="dark"] body #root .stc-message-meta :is(.nt-role-badge, .stc-role, em, i) { background: rgba(255, 190, 120, .16); color: #ffcf9d; }
+
+/* bubbles */
+html[data-theme] body #root .stc-bubble {
+  padding: 10px 14px 22px; border: 1px solid var(--stc-in-line); border-radius: 18px 18px 18px 6px;
+  background: var(--stc-in); color: var(--text); box-shadow: 0 1px 2px rgba(40, 55, 80, .06);
+}
+html[data-theme] body #root .stc-message.is-own .stc-bubble { border-color: var(--stc-out-line); border-radius: 18px 18px 6px 18px; background: var(--stc-out); }
+html[data-theme] body #root .stc-bubble p { font-size: .9rem; }
+html[data-theme] body #root .stc-bubble time { color: var(--stc-meta); font-size: .64rem; }
+html[data-theme] body #root .stc-sent-status, html[data-theme] body #root .stc-sent-status-label { color: var(--stc-read); }
+html[data-theme] body #root .stc-status-checks { color: var(--stc-read); }
+html[data-theme] body #root .stc-audio, html[data-theme] body #root .stc-bubble audio { border-radius: 999px; }
+
+/* ------------------------------------------------------------------ 4. composer */
+html[data-theme] body #root .stc-composer { padding: 12px 16px 10px; border-top: 1px solid var(--stc-line); background: var(--stc-panel); }
+html[data-theme] body #root .stc-compose-row { display: flex; align-items: center; gap: 10px; }
+html[data-theme] body #root .stc-tool {
+  display: grid; flex: none; width: 44px; height: 44px; place-items: center; padding: 0;
+  border: 1px solid var(--stc-line); border-radius: 50%; background: var(--stc-field); color: var(--text); cursor: pointer;
+  transition: background-color .14s ease, border-color .14s ease, color .14s ease, transform .14s ease;
+}
+html[data-theme] body #root .stc-tool:hover, html[data-theme] body #root .stc-tool.is-on { border-color: rgba(var(--accent-rgb), .5); background: var(--stc-peach); color: var(--accent); }
+html[data-theme] body #root .stc-tool:active { transform: scale(.94); }
+html[data-theme] body #root .stc-input-wrap { flex: 1; min-width: 0; }
+html[data-theme] body #root .stc-input-wrap textarea {
+  width: 100%; min-height: 46px; padding: 12px 18px; border: 1px solid var(--stc-line); border-radius: 23px; background: var(--stc-field); color: var(--text); font-size: .92rem; resize: none;
+}
+html[data-theme] body #root .stc-input-wrap textarea:focus { border-color: rgba(var(--accent-rgb), .6); outline: none; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+html[data-theme] body #root .stc-send {
+  display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px;
+  border: 0; border-radius: 23px; background: linear-gradient(180deg, #ff9a35, #ff7a12); color: #fff; font-weight: 800; box-shadow: 0 10px 20px -12px rgba(255, 100, 0, .85);
+}
+html[data-theme] body #root .stc-send:disabled { opacity: .55; box-shadow: none; }
+html[data-theme] body #root .stc-composer > small { padding-left: 0; text-align: center; color: var(--stc-meta); }
+
+/* ------------------------------------------------------------------ 5. emoji / sticker panel (Telegram style) */
+html[data-theme] body #root .stc-sticker-pop {
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; width: 392px; height: min(420px, 58dvh); right: 16px; padding: 0; overflow: hidden; border-radius: 20px;
+}
+html[data-theme] body #root .stc-sticker-pop > header.stc-pop-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 0 10px; border: 0; background: transparent; }
+html[data-theme] body #root .stc-pop-tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 13px; background: rgba(var(--accent-rgb), .08); }
+html[data-theme] body #root .stc-pop-tabs button {
+  width: auto; height: auto; min-height: 32px; padding: 0 16px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-weight: 700; font-size: .84rem; cursor: pointer;
+}
+html[data-theme] body #root .stc-pop-tabs button.is-on { background: var(--pop-bg); color: var(--text); box-shadow: 0 1px 4px rgba(30, 40, 60, .16); }
+html[data-theme] body #root .stc-sticker-pop > header.stc-pop-head > .stc-pop-x { display: grid; width: 30px; height: 30px; place-items: center; border: 0; border-radius: 10px; background: transparent; color: var(--muted); cursor: pointer; }
+
+html[data-theme] body #root .stc-sticker-pop .stc-sticker-grid { display: block; grid-template-columns: none; padding: 4px 10px 10px; overflow-y: auto; scroll-behavior: auto; }
+html[data-theme] body #root .stc-pack { padding-top: 6px; }
+html[data-theme] body #root .stc-pack-name { display: flex; align-items: baseline; gap: 8px; margin: 6px 4px 8px; font-size: .78rem; font-weight: 700; color: var(--muted); }
+html[data-theme] body #root .stc-pack-name b { color: var(--text); font-weight: 800; letter-spacing: .01em; }
+html[data-theme] body #root .stc-pack-name small { font-size: .7rem; font-weight: 600; opacity: .8; }
+html[data-theme] body #root .stc-pack-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+html[data-theme] body #root .stc-pack-grid > button {
+  position: relative; display: block; box-sizing: border-box; width: 100%; padding: 0; overflow: hidden; border: 1px solid transparent; border-radius: 14px; background: rgba(var(--accent-rgb), .04); cursor: pointer;
+  transition: background-color .14s ease, border-color .14s ease, transform .14s ease; -webkit-touch-callout: none; user-select: none; touch-action: pan-y;
+}
+html[data-theme] body #root .stc-pack-grid > button::before { content: ""; display: block; width: 100%; padding-top: 100%; }
+html[data-theme] body #root .stc-pack-grid > button > img { position: absolute; inset: 6px; display: block; width: calc(100% - 12px); height: calc(100% - 12px); object-fit: contain; pointer-events: none; transition: transform .16s ease; }
+html[data-theme] body #root .stc-pack-grid > button:hover, html[data-theme] body #root .stc-pack-grid > button:focus-visible, html[data-theme] body #root .stc-pack-grid > button.is-previewing {
+  border-color: rgba(var(--accent-rgb), .45); background: rgba(var(--accent-rgb), .12); outline: none;
+}
+html[data-theme] body #root .stc-pack-grid > button:hover > img { transform: scale(1.08) rotate(-2deg); }
+html[data-theme] body #root .stc-pack-grid > button:active { transform: scale(.94); }
+html[data-theme] body #root .stc-pack-grid > button[aria-disabled="true"] { opacity: .5; }
+
+/* pack strip */
+html[data-theme] body #root .stc-pack-strip { display: flex; align-items: center; gap: 6px; padding: 7px 10px; overflow-x: auto; border-top: 1px solid var(--pop-line); background: rgba(var(--accent-rgb), .04); scrollbar-width: none; }
+html[data-theme] body #root .stc-pack-strip button { position: relative; display: grid; flex: none; width: 40px; height: 40px; place-items: center; padding: 4px; border: 0; border-radius: 12px; background: transparent; cursor: pointer; transition: background-color .14s ease, transform .14s ease; }
+html[data-theme] body #root .stc-pack-strip button img { width: 100%; height: 100%; object-fit: contain; }
+html[data-theme] body #root .stc-pack-strip button:hover { background: rgba(var(--accent-rgb), .1); }
+html[data-theme] body #root .stc-pack-strip button.is-on { background: rgba(var(--accent-rgb), .18); box-shadow: inset 0 0 0 1.5px rgba(var(--accent-rgb), .55); }
+
+/* emoji tab */
+html[data-theme] body #root .stc-sticker-pop .stc-emoji-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); grid-auto-rows: min-content; align-content: start; gap: 2px; min-height: 0; padding: 8px 10px 10px; overflow-y: auto; }
+html[data-theme] body #root .stc-sticker-pop .stc-emoji-grid button { display: grid; height: 40px; place-items: center; border: 0; border-radius: 11px; background: transparent; font-size: 1.35rem; line-height: 1; cursor: pointer; transition: background-color .12s ease, transform .12s ease; }
+html[data-theme] body #root .stc-sticker-pop .stc-emoji-grid button:hover, html[data-theme] body #root .stc-sticker-pop .stc-emoji-grid button:focus-visible { background: rgba(var(--accent-rgb), .14); outline: none; transform: scale(1.14); }
+/* emoji tab has no pack strip: let the grid take the last row too */
+html[data-theme] body #root .stc-sticker-pop > .stc-emoji-grid { grid-row: 2 / span 2; }
+
+/* ------------------------------------------------------------------ 6. phones */
+@media (max-width: 860px) {
+  html[data-theme] body #root .stc-page { padding-inline: 8px; }
+  html[data-theme][data-theme] body #root .stc-shell-main .stc { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  html[data-theme][data-theme] body #root .stc-shell-main .stc > :is(.stc-sidebar, .stc-main) { border-radius: 18px; }
+  html[data-theme] body #root .stc-head { min-height: 64px; padding: 10px 12px; }
+  html[data-theme] body #root .stc-composer { padding: 8px 8px 8px; }
+  html[data-theme] body #root .stc-compose-row { gap: 6px; }
+  html[data-theme] body #root .stc-tool { width: 40px; height: 40px; }
+  html[data-theme] body #root .stc-send { min-height: 42px; padding: 0 14px; }
+  html[data-theme] body #root .stc-send span { display: none; }
+  html[data-theme] body #root .stc-sticker-pop { left: 8px; right: 8px; width: auto; height: min(380px, 54dvh); }
+}
+@media (max-width: 380px) { html[data-theme] body #root .stc-pack-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

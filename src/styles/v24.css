@@ -1,0 +1,268 @@
+/* ==========================================================================
+   NARXTOP v24 — imported LAST in bootstrap.jsx, so it wins over every earlier layer.
+
+     1. tokens        in-cart colour (amber instead of indigo), sale badge, store colours
+     2. categories    smaller labels + icons, every pill has ITS OWN colour (border, tile, badge, selected state)
+     3. product card  no purple; border / chip / photo ring take the category colour, price rows take the store colour
+     4. borders       the light-mode "white border" bug: every hard-coded white border on a light surface now has a
+                      real, visible colour (the root cause, --glass-border, is fixed in tokens.css)
+
+   Specificity: rules below start with `html[data-theme] body #root` so they beat the older stacked layers
+   without !important. Pop-ups that render in a portal (outside #root) use `html[data-theme] body` instead.
+   To undo any part, delete its numbered block.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 1. tokens */
+/* Definitive border tokens. Older layers (refresh.css, revamp.css, redesign.css, ui-v5.css) each re-declare
+   these, some with pale values (#e3d8cf, #ddd6cf, #e6d6ce) that read as "white" on the cream page.
+   v24.css loads last, so these are the values that actually apply. */
+html[data-theme="light"] {
+  --border: #d2bba7;
+  --border-soft: #e0cfbf;
+  --glass-border: rgba(107, 65, 41, .3);
+  --tc-line: #d6c1ae;
+  --tc-row-line: #d2c4b8;
+  --pop-line: #d6c0b0;
+  --card-edge: #cdb59f;
+}
+html[data-theme="dark"] {
+  --border: #4b372a;
+  --border-soft: #3a2a20;
+  --glass-border: rgba(255, 232, 214, .24);
+  --tc-line: #4e382a;
+  --tc-row-line: #4a3a2e;
+  --pop-line: rgba(255, 232, 214, .24);
+  --card-edge: rgba(255, 232, 214, .24);
+}
+
+html[data-theme="light"], :root {
+  /* in-cart state: warm amber-gold (was indigo/violet) */
+  --incart: #d98a00;
+  --incart-rgb: 217, 138, 0;
+  --incart-ink: #7a4a00;
+  --incart-a: #ffc93f;
+  --incart-b: #f28c00;
+
+  --sale-a: #ff5d73;
+  --sale-b: #e5284f;
+
+  /* each supermarket gets its own line colour on the price rows */
+  --store-korzinka: 227, 24, 55;
+  --store-makro: 31, 91, 196;
+  --store-havas: 22, 150, 66;
+}
+html[data-theme="dark"] {
+  --incart: #ffc247;
+  --incart-rgb: 255, 194, 71;
+  --incart-ink: #ffd98a;
+  --incart-a: #ffc93f;
+  --incart-b: #f28c00;
+
+  --store-korzinka: 255, 99, 120;
+  --store-makro: 108, 160, 255;
+  --store-havas: 84, 214, 130;
+}
+
+/* ------------------------------------------------------------------ 2. categories */
+html[data-theme] body #root .category-section { padding: 2px 0 16px; }
+html[data-theme] body #root .category-list { gap: 9px; padding: 4px 2px 8px; }
+
+html[data-theme] body #root .category-list .category-button {
+  --cr: var(--cat-rgb, var(--accent-rgb));            /* this pill's own colour */
+  position: relative; min-height: 42px; padding: 4px 12px 4px 4px; gap: 8px; border-radius: 14px;
+  border: 1.5px solid rgba(var(--cr), .62);
+  background: linear-gradient(180deg, rgba(var(--cr), .13), rgba(var(--cr), .04)), var(--surface);
+  box-shadow: 0 8px 16px -12px rgba(var(--cr), .75);
+  color: var(--text); font: 700 .78rem/1 var(--font-body); letter-spacing: -.005em;
+  transition: transform .25s var(--ease-out), border-color .2s, box-shadow .25s, background .2s, color .2s;
+}
+html[data-theme="dark"] body #root .category-list .category-button {
+  border-color: rgba(var(--cr), .72);
+  background: linear-gradient(180deg, rgba(var(--cr), .2), rgba(var(--cr), .07)), var(--surface);
+}
+html[data-theme] body #root .category-list .category-button:hover {
+  transform: translateY(-2px); border-color: rgb(var(--cr));
+  box-shadow: 0 0 0 3px rgba(var(--cr), .16), 0 14px 22px -14px rgba(var(--cr), .95);
+}
+html[data-theme] body #root .category-list .category-button:active { transform: scale(.97); }
+html[data-theme] body #root .category-list .category-button:focus-visible { outline: 3px solid rgba(var(--cr), .55); outline-offset: 2px; }
+
+html[data-theme] body #root .category-tile {
+  width: 32px; height: 32px; border-radius: 10px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, .97), rgba(var(--cr), .24)), #fff;   /* light plate so the artwork pops in both themes */
+  box-shadow: inset 0 0 0 1.5px rgba(var(--cr), .5), 0 4px 8px -5px rgba(var(--cr), .8);
+}
+html[data-theme] body #root .category-tile svg { width: 25px; height: 25px; filter: drop-shadow(0 1px 1px rgba(60, 36, 20, .28)); }
+html[data-theme] body #root .category-list .category-button:hover .category-tile { transform: scale(1.1) rotate(-4deg); }
+
+html[data-theme] body #root .category-list .category-button .category-label { color: var(--cat-ink, var(--text)); }
+html[data-theme="dark"] body #root .category-list .category-button .category-label { color: var(--cat-ink-d, var(--text)); }
+
+html[data-theme] body #root .category-count {
+  min-width: 22px; height: 22px; padding: 0 6px; border-radius: 8px; font-size: .7rem; font-weight: 800;
+  background: rgba(var(--cr), .2); color: var(--cat-ink, var(--accent)); box-shadow: inset 0 0 0 1px rgba(var(--cr), .45);
+}
+html[data-theme="dark"] body #root .category-count { color: var(--cat-ink-d, #ecc9ad); background: rgba(var(--cr), .3); }
+
+/* selected: filled with the category's own gradient + a ring in the same colour */
+html[data-theme] body #root .category-list .category-button.category-button-active,
+html[data-theme] body #root .category-list .category-button.category-button-active:hover {
+  background: linear-gradient(135deg, var(--cat-a, #a8744f), var(--cat-b, #6b4129));
+  border-color: rgb(var(--cr)); color: #fff; transform: none;
+  box-shadow: 0 0 0 3px rgba(var(--cr), .24), inset 0 1px 0 rgba(255, 255, 255, .35), 0 14px 22px -12px rgba(var(--cr), .95);
+}
+html[data-theme] body #root .category-list .category-button.category-button-active .category-label { color: #fff; }
+html[data-theme] body #root .category-list .category-button.category-button-active .category-count { background: rgba(255, 255, 255, .26); color: #fff; box-shadow: none; }
+html[data-theme] body #root .category-list .category-button.category-button-active .category-tile { transform: none; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .8), 0 6px 10px -6px rgba(0, 0, 0, .5); }
+html[data-theme] body #root .category-list .category-button.is-empty:not(.category-button-active) { opacity: .6; }
+
+/* the icon next to the category name on a product card */
+html[data-theme] body #root .tc-cat i svg { width: 18px; height: 18px; }
+
+@media (max-width: 640px) {
+  html[data-theme] body #root .category-list { gap: 6px; }
+  html[data-theme] body #root .category-list .category-button { min-height: 36px; padding: 3px 10px 3px 3px; gap: 6px; border-radius: 12px; font-size: .72rem; }
+  html[data-theme] body #root .category-tile { width: 27px; height: 27px; border-radius: 9px; }
+  html[data-theme] body #root .category-tile svg { width: 21px; height: 21px; }
+  html[data-theme] body #root .category-count { min-width: 19px; height: 19px; font-size: .64rem; padding: 0 5px; }
+}
+
+/* ------------------------------------------------------------------ 3. product card */
+html[data-theme] body #root .tc {
+  --cr: var(--cat-rgb, var(--accent-rgb));            /* the card's own colour = its category */
+  border: 2px solid rgba(var(--cr), .52);
+  background: linear-gradient(180deg, rgba(var(--cr), .1), rgba(var(--cr), 0) 48%), var(--tc-bg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 14px 28px -20px rgba(var(--cr), .75);
+  transition: border-color .2s, box-shadow .3s;
+}
+html[data-theme="dark"] body #root .tc {
+  border-color: rgba(var(--cr), .62);
+  background: linear-gradient(180deg, rgba(var(--cr), .17), rgba(var(--cr), 0) 52%), var(--tc-bg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 14px 28px -20px rgba(0, 0, 0, .9);
+}
+html[data-theme] body #root .tc:hover {
+  border-color: rgb(var(--cr));
+  box-shadow: 0 0 0 4px rgba(var(--cr), .15), 0 28px 46px -24px rgba(var(--cr), .8);
+}
+
+html[data-theme] body #root .tc-photo {
+  border: 1.5px solid rgba(var(--cr), .36);
+  background: radial-gradient(92% 92% at 50% 16%, #fff, rgba(var(--cr), .14)), #fff;
+}
+html[data-theme="dark"] body #root .tc-photo {
+  border-color: rgba(var(--cr), .5);
+  background: radial-gradient(92% 92% at 50% 16%, #fffaf5, rgba(var(--cr), .3)), #f3e6da;
+}
+
+/* category chip */
+html[data-theme] body #root .tc-cat {
+  gap: 6px; padding: 4px 11px 4px 6px; border-radius: 10px; font: 800 .76rem/1.1 var(--font-body);
+  background: rgba(var(--cr), .15); border: 1.5px solid rgba(var(--cr), .52); color: var(--cat-ink, var(--tc-chip-text));
+}
+html[data-theme="dark"] body #root .tc-cat { background: rgba(var(--cr), .24); color: var(--cat-ink-d, var(--tc-chip-text)); }
+
+/* price rows: line colour = the store's own colour */
+html[data-theme] body #root .tc-offers li {
+  --sr: var(--accent-rgb);
+  border: 1.5px solid rgba(var(--sr), .6);
+  background: linear-gradient(90deg, rgba(var(--sr), .13), rgba(var(--sr), .03) 72%), var(--surface);
+  box-shadow: inset 4px 0 0 rgba(var(--sr), .9);
+}
+html[data-theme] body #root .tc-offers li[data-store="korzinka"] { --sr: var(--store-korzinka); }
+html[data-theme] body #root .tc-offers li[data-store="makro"]    { --sr: var(--store-makro); }
+html[data-theme] body #root .tc-offers li[data-store="havas"]    { --sr: var(--store-havas); }
+html[data-theme] body #root .tc-offers li:hover { border-color: rgb(var(--sr)); }
+html[data-theme] body #root .tc-offers li.is-best {
+  --sr: var(--green-rgb);
+  border: 2px solid rgb(var(--green-rgb));
+  background: linear-gradient(90deg, rgba(var(--green-rgb), .24), rgba(var(--green-rgb), .07)), var(--surface);
+  box-shadow: inset 5px 0 0 rgb(var(--green-rgb)), 0 0 0 3px rgba(var(--green-rgb), .13);
+}
+
+/* discount badge: a clear red-pink "sale" tag (was brown-on-cream) */
+html[data-theme] body #root .tc-drop {
+  background: linear-gradient(135deg, var(--sale-a), var(--sale-b)); color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, .65); box-shadow: 0 8px 14px -8px rgba(229, 40, 79, .85);
+}
+
+/* favourite heart: pink line instead of an invisible white one */
+html[data-theme] body #root .tc-heart {
+  background: #fff; color: #c2315b; border: 1.5px solid rgba(var(--pink-rgb), .6);
+  box-shadow: 0 6px 12px -8px rgba(var(--pink-rgb), .9);
+}
+html[data-theme="dark"] body #root .tc-heart { background: rgba(26, 17, 12, .86); color: var(--pink); border-color: rgba(var(--pink-rgb), .75); }
+html[data-theme] body #root .tc-heart.is-on { background: var(--pink-soft); color: var(--pink); border-color: var(--pink); }
+html[data-theme="light"] body #root .tc-heart.is-on { color: #e8527f; background: #ffe3ec; }
+
+/* in the cart: amber-gold (no purple) */
+html[data-theme] body #root .tc.has-qty {
+  border-color: var(--incart);
+  background: linear-gradient(180deg, rgba(var(--incart-rgb), .16), rgba(var(--incart-rgb), 0) 52%), var(--tc-bg);
+  box-shadow: 0 0 0 4px rgba(var(--incart-rgb), .22), 0 30px 48px -28px rgba(var(--incart-rgb), .85);
+}
+html[data-theme] body #root .tc.has-qty .tc-photo { border-color: rgba(var(--incart-rgb), .6); }
+html[data-theme] body #root .tc-incart {
+  color: #3a2000; border: 1.5px solid rgba(255, 255, 255, .75);
+  background: linear-gradient(135deg, var(--incart-a), var(--incart-b));
+  box-shadow: 0 10px 18px -10px rgba(var(--incart-rgb), 1), inset 0 1px 0 rgba(255, 255, 255, .5);
+}
+html[data-theme] body #root .tc .tc-step {
+  background: rgba(var(--incart-rgb), .15); border: 2px solid var(--incart); color: var(--incart-ink);
+  box-shadow: 0 0 0 4px rgba(var(--incart-rgb), .15), 0 10px 20px -14px rgba(var(--incart-rgb), .9);
+}
+html[data-theme] body #root .tc .tc-step button { color: var(--incart-ink); background: transparent; }
+html[data-theme] body #root .tc .tc-step button:not(:disabled):hover { background: rgba(var(--incart-rgb), .24); }
+html[data-theme] body #root .tc .tc-step output { color: var(--text); }
+
+@media (max-width: 640px) {
+  html[data-theme] body #root .tc { border-width: 1.5px; }
+  html[data-theme] body #root .tc-offers li { box-shadow: inset 3px 0 0 rgba(var(--sr), .9); }
+}
+
+/* ------------------------------------------------------------------ 4. borders: light-mode "white border" fixes */
+/* quick-look pop-up: it is a light frosted panel, so in light mode its white edges vanished */
+html[data-theme="light"] body .pv { border: 2px solid rgba(var(--accent-rgb), .5); box-shadow: 0 50px 110px -34px rgba(40, 22, 12, .55), 0 0 0 6px rgba(var(--accent-rgb), .08); }
+html[data-theme="light"] body .pv-img { border: 2px solid rgba(var(--accent-rgb), .4); box-shadow: 0 30px 50px -22px rgba(90, 54, 30, .5); }
+html[data-theme="light"] body .pv-stage::before { border-color: rgba(var(--accent-rgb), .22); }
+html[data-theme="light"] body .pv-stage::after  { border-color: rgba(var(--accent-rgb), .3); }
+html[data-theme="light"] body .pv-heart { border: 1.5px solid rgba(var(--pink-rgb), .6); }
+html[data-theme="light"] body .pv-x { border: 1.5px solid rgba(var(--accent-rgb), .5); }
+html[data-theme="light"] body .pv-ladder { border: 1.5px solid rgba(var(--accent-rgb), .38); background: rgba(255, 255, 255, .72); }
+
+/* panels / chrome that used a white edge or the pale --border on a pale surface */
+html[data-theme="light"] body #root .nt-nav { border-color: rgba(var(--accent-rgb), .38); }
+html[data-theme="light"] body #root .nt-section-glass,
+html[data-theme="light"] body #root .nt-glass { border-color: rgba(var(--accent-rgb), .3); }
+html[data-theme="light"] body #root .nt-footer { border-top: 2px solid rgba(var(--accent-rgb), .3); }
+html[data-theme="light"] body #root .nt-icon-btn,
+html[data-theme="light"] body #root .nt-user-btn { border: 1.5px solid rgba(var(--accent-rgb), .42); }
+html[data-theme="light"] body #root .nt-ss form { border-color: rgba(var(--accent-rgb), .45); }
+html[data-theme="light"] body .nt-drop,
+html[data-theme="light"] body .nt-modal { border-color: rgba(var(--accent-rgb), .42); }
+
+/* product page + cart: panels, image plates, option chips, price table */
+html[data-theme] body #root .nt-detail-info { border: 2px solid rgba(var(--accent-rgb), .38); }
+html[data-theme] body #root .nt-detail-img  { border: 2px solid rgba(var(--accent-rgb), .42); }
+html[data-theme] body #root .nt-detail-cat  { border: 1.5px solid rgba(var(--accent-rgb), .55); }
+html[data-theme] body #root .nt-best.big    { border: 2px solid rgba(var(--green-rgb), .6); }   /* cheapest price = green, its own colour */
+html[data-theme] body #root .nt-table       { border: 1.5px solid rgba(var(--accent-rgb), .4); }
+html[data-theme] body #root .nt-eyebrow     { border-color: rgba(var(--accent-rgb), .5); }
+html[data-theme] body #root .nc-img         { border: 1.5px solid rgba(var(--accent-rgb), .45); }
+html[data-theme] body #root .nc-opt         { border-color: rgba(var(--accent-rgb), .5); }
+
+/* dark mode: same idea, lighter lines so the edges are equally noticeable */
+html[data-theme="dark"] body #root .nt-nav { border-color: rgba(var(--accent-rgb), .42); }
+html[data-theme="dark"] body #root .nt-section-glass,
+html[data-theme="dark"] body #root .nt-glass { border-color: rgba(var(--accent-rgb), .34); }
+html[data-theme="dark"] body #root .nt-icon-btn,
+html[data-theme="dark"] body #root .nt-user-btn { border: 1.5px solid rgba(var(--accent-rgb), .5); }
+
+/* keyboard focus is always visible, in its own colour */
+html[data-theme] body #root .tc-heart:focus-visible,
+html[data-theme] body #root .tc-add:focus-visible { outline: 3px solid rgba(var(--cr, var(--accent-rgb)), .6); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body #root .category-list .category-button,
+  html[data-theme] body #root .category-tile,
+  html[data-theme] body #root .tc { transition: none; }
+}

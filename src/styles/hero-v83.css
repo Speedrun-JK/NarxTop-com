@@ -1,0 +1,167 @@
+/* ==========================================================================
+   v83 — MAIN BANNER ONLY (the navbar keeps its own styles).
+   · Dark theme: the black supermarket photo with dark glass.
+   · Light theme: the bright studio photo with white glass, black headline,
+     orange → green accent word, handwritten note, pastel stat tiles.
+   · Savings card: bigger, see-through, with a "best price" badge + % sticker.
+   · Carousel arrows / dots are hidden.
+   ========================================================================== */
+html[data-theme] body #root .nt-home.nt-home .hb { isolation: isolate; }
+html[data-theme] body #root .nt-home.nt-home .hb-ctl { display: none !important; }
+html[data-theme] body #root .nt-home.nt-home .hb::after { display: none; }
+
+/* ---------- shared bits ---------- */
+html[data-theme] body #root .nt-home.nt-home .hb-photo img { object-fit: cover; opacity: 1; }
+html[data-theme] body #root .nt-home.nt-home .hb-eyebrow { gap: 8px; padding: 8px 15px; font-size: .86rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
+html[data-theme] body #root .nt-home.nt-home .hb-eyebrow svg { fill: currentColor; }
+html[data-theme] body #root .nt-home.nt-home .hb-eyebrow-dot { width: 7px; height: 7px; margin-left: 4px; border-radius: 50%; background: #2fd16c; box-shadow: 0 0 0 3px rgba(47, 209, 108, .22); animation: hb83-pulse 2.4s ease-in-out infinite; }
+@keyframes hb83-pulse { 50% { box-shadow: 0 0 0 6px rgba(47, 209, 108, 0); } }
+
+html[data-theme] body #root .nt-home.nt-home .hb h1 .hb-grad { display: block; width: fit-content; position: relative; }
+html[data-theme] body #root .nt-home.nt-home .hb h1 .hb-grad::after {
+  content: ""; position: absolute; left: 52%; right: 4%; bottom: -.02em; height: .3em; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M4 17C48 5 120 2 196 11' fill='none' stroke='%23ff7a14' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+html[data-theme] body #root .nt-home.nt-home .hb-note { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; font: 700 1.3rem/1.1 "Caveat", "Segoe Script", "Bradley Hand", cursive; transform: rotate(-2deg); transform-origin: left; }
+html[data-theme] body #root .nt-home.nt-home .hb-note svg { flex: none; transform: translateY(-6px); }
+
+/* savings card: bigger, translucent, partly "behind" the basket in the photo */
+html[data-theme] body #root .nt-home.nt-home .hb { min-height: clamp(600px, 54vw, 740px); }
+html[data-theme] body #root .nt-home.nt-home .hb-stage { position: relative; align-self: start; margin-top: clamp(0px, 1vw, 14px); }
+html[data-theme] body #root .nt-home.nt-home .hb-stats li span { font-size: .78rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+html[data-theme] body #root .nt-home.nt-home .hb-viewport { max-width: 540px; position: relative; }
+html[data-theme] body #root .nt-home.nt-home .hb-card { position: relative; gap: 12px; padding: 20px 20px 18px; border-radius: 28px; -webkit-backdrop-filter: blur(16px) saturate(1.25); backdrop-filter: blur(16px) saturate(1.25); }
+html[data-theme] body #root .nt-home.nt-home .hb-go { display: none; }
+html[data-theme] body #root .nt-home.nt-home .hb-prod { grid-template-columns: 76px minmax(0, 1fr); gap: 14px; padding-right: 92px; }
+html[data-theme] body #root .nt-home.nt-home .hb-img { width: 76px; height: 76px; border-radius: 18px; }
+html[data-theme] body #root .nt-home.nt-home .hb-name b { font-size: 1.12rem; }
+html[data-theme] body #root .nt-home.nt-home .hb-name small { font-size: .88rem; }
+html[data-theme] body #root .nt-home.nt-home .hb-rows { gap: 2px; }
+html[data-theme] body #root .nt-home.nt-home .hb-rows li { grid-template-columns: 38px minmax(56px, 76px) minmax(0, 1fr) auto; gap: 12px; padding: 9px 4px; border-radius: 0; border: 0; background: transparent; }
+html[data-theme] body #root .nt-home.nt-home .hb-rows li.is-best { background: transparent; border: 0; }
+html[data-theme] body #root .nt-home.nt-home .hb-store { font-size: .9rem; font-weight: 600; }
+html[data-theme] body #root .nt-home.nt-home .hb-price { font-size: .9rem; font-weight: 600; }
+html[data-theme] body #root .nt-home.nt-home .hb-bar { height: 8px; }
+html[data-theme] body #root .nt-home.nt-home .hb-rows li:nth-child(1) .hb-bar i { background: linear-gradient(90deg, #2fb862, #7be3a3); }
+html[data-theme] body #root .nt-home.nt-home .hb-rows li:nth-child(2) .hb-bar i { background: linear-gradient(90deg, #f0405a, #ff8a95); }
+html[data-theme] body #root .nt-home.nt-home .hb-rows li:nth-child(3) .hb-bar i { background: linear-gradient(90deg, #f5a623, #ffd25a); }
+html[data-theme] body #root .nt-home.nt-home .hb-save { align-items: center; gap: 12px; padding: 12px 16px; border-radius: 18px; font-size: .92rem; }
+html[data-theme] body #root .nt-home.nt-home .hb-save span { display: grid; gap: 2px; }
+html[data-theme] body #root .nt-home.nt-home .hb-save b { font-weight: 800; }
+html[data-theme] body #root .nt-home.nt-home .hb-save small { font-size: .74rem; font-weight: 500; opacity: .8; }
+html[data-theme] body #root .nt-home.nt-home .hb-badge {
+  position: absolute; top: 20px; right: 20px; z-index: 2; display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px 5px 9px; border-radius: 999px; font-size: .7rem; font-weight: 800; white-space: nowrap;
+}
+html[data-theme] body #root .nt-home.nt-home .hb-badge svg { width: 14px; height: 14px; }
+html[data-theme] body #root .nt-home.nt-home .hb-sticker { position: absolute; top: -86px; right: 4px; z-index: 3; display: grid; justify-items: center; width: 118px; pointer-events: none; transform: rotate(10deg); }
+html[data-theme] body #root .nt-home.nt-home .hb-sticker i {
+  display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; font: 800 1.5rem/1 var(--font-display, inherit); font-style: normal; color: #fff;
+  background: linear-gradient(145deg, #45cf76, #139348); border: 3px solid #fff; box-shadow: 0 12px 24px -10px rgba(19, 147, 72, .8);
+}
+html[data-theme] body #root .nt-home.nt-home .hb-sticker em { margin-top: 6px; font: 700 1.15rem/1 "Caveat", "Segoe Script", cursive; font-style: normal; text-align: center; transform: rotate(-14deg); }
+
+/* ================= DARK THEME ================= */
+html[data-theme="dark"] body #root .nt-home.nt-home .hb { background: #0a0807; border-color: rgba(255, 255, 255, .1); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb::before, html[data-theme="dark"] body #root .nt-home.nt-home .hb-glow { display: none; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-photo img { object-position: 76% 100%; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-photo::after {
+  background:
+    linear-gradient(98deg, rgba(8, 6, 5, .9) 0%, rgba(8, 6, 5, .72) 32%, rgba(8, 6, 5, .22) 62%, rgba(8, 6, 5, .04) 100%),
+    linear-gradient(0deg, rgba(8, 6, 5, .45), transparent 34%);
+}
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-eyebrow { color: #fff8ee; background: rgba(20, 16, 13, .62); border: 1px solid rgba(255, 255, 255, .15); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-eyebrow svg { color: #ffb23f; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb h1 { color: #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb h1 .hb-grad .nt-word, html[data-theme="dark"] body #root .nt-home.nt-home .hb h1 .hb-grad .nt-word:nth-child(n+1) { background-image: linear-gradient(100deg, #fff1d6 0%, #ffcb70 45%, #ff9a3c 100%); text-shadow: none; filter: drop-shadow(0 4px 18px rgba(0, 0, 0, .45)); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-copy > p { color: rgba(255, 255, 255, .76); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-ss form { background: rgba(255, 255, 255, .09); border: 1px solid rgba(255, 255, 255, .16); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-ss input { color: #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-ss input::placeholder { color: rgba(255, 255, 255, .55); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-ss-icon { color: rgba(255, 255, 255, .82); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-ss-go { color: #2a1604; background: linear-gradient(135deg, #ffcb6a, #ff9524); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-note { color: #ffc66b; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-stat-ico { color: #ffb23f; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-card { background: linear-gradient(160deg, rgba(38, 32, 28, .62), rgba(16, 13, 11, .5)); border: 1px solid rgba(255, 255, 255, .15); box-shadow: 0 34px 70px -36px rgba(0, 0, 0, .95), inset 0 1px 0 rgba(255, 255, 255, .14); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-badge { color: #8ff3b8; background: rgba(47, 209, 108, .16); border: 1px solid rgba(47, 209, 108, .4); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-rows li + li { border-top: 1px solid rgba(255, 255, 255, .07); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-bar { background: rgba(255, 255, 255, .12); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-save { color: #bdf5d4; background: rgba(47, 209, 108, .13); border: 1px solid rgba(47, 209, 108, .3); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-save svg { color: #5fe39a; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb-sticker em { color: #8ff3b8; text-shadow: 0 2px 8px rgba(0, 0, 0, .6); }
+
+/* ================= LIGHT THEME ================= */
+html[data-theme="light"] body #root .nt-home.nt-home .hb { background: #f4f7f3; border: 1px solid rgba(255, 255, 255, .9); box-shadow: 0 34px 70px -46px rgba(40, 70, 40, .5), inset 0 1px 0 #fff; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb::before, html[data-theme="light"] body #root .nt-home.nt-home .hb-glow, html[data-theme="light"] body #root .nt-home.nt-home .nt-leaf-hero { display: none; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-photo img { object-position: 74% 100%; transform-origin: 78% 80%; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-photo::after {
+  background:
+    linear-gradient(96deg, rgba(255, 255, 255, .78) 0%, rgba(255, 255, 255, .5) 34%, rgba(255, 255, 255, .08) 62%, transparent 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, .25), transparent 30%);
+}
+html[data-theme="light"] body #root .nt-home.nt-home .hb-eyebrow { color: #10301c; background: rgba(255, 255, 255, .88); border: 1.5px solid #34c46a; box-shadow: 0 8px 22px -14px rgba(30, 150, 80, .6); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-eyebrow svg { color: #1bb653; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb h1 { color: #0d0d0d; text-shadow: none; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb h1 .hb-grad { color: #0d0d0d; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb h1 .hb-grad .nt-word,
+html[data-theme="light"] body #root .nt-home.nt-home .hb h1 .hb-grad .nt-word:nth-child(n+1) { background-image: none; -webkit-text-fill-color: #0d0d0d; color: #0d0d0d; text-shadow: none; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child,
+html[data-theme="light"] body #root .nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child:nth-child(n+1) { background-image: linear-gradient(95deg, #ff6a00 0%, #ff9a1a 40%, #2fae55 100%); -webkit-text-fill-color: transparent; color: transparent; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-copy > p { color: #4b5663; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-ss form { background: #fff; border: 1px solid rgba(20, 30, 20, .06); box-shadow: 0 18px 40px -26px rgba(30, 50, 30, .55), 0 0 0 4px rgba(255, 255, 255, .55); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-ss input { color: #1b1f24; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-ss input::placeholder { color: #8d97a2; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-ss-icon { color: #1b1f24; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-ss-go { color: #fff; background: linear-gradient(135deg, #ff8a2a, #ff5a00); box-shadow: 0 14px 26px -14px rgba(255, 90, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .35); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-stats li { background: rgba(255, 255, 255, .9); border: 1px solid rgba(20, 30, 20, .05); box-shadow: 0 14px 30px -22px rgba(30, 50, 30, .5); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-stats li b { color: #101418; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-stats li span { color: #5b6672; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-stats li:nth-child(1) .hb-stat-ico { color: #ff7a1a; background: #ffeadb; border-color: #ffd7bb; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-stats li:nth-child(2) .hb-stat-ico { color: #3b78f0; background: #e3edff; border-color: #cfe0ff; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-stats li:nth-child(3) .hb-stat-ico { color: #1f9d55; background: #dcf5e5; border-color: #c3ecd2; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-note { color: #1f9d55; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-card { background: rgba(255, 255, 255, .6); border: 1px solid rgba(255, 255, 255, .95); box-shadow: 0 34px 70px -38px rgba(40, 70, 40, .55), inset 0 1px 0 #fff; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-name b { color: #0f1418; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-name small { color: #66717d; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-img { background: #fff; border: 1px solid rgba(20, 30, 20, .06); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-badge { color: #fff; background: linear-gradient(135deg, #2fb862, #14873f); box-shadow: 0 8px 16px -8px rgba(20, 135, 63, .8); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-rows li + li { border-top: 1px solid rgba(20, 30, 20, .06); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-rows li .hb-store, html[data-theme="light"] body #root .nt-home.nt-home .hb-rows li .hb-price, html[data-theme="light"] body #root .nt-home.nt-home .hb-rows li.is-best .hb-store, html[data-theme="light"] body #root .nt-home.nt-home .hb-rows li.is-best .hb-price { color: #1a2026; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-bar { background: rgba(20, 30, 20, .07); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-save { color: #14783a; background: rgba(47, 184, 98, .14); border: 1px solid rgba(47, 184, 98, .28); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-save svg { color: #1f9d55; }
+html[data-theme="light"] body #root .nt-home.nt-home .hb-sticker em { color: #1f9d55; text-shadow: 0 1px 0 #fff, 0 0 10px rgba(255, 255, 255, .9); }
+
+/* guest buttons */
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-btn-primary:not(.nt-ss-go) { color: #fff; background: linear-gradient(135deg, #ff8a2a, #ff5a00); border: 0; box-shadow: 0 14px 26px -14px rgba(255, 90, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .35); }
+html[data-theme="light"] body #root .nt-home.nt-home .hb .nt-btn-ghost { color: #1b1f24; background: rgba(255, 255, 255, .9); border: 1px solid rgba(20, 30, 20, .08); box-shadow: 0 12px 26px -20px rgba(30, 50, 30, .5); }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-btn-primary:not(.nt-ss-go) { color: #2a1604; background: linear-gradient(135deg, #ffcb6a, #ff9524); border: 0; }
+html[data-theme="dark"] body #root .nt-home.nt-home .hb .nt-btn-ghost { color: #fff; background: rgba(255, 255, 255, .09); border: 1px solid rgba(255, 255, 255, .22); }
+
+/* ---------- home shortcut tiles (signed-in): four pastel cards like the reference ---------- */
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li:nth-child(1) a { --tint: #2fb862; }
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li:nth-child(2) a { --tint: #4c8dff; }
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li:nth-child(3) a { --tint: #ff9a2a; }
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li:nth-child(4) a { --tint: #8b6cf0; }
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li a {
+  border-color: color-mix(in srgb, var(--tint) 32%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--tint) 18%, transparent), rgba(var(--surface-rgb), .78) 72%);
+  transition: transform .25s var(--ease-out, ease), box-shadow .25s, border-color .25s;
+}
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li a:hover { transform: translateY(-3px); box-shadow: 0 18px 32px -22px var(--tint); border-color: color-mix(in srgb, var(--tint) 60%, transparent); }
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li a .nt-quick-ico { color: #fff; background: linear-gradient(145deg, color-mix(in srgb, var(--tint) 72%, #fff), var(--tint)); box-shadow: 0 10px 18px -10px var(--tint); }
+html[data-theme] body #root .nt-home.nt-home .nt-quick ul li a.is-premium .nt-quick-ico { color: #fff; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  html[data-theme] body #root .nt-home.nt-home .hb { min-height: 0; }
+  html[data-theme] body #root .nt-home.nt-home .hb-stage { align-self: auto; margin-top: 0; }
+  html[data-theme] body #root .nt-home.nt-home .hb-viewport { max-width: 540px; }
+  html[data-theme] body #root .nt-home.nt-home .hb-sticker { top: -78px; right: 0; }
+}
+@media (max-width: 767px) {
+  html[data-theme] body #root .nt-home.nt-home .hb-note { display: none; }
+  html[data-theme="light"] body #root .nt-home.nt-home .hb-photo::after { background: linear-gradient(180deg, rgba(255, 255, 255, .8), rgba(255, 255, 255, .55) 55%, rgba(255, 255, 255, .7)); }
+}
+@media (prefers-reduced-motion: reduce) { html[data-theme] body #root .nt-home.nt-home .hb-eyebrow-dot { animation: none; } }
+html[data-motion="off"] .hb-eyebrow-dot { animation: none; }

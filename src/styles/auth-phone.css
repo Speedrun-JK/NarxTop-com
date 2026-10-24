@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Sign-in / sign-up: country phone field + password eye.
+   Scoped to .nt-phone* and .nt-password-eye only - nothing else on the site is touched.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ password eye */
+html .nt-input .nt-password-eye {
+  position: absolute; right: 6px; top: 50%; z-index: 2; margin: -20px 0 0; width: 40px; height: 40px; min-width: 0; min-height: 0; padding: 0;
+  display: grid; place-items: center; border: 0; border-radius: 12px; background: transparent; color: var(--muted); box-shadow: none;
+  cursor: pointer; transform: none; -webkit-tap-highlight-color: transparent;
+  transition: background .18s ease, color .18s ease, transform .12s ease;
+}
+html .nt-input .nt-password-eye:hover { background: rgba(var(--accent-rgb), .12); color: var(--accent); transform: none; }
+html .nt-input .nt-password-eye:active { transform: scale(.9); }
+html .nt-input .nt-password-eye.is-shown { color: var(--accent); }
+html .nt-input .nt-password-eye:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.nt-eye-svg { display: block; overflow: visible; pointer-events: none; }
+.nt-eye-svg .nt-eye-slash { transition: stroke-dashoffset .24s cubic-bezier(.4, 0, .2, 1); }
+/* the browsers' own reveal / clear / autofill buttons would double up with ours */
+.nt-input input::-ms-reveal, .nt-input input::-ms-clear { display: none; }
+.nt-input input[type="password"]::-webkit-credentials-auto-fill-button, .nt-input input::-webkit-contacts-auto-fill-button { visibility: hidden; display: none !important; pointer-events: none; position: absolute; right: 0; }
+
+/* ------------------------------------------------------------------ flag */
+.nt-flag { flex: none; display: inline-grid; place-items: center; width: 26px; height: 19px; overflow: hidden; border-radius: 4px; background: rgba(var(--accent-rgb), .12); box-shadow: 0 0 0 1px rgba(var(--ink-rgb, 0, 0, 0), .14), 0 1px 3px rgba(var(--ink-rgb, 0, 0, 0), .18); }
+.nt-flag img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nt-flag b { font: 800 .6rem/1 var(--font-body); letter-spacing: .02em; color: var(--accent); }
+
+/* ------------------------------------------------------------------ phone field */
+html[data-theme] .nt-phone {
+  position: relative; display: flex; align-items: stretch; min-height: 52px; border-radius: 16px;
+  background: rgba(var(--accent-rgb), .06); border: 1.5px solid rgba(var(--accent-rgb), .2);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+html[data-theme] .nt-phone:hover { border-color: rgba(var(--accent-rgb), .45); }
+html[data-theme] .nt-phone:focus-within, html[data-theme] .nt-phone.is-open { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .16); }
+html[data-theme] .nt-field.is-error .nt-phone { border-color: var(--error); box-shadow: 0 0 0 4px rgba(226, 72, 92, .12); }
+html[data-theme] .nt-field.is-valid .nt-phone { border-color: rgba(47, 190, 125, .7); }
+
+html[data-theme] .nt-phone-cc {
+  position: relative; flex: none; display: flex; align-items: center; gap: 8px; min-height: 0; margin: 0; padding: 0 10px 0 13px;
+  border: 0; border-radius: 14px 0 0 14px; background: transparent; box-shadow: none; transform: none;
+  color: var(--text); font: 800 .93rem var(--font-body); font-variant-numeric: tabular-nums; cursor: pointer; transition: background .18s;
+}
+html[data-theme] .nt-phone-cc::after { content: ""; position: absolute; right: 0; top: 12px; bottom: 12px; width: 1.5px; border-radius: 2px; background: rgba(var(--accent-rgb), .25); }
+html[data-theme] .nt-phone-cc:hover { background: rgba(var(--accent-rgb), .09); transform: none; }
+html[data-theme] .nt-phone-cc:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.nt-phone-dial { white-space: nowrap; }
+.nt-phone-chev { color: var(--muted); transition: transform .2s ease; }
+.nt-phone.is-open .nt-phone-chev { transform: rotate(180deg); color: var(--accent); }
+
+html[data-theme] .nt-phone .nt-phone-input {
+  flex: 1; min-width: 0; width: auto; min-height: 0; height: auto; margin: 0; padding: 0 46px 0 14px;
+  border: 0; border-radius: 0 14px 14px 0; background: transparent; box-shadow: none; outline: 0;
+  color: var(--text); font: 600 .98rem var(--font-body); letter-spacing: .02em; font-variant-numeric: tabular-nums;
+}
+html[data-theme] .nt-phone .nt-phone-input::placeholder { color: var(--muted); opacity: .6; font-weight: 500; }
+html[data-theme] .nt-phone .nt-phone-input:hover, html[data-theme] .nt-phone .nt-phone-input:focus { background: transparent; box-shadow: none; border: 0; }
+html[data-theme] .nt-phone .nt-ok { right: 12px; top: 0; bottom: 0; margin: auto 0; width: 22px; height: 22px; border-radius: 50%; }
+
+/* ------------------------------------------------------------------ country list */
+.nt-phone-pop {
+  position: absolute; z-index: 60; left: 0; right: 0; top: calc(100% + 8px); display: flex; flex-direction: column; overflow: hidden;
+  border-radius: 18px; background: var(--surface); border: 1.5px solid rgba(var(--accent-rgb), .28); box-shadow: var(--shadow-lift, 0 18px 40px rgba(0, 0, 0, .18));
+  transform-origin: top center;
+}
+html[data-theme] .nt-phone-search { position: relative; display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 12px; border-bottom: 1px solid rgba(var(--accent-rgb), .16); color: var(--muted); opacity: 1; font-weight: 500; }
+html[data-theme] .nt-phone-search input {
+  flex: 1; min-width: 0; width: auto; min-height: 38px; padding: 0 12px; border-radius: 12px; border: 1.5px solid rgba(var(--accent-rgb), .2);
+  background: rgba(var(--accent-rgb), .06); color: var(--text); font: 500 .92rem var(--font-body); outline: 0; box-shadow: none;
+}
+html[data-theme] .nt-phone-search input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+html[data-theme] .nt-phone-search input::placeholder { color: var(--muted); opacity: .75; }
+.nt-phone-pop ul { list-style: none; margin: 0; padding: 6px; max-height: min(300px, 46vh); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(var(--accent-rgb), .4) transparent; }
+.nt-phone-li { margin: 0; padding: 0; }
+.nt-phone-group { display: block; padding: 8px 10px 4px; color: var(--muted); font: 800 .66rem var(--font-body); letter-spacing: .09em; text-transform: uppercase; }
+.nt-phone-opt { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto 16px; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 12px; color: var(--text); cursor: pointer; font-size: .92rem; transition: background .12s; }
+.nt-phone-opt.is-active { background: rgba(var(--accent-rgb), .12); }
+.nt-phone-opt.is-picked .nt-phone-name { font-weight: 800; }
+.nt-phone-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nt-phone-code { color: var(--muted); font-weight: 700; font-size: .84rem; font-variant-numeric: tabular-nums; }
+.nt-phone-tick { color: var(--accent); }
+.nt-phone-empty { padding: 18px 12px; text-align: center; color: var(--muted); font-size: .9rem; list-style: none; }
+
+@media (max-width: 560px) {
+  html[data-theme] .nt-phone .nt-phone-input, html[data-theme] .nt-phone-search input { font-size: 16px; } /* no iOS zoom */
+  html[data-theme] .nt-phone-cc { padding: 0 8px 0 11px; gap: 6px; }
+  .nt-phone-opt { gap: 10px; padding: 11px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nt-eye-svg .nt-eye-slash, .nt-phone-chev { transition: none; }
+}
+
+/* the number input sits inside the shell, which draws the border/ring - keep any global input:focus styling off it */
+html .nt-phone .nt-phone-input, html .nt-phone .nt-phone-input:hover, html .nt-phone .nt-phone-input:focus, html .nt-phone .nt-phone-input:focus-visible {
+  box-shadow: none !important; border: 0 !important; outline: 0 !important; background: transparent !important; border-radius: 0 14px 14px 0 !important;
+}

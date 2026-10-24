@@ -1,0 +1,176 @@
+/* ==========================================================================
+   MOBILE FIT — loaded last. Phones / small tablets only.
+   Everything is inside a max-width media query, so laptop and desktop pages
+   are not affected. What lives here:
+     1. navbar: logo, cart, profile, burger always visible; theme moved into the burger menu
+     2. burger menu panel
+     3. categories: one swipeable row instead of a wall of pills
+     4. smaller text (home, cards, product page, sections)
+     5. scrollers: tidy swipe rows and hidden scrollbars on touch screens
+   ========================================================================== */
+
+/* the phone-only menu rows are hidden on desktop by design.css; nothing else here leaks out */
+
+/* ------------------------------------------------------------------ 1 + 2. navbar and burger menu */
+@media (max-width: 860px) {
+  html body .nt-nav { width: calc(100% - 16px); margin-top: 8px; border-radius: 20px; }
+  html body .nt-nav-in { padding: 6px 8px 6px 10px; gap: 6px; }
+
+  /* logo shrinks first; the buttons never get pushed off screen */
+  html body .nt-nav .nt-logo { flex: 0 1 auto; min-width: 0; gap: 7px; overflow: hidden; }
+  html body .nt-nav .nt-logo.is-plus { overflow: visible; }
+  html body .nt-nav .nt-mark { width: 30px; height: 30px; flex: none; }
+  html body .nt-nav .nt-ab-nav { font-size: 1.12rem; }
+
+  html body .nt-nav-actions { flex: none; gap: 5px; margin-left: auto; }
+  html body .nt-nav-actions .nt-icon-btn { width: 36px; height: 36px; flex: none; border-radius: 12px; }
+  html body .nt-nav-actions .nt-icon-btn svg { width: 18px; height: 18px; }
+
+  /* theme + language live in the burger menu on phones */
+  html body .nt-nav-actions .nt-theme-btn,
+  html body .nt-nav-actions > .nt-seg,
+  html body .nt-nav-actions .nt-nav-contact { display: none; }
+
+  /* profile: the avatar was hidden by a "hide the name" rule (the avatar initial is a span too) */
+  html body .nt-user-btn { position: relative; flex: none; width: 38px; height: 38px; padding: 0; gap: 0; justify-content: center; border-radius: 50%; }
+  html body .nt-user-btn .nt-user-name { display: none; }
+  html body .nt-user-btn .nt-avatar { display: inline-grid; width: 32px; height: 32px; font-size: .9rem; }
+  html body .nt-user-btn em { position: absolute; top: -4px; right: -4px; margin: 0; min-width: 16px; padding: 1px 4px; font-size: .62rem; line-height: 1.2; text-align: center; }
+  html body .nt-cart-btn em { top: -5px; right: -5px; min-width: 17px; font-size: .62rem; }
+
+  /* guests: only "Kirish" in the bar (sign-up moved to the menu) */
+  html body .nt-nav-login { flex: none; padding: 0 12px; min-height: 36px; font-size: .8rem; border-radius: 12px; }
+  html body .nt-nav-reg { display: none; }
+
+  /* profile dropdown */
+  html body .nt-drop { min-width: 190px; max-width: calc(100vw - 24px); padding: 6px; border-radius: 16px; }
+  html body .nt-drop a, html body .nt-drop button { padding: 10px 11px; font-size: .86rem; }
+
+  /* burger: clear, tappable, shows open / closed */
+  html body .nt-burger { display: inline-grid; place-items: center; border: 1px solid var(--border); background: var(--surface); }
+  html body .nt-burger[aria-expanded="true"] { background: rgba(var(--accent-rgb), .14); border-color: rgba(var(--accent-rgb), .5); color: var(--accent); }
+
+  /* menu panel: solid, compact, scrolls inside itself */
+  html body .nt-nav-links { left: 0; right: 0; margin-top: 6px; padding: 6px; gap: 2px; border-radius: 18px; background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; border: 1px solid var(--border); box-shadow: 0 18px 40px -14px rgba(0, 0, 0, .45); max-height: calc(100dvh - 84px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+  html body .nt-nav-links::-webkit-scrollbar { display: none; }
+  html body .nt-nav-links a, html body .nt-nav-extra a, html body .nt-nav-theme { min-height: 44px; padding: 10px 14px; border-radius: 14px; font-size: .9rem; }
+  html body .nt-nav-extra { gap: 2px; margin-top: 4px; padding-top: 6px; }
+  html body .nt-nav-theme { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; background: none; color: var(--muted); font-family: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+  html body .nt-nav-theme:active, html body .nt-nav-links a:active { background: rgba(var(--accent-rgb), .12); }
+  html body .nt-nav-lang { padding: 8px 14px 6px; font-size: .86rem; }
+  html body .nt-nav-lang .nt-seg button { padding: 5px 11px; font-size: .76rem; }
+}
+
+@media (max-width: 380px) {
+  html body .nt-nav-in { gap: 4px; padding-left: 8px; }
+  html body .nt-nav .nt-ab-nav { font-size: 1rem; }
+  html body .nt-nav .nt-mark { width: 28px; height: 28px; }
+  html body .nt-nav-actions { gap: 4px; }
+  html body .nt-nav-actions .nt-icon-btn { width: 34px; height: 34px; }
+}
+
+/* ------------------------------------------------------------------ 3. categories, 4. smaller text, 5. scrollers */
+@media (max-width: 640px) {
+
+  /* ---- 3. categories: one swipeable row (was a wrapping wall of pills) ---- */
+  html body .category-section { padding: 0 0 6px; }
+  html body .category-section .category-list { position: relative; flex-wrap: nowrap; justify-content: flex-start; gap: 6px; padding: 2px 14px 6px 2px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%); }
+  html body .category-section .category-list::-webkit-scrollbar { display: none; }
+  html body .category-section .category-list .category-button { flex: none; scroll-snap-align: start; min-height: 34px; padding: 0 12px 0 9px; gap: 6px; font-size: .78rem; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; transition: background .2s, color .2s, border-color .2s; }
+  html body .category-section .category-list .category-button:hover { transform: none; box-shadow: none; }
+  html body .category-section .category-list .category-button:active { transform: scale(.97); }
+  html body .category-section .category-list .category-button.category-button-active { box-shadow: 0 4px 12px rgba(var(--accent-rgb), .3); }
+  html body .category-section .category-icon { width: 16px; height: 16px; flex-basis: 16px; }
+  html body .category-section .category-icon svg { width: 16px; height: 16px; }
+  html body .category-section .category-count { display: none; } /* less text: the number is on the results line anyway */
+
+  /* ---- 4. smaller text. 15px root scales every rem size on phones; inputs stay 16px (no iOS zoom) ---- */
+  html { font-size: 15px; }
+  html body .nt-main { padding-top: 10px; }
+  html body .nt-h1 { font-size: 1.3rem; }
+  html body .nt-section { margin: 22px 0; }
+  html body .nt-section-head { margin-bottom: 10px; gap: 8px; }
+  html body .nt-section-head h2 { font-size: 1.1rem; gap: 8px; }
+  html body .nt-section-head h2::before { width: 4px; }
+  html body .nt-section-head p { font-size: .76rem; margin-top: 2px; }
+  html body .nt-section-head .nt-link { font-size: .78rem; }
+  html body .nt-viewbar { margin: 2px 0 10px; }
+  html body .nt-viewbar .nt-count, html body .nt-count { font-size: .76rem; }
+  html body .nt-toolbar-glass { padding: 8px 10px; border-radius: 14px; margin: 8px 0 12px; }
+  html body .nt-btn { font-size: .86rem; }
+  html body .nt-btn-lg { font-size: .9rem; }
+  html body .nt-badge { font-size: .64rem; padding: 2px 7px; }
+
+  /* home banner: slightly tighter still */
+  html[data-theme] .nt-hero h1 { font-size: clamp(1.3rem, 6.2vw, 1.6rem); }
+  html .nt-hero p { font-size: .76rem; line-height: 1.4; }
+
+  /* product cards */
+  html body .pc { gap: 6px; padding: 7px 7px 9px; border-radius: 18px; }
+  html body .pc-title { font-size: .78rem; line-height: 1.22; min-height: 2.44em; margin: 0 2px; }
+  html body .pc-see { font-size: .68rem; padding: 6px 8px; }
+  html body .pc-add, html body .pc-step { height: 34px; font-size: .76rem; border-radius: 11px; }
+  html body .pc-add svg { width: 15px; height: 15px; }
+  html body .pc-heart { width: 28px; height: 28px; }
+  html body .pc-badges { top: 12px; left: 12px; }
+  html body .pc-badges .nt-badge { font-size: .6rem; padding: 2px 6px; }
+  html body .pc-unavail { font-size: .64rem; padding: 3px 8px; }
+
+  /* product page */
+  html body .nt-crumbs { flex-wrap: nowrap; gap: 6px; margin: 0 0 10px; font-size: .72rem; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+  html body .nt-crumbs::-webkit-scrollbar { display: none; }
+  html body .nt-crumbs span { max-width: 22ch; }
+  html body .nt-detail { gap: 12px; }
+  html body .nt-detail-img { aspect-ratio: 16 / 11; min-height: 0; border-radius: 20px; }
+  html body .nt-detail-img img { width: 70%; max-height: 90%; }
+  html body .nt-detail-flag { left: 10px; top: 10px; padding: 4px 9px; font-size: .66rem; }
+  html body .nt-detail-info { padding: 14px; border-radius: 20px; }
+  html body .nt-detail-cat { padding: 3px 9px; font-size: .66rem; }
+  html body .nt-detail-info h1 { margin: 9px 0 3px; font-size: 1.22rem; line-height: 1.15; }
+  html body .nt-detail-info .nt-meta { font-size: .72rem; }
+  html body .nt-detail-info .nt-desc { margin-top: 8px; font-size: .78rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  html body .nt-detail-info .nt-best.big { margin-top: 12px; padding: 11px 13px; border-radius: 16px; }
+  html body .nt-detail-info .nt-best.big .nt-best-price { font-size: 1.55rem; }
+  html body .nt-detail-info .nt-best.big .nt-best-label { font-size: .7rem; }
+  html body .nt-detail-info .nt-best-store { font-size: .7rem; padding: 4px 10px; }
+  html body .nt-detail-info .nt-unitprice, html body .nt-detail-info .nt-save, html body .nt-linetotal { font-size: .74rem; }
+  html body .nt-actions { gap: 8px; margin: 12px 0 0; min-height: 0; }
+  html body .nt-actions .nt-btn { padding: 10px 14px; font-size: .84rem; border-radius: 13px; }
+  html body .nt-actions .nt-btn-ghost { padding: 10px 14px; border-radius: 13px; }
+  html body .nt-detail-info .nt-qty button { width: 34px; height: 34px; }
+  html body .nt-detail-info .nt-qty output { min-width: 32px; font-size: .92rem; }
+  html body .nt-alertbox { margin-top: 10px; padding: 9px 11px; border-radius: 13px; font-size: .74rem; gap: 8px; }
+  html body .nt-alertbox input { width: 100px; padding: 7px 9px; }
+
+  /* facts: two compact tiles per row */
+  html body .nt-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  html body .nt-facts > div { padding: 9px 11px; border-radius: 13px; }
+  html body .nt-facts dt { margin-bottom: 3px; font-size: .66rem; gap: 5px; }
+  html body .nt-facts dt svg { width: 13px; height: 13px; }
+  html body .nt-facts dd { font-size: .88rem; }
+
+  /* store comparison table: small type so it fits without squeezing */
+  html body .nt-table { border-radius: 16px; font-size: .74rem; }
+  html body .nt-table th, html body .nt-table td { padding: 8px 9px; }
+  html body .nt-table th { font-size: .62rem; }
+  html body .nt-table .nt-badge { margin-left: 4px; }
+  html body .nt-table .nt-promo, html body .nt-table .nt-diff { font-size: .66rem; }
+
+  /* ---- 5. scrollers ---- */
+  /* "similar" / "bought together" rows: a swipe row, two cards visible with a peek of the third */
+  html body .nt-grid.nt-grid-row { display: flex; grid-template-columns: none; gap: 10px; overflow-x: auto; padding: 2px 2px 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; }
+  html body .nt-grid.nt-grid-row::-webkit-scrollbar { display: none; }
+  html body .nt-grid.nt-grid-row > * { flex: 0 0 calc(46% - 5px); min-width: 0; scroll-snap-align: start; }
+
+  /* account tabs, wide tables and admin tabs: swipeable, no visible bar */
+  html body .nt-acc-nav, html body .nt-scroll, html body .adm-nav { -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: none; }
+  html body .nt-acc-nav::-webkit-scrollbar, html body .nt-scroll::-webkit-scrollbar, html body .adm-nav::-webkit-scrollbar { display: none; }
+
+  /* inner scroll panels (cart, popups): thin, and the page behind does not scroll with them */
+  html body .nt-cart-scroll, html body .nc-body, html body .nc-side, html body .cm-cols, html body .cm-list, html body .rt { overscroll-behavior: contain; scrollbar-width: thin; }
+  html body .nt-cart-scroll::-webkit-scrollbar, html body .nc-body::-webkit-scrollbar, html body .cm-cols::-webkit-scrollbar, html body .cm-list::-webkit-scrollbar { width: 4px; height: 4px; }
+
+  /* page: smooth, no rubber-band sideways drift */
+  html { scroll-behavior: smooth; overscroll-behavior-x: none; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}

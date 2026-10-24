@@ -1,0 +1,47 @@
+/* ==========================================================================
+   v89 — (1) "NarxTop" wordmark readable on the light navbar/footer
+         (3) home product list sits directly on the page (no separate panel)
+         (4) new motion: card photo reveal, button press, tile lift, heading bar, wordmark shimmer
+   Imported after polish-v88.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------- (1) wordmark --- */
+html[data-theme="light"][data-theme] body #root .nt-nav .nt-ab-l.is-top {
+  background-image: linear-gradient(100deg, #b83700 0%, #e0500a 34%, #a82f00 66%, #d9480f 100%);
+  background-size: 400% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+html[data-theme="light"][data-theme] body #root .nt-nav .nt-ab-l.is-narx { color: #2a170a; }
+html[data-theme="dark"] body #root .nt-nav .nt-ab-l.is-top {
+  background-image: linear-gradient(100deg, #ffe3a8 0%, #ffb23f 40%, #ffd78f 70%, #ff9a2a 100%);
+  background-size: 400% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+html[data-theme] body #root .nt-nav .nt-ab-l.is-top { animation: nt-ab-flow 9s linear infinite; }
+html[data-theme="light"][data-theme] body #root .nt-nav { --nm-top: linear-gradient(100deg, #b83700, #e0500a 55%, #a82f00); --nm-narx: #2a170a; }
+
+/* -------------------------------------- (3) home products: no separate panel --- */
+html[data-theme] body #root .nt-home #catalog { margin-top: clamp(22px, 3vw, 40px); padding: 0; background: none; border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html[data-theme] body #root .nt-home #catalog .nt-section-head h2 { font-size: clamp(1.4rem, 2.6vw, 1.95rem); }
+html[data-theme="light"] body #root .nt-home #catalog .nt-section-head { padding-bottom: 12px; border-bottom: 2px solid rgba(95, 55, 28, .25); }
+
+/* ---------------------------------------------------------------- (4) motion --- */
+html[data-theme] body #root :is(.nt-btn, .nt-icon-btn, .nt-chip, .pcat-item):active { transform: scale(.96); }
+html[data-theme] body #root .nt-home .hb-stats li { transition: transform .25s var(--ease-out, ease), box-shadow .25s; }
+html[data-theme] body #root .nt-home .hb-stats li:hover { transform: translateY(-4px); }
+html[data-theme] body #root .nt-home .hb-stats li:hover .hb-stat-ico { animation: v89-wiggle .6s ease; }
+@keyframes v89-wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-12deg) scale(1.1); } 60% { transform: rotate(9deg) scale(1.1); } }
+html[data-theme] body #root .nt-home .nt-section-head h2::before { transform-origin: 50% 100%; animation: v89-bar .8s var(--ease-out, ease) both; }
+@keyframes v89-bar { from { transform: scaleY(.1); opacity: 0; } to { transform: none; opacity: 1; } }
+html[data-theme] body #root .nt-home .hb .nt-ss form { transition: box-shadow .3s, transform .3s; }
+html[data-theme] body #root .nt-home .hb .nt-ss form:focus-within { transform: translateY(-2px); }
+html[data-theme] body #root .tc-heart:hover, html[data-theme] body #root .pc-heart:hover { animation: v89-beat .5s ease; }
+@keyframes v89-beat { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.22); } 60% { transform: scale(.95); } }
+/* product photos grow into place while scrolling into view (browsers with scroll-driven animations) */
+@supports (animation-timeline: view()) {
+  html[data-theme] body #root .tc-grid .tc-photo { animation: v89-photo linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
+  @keyframes v89-photo { from { opacity: .25; transform: scale(.92) translateY(14px); } to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body #root .nt-nav .nt-ab-l.is-top, html[data-theme] body #root .nt-home .nt-section-head h2::before,
+  html[data-theme] body #root .tc-grid .tc-photo { animation: none !important; }
+}
+html[data-motion="off"] .nt-nav .nt-ab-l.is-top { animation: none !important; }

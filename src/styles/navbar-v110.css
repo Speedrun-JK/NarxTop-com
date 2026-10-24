@@ -1,0 +1,179 @@
+/* ==========================================================================
+   v110 — NAVBAR + BURGER MENU (loaded last, wins every older navbar layer)
+
+   1. Desktop bar: a rounded rectangle (not a full pill) with a calmer glass frame.
+   2. Logo + Premium crown: crisper wordmark, glowing N, gold halo behind the crown.
+   3. Phone burger: the sheet is `position: fixed` and is placed under the bar from JS (--nt-menu-top),
+      so it opens at any scroll position and always sits above sticky page content.
+      The bar must not keep a backdrop-filter while the menu is open (it would turn into the
+      containing block for the fixed sheet and the backdrop).
+   4. Theme switch in the sheet: System / Light / Dark. Changing it never closes the menu.
+   ========================================================================== */
+
+/* One long prefix beats the stacked [data-theme] hacks of the older sheets. */
+/* P = html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root */
+
+/* ---------------------------------------------------------------- 3. scroll lock while the sheet is open --- */
+html.nt-menu-lock,
+html.nt-menu-lock body { overflow: hidden; overscroll-behavior: none; }
+
+/* ---------------------------------------------------------------- 1. desktop bar --- */
+@media (min-width: 861px) {
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav { z-index: 900; border-radius: 22px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-in {
+    min-height: 74px;
+    padding: 8px 14px 8px 22px;
+    border-radius: 22px;
+  }
+  /* the two side edges: soft squared corners instead of half-circles */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-in::before { border-radius: 22px; }
+
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links {
+    padding: 5px;
+    border-radius: 16px;
+  }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a {
+    padding: 10px 16px;
+    border-radius: 12px;
+  }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a .nt-nav-pill { border-radius: 12px; }
+  /* active link: peach tile with an orange label, like the chat reference */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a.is-active .nt-nav-pill {
+    background: rgba(255, 138, 42, .14);
+    box-shadow: inset 0 0 0 1px rgba(255, 138, 42, .42);
+  }
+  html[data-theme="light"][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a.is-active .nt-nav-pill {
+    background: linear-gradient(180deg, #fff4e8 0%, #ffe3c9 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 138, 42, .5), 0 6px 14px -10px rgba(255, 110, 20, .6);
+  }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a .nt-nav-pill::after { display: none; }
+
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-seg { border-radius: 14px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-seg button { border-radius: 10px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn { width: 46px; height: 46px; border-radius: 14px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user-btn { border-radius: 14px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-login,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-reg { border-radius: 12px; }
+}
+
+/* ---------------------------------------------------------------- 2. logo + crown --- */
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo { position: relative; gap: 11px; }
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo-markwrap { position: relative; display: grid; place-items: center; }
+/* soft warm glow behind the N */
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo-markwrap::before {
+  content: ""; position: absolute; inset: -16%; z-index: 0; border-radius: 40%;
+  background: radial-gradient(closest-side, rgba(255, 138, 42, .34), rgba(255, 138, 42, 0) 100%);
+  pointer-events: none;
+}
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo-markwrap > .nt-mark { position: relative; z-index: 1; transition: transform .35s cubic-bezier(.3, 1.5, .5, 1); }
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo:hover .nt-logo-markwrap > .nt-mark { transform: rotate(-6deg) scale(1.06); }
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-ab-nav { font-weight: 800; letter-spacing: -.05em; }
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-ab-l.is-top {
+  background-image: linear-gradient(180deg, #ffbe3a 0%, #ff8a1a 52%, #f0540a 100%);
+  filter: drop-shadow(0 4px 10px rgba(255, 110, 20, .32));
+}
+
+/* Premium crown: gold halo, a little larger, still centred over the N */
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo.is-plus .nt-logo-markwrap > .nt-plus-crown {
+  z-index: 3;
+  top: calc(var(--mark) * -.4);
+  width: calc(var(--mark) * .9);
+  height: calc(var(--mark) * .72);
+  filter: drop-shadow(0 0 calc(var(--mark) * .22) rgba(255, 196, 70, .7)) drop-shadow(0 2px 3px rgba(90, 45, 0, .55));
+}
+html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo.is-plus .nt-logo-markwrap > .nt-plus-crown::before {
+  content: ""; position: absolute; inset: -30% -25%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 212, 94, .42), rgba(255, 212, 94, 0) 100%);
+  pointer-events: none;
+}
+@media (max-width: 860px) {
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo.is-plus .nt-logo-markwrap > .nt-plus-crown {
+    top: calc(var(--mark) * -.38); width: calc(var(--mark) * .78); height: calc(var(--mark) * .62);
+  }
+}
+
+/* ---------------------------------------------------------------- 3. phone bar + burger sheet --- */
+@media (max-width: 860px) {
+  /* the bar stays above sticky page rows (category pills, filters, toasts) */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav { z-index: 1200; border-radius: 20px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-in { border-radius: 20px; }
+
+  /* while the sheet is open the bar must not blur: a backdrop-filter would make it the containing block of the
+     fixed sheet and backdrop, which broke the menu after scrolling */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav.is-menu-open,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav.is-menu-open .nt-nav-in {
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+    transform: none !important; filter: none !important; contain: none !important;
+  }
+
+  /* bar content sits above the dimmed backdrop */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions { position: relative; z-index: 2; }
+
+  /* dim page */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-backdrop {
+    position: fixed; inset: 0; z-index: 1; display: block; width: 100vw; height: 100dvh; margin: 0; padding: 0; border: 0;
+    background: rgba(8, 5, 3, .5); touch-action: none; cursor: default;
+    animation: nt110-fade .2s ease both;
+  }
+
+  /* the sheet itself */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links {
+    position: fixed; z-index: 5;
+    top: var(--nt-menu-top, 76px); left: 10px; right: 10px; bottom: auto; margin: 0;
+    width: auto; max-width: 520px; margin-inline: auto;
+    max-height: calc(100dvh - var(--nt-menu-top, 76px) - 12px - env(safe-area-inset-bottom, 0px));
+    padding: 10px; gap: 4px; border-radius: 22px;
+    overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    box-shadow: 0 34px 70px -24px rgba(0, 0, 0, .75), 0 0 0 1px var(--nm-border, rgba(255, 255, 255, .14)), inset 0 1px 0 rgba(255, 255, 255, .16);
+  }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links:not(.is-open) { display: none; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links.is-open { display: flex; animation: nt110-sheet .24s cubic-bezier(.22, 1, .36, 1) both; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links::-webkit-scrollbar { display: none; }
+
+  /* rows */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links > a,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-extra > a,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-extra > button.nt-nav-theme {
+    min-height: 52px; padding: 8px 12px 8px 10px; border-radius: 16px; font-size: .95rem;
+  }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links .nt-nav-ico { width: 34px; height: 34px; border-radius: 12px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-extra { margin-top: 6px; padding-top: 8px; gap: 4px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links.is-open > a { animation: nt110-row .3s cubic-bezier(.22, 1, .36, 1) both; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links.is-open > a:nth-child(2) { animation-delay: .04s; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links.is-open > a:nth-child(3) { animation-delay: .08s; }
+
+  /* theme switch (System / Light / Dark) */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-themebox { border-top: 0; margin-top: 2px; padding-top: 8px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-theme-seg > button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 6px; font-size: .8rem; letter-spacing: 0;
+  }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-theme-seg > button .nt-icon { flex: none; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-theme-seg > button.is-on { color: #fff; background: linear-gradient(135deg, #ff9a2a, #ff6a00); box-shadow: 0 6px 14px -8px rgba(255, 98, 0, .9); }
+
+  /* burger button: icon turns instead of popping */
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-burger .nt-icon { transition: transform .25s cubic-bezier(.3, 1.5, .5, 1); }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-burger[aria-expanded="true"] .nt-icon { transform: rotate(90deg); }
+}
+@media (max-width: 380px) {
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links { left: 8px; right: 8px; padding: 8px; }
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-theme-seg > button .nt-icon { display: none; }
+}
+
+@keyframes nt110-sheet { from { opacity: 0; transform: translateY(-10px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes nt110-row { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes nt110-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links.is-open,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links.is-open > a,
+  html[data-theme][data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-backdrop { animation: none; }
+}
+html[data-motion="off"] .nt-nav .nt-nav-links.is-open,
+html[data-motion="off"] .nt-nav .nt-nav-links.is-open > a,
+html[data-motion="off"] .nt-nav .nt-nav-backdrop { animation: none !important; }
+
+/* settings > theme (account page) */
+.nt-theme-seg { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.nt-theme-seg button { display: inline-flex; align-items: center; gap: 7px; }
+.nt-theme-note { margin-top: 8px; }

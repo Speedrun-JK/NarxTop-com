@@ -1,0 +1,72 @@
+/* v103: keep the Plus crown centered over the N and the language selector aligned. */
+html[data-theme] body #root .nt-nav .nt-logo.is-plus .nt-logo-markwrap > .nt-plus-crown {
+  left: 50%;
+  right: auto;
+  top: calc(var(--mark) * -.34);
+  width: calc(var(--mark) * .82);
+  height: calc(var(--mark) * .66);
+  transform: translateX(-50%) rotate(-4deg);
+  transform-origin: 50% 100%;
+  animation: navbar-crown-on-n 4.2s ease-in-out infinite;
+}
+
+@keyframes navbar-crown-on-n {
+  0%, 100% { transform: translateX(-50%) rotate(-4deg) translateY(0); }
+  50% { transform: translateX(-50%) rotate(-2deg) translateY(-1px); }
+}
+
+html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions > .nt-seg,
+html[data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-seg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  min-height: 46px;
+  padding: 3px;
+  line-height: 1;
+}
+
+html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions > .nt-seg > button,
+html[data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-seg > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 44px;
+  height: 38px;
+  min-height: 38px;
+  margin: 0;
+  padding: 0 10px;
+  line-height: 1;
+  vertical-align: middle;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 1220px) and (min-width: 861px) {
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-actions > .nt-seg > button {
+    min-width: 38px;
+    padding-inline: 8px;
+  }
+}
+
+@media (max-width: 860px) {
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-seg {
+    min-height: 0;
+    padding: 3px;
+  }
+  html[data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-seg > button {
+    min-width: 40px;
+    height: 34px;
+    min-height: 34px;
+    padding-inline: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body #root .nt-nav .nt-logo.is-plus .nt-logo-markwrap > .nt-plus-crown { animation: none !important; }
+}
+html[data-motion="off"] .nt-nav .nt-logo.is-plus .nt-logo-markwrap > .nt-plus-crown { animation: none !important; }
