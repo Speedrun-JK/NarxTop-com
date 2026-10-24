@@ -1,0 +1,124 @@
+/* Compact signed-in desktop comparison carousel, card hover affordance and phone preview sheet. */
+html[data-theme] #root .hb {
+  grid-template-columns: minmax(0, 1.2fr) minmax(330px, .8fr);
+  align-items: center;
+  min-height: 0;
+  padding: clamp(28px, 4vw, 50px) clamp(24px, 4vw, 54px);
+}
+html[data-theme] #root .hb-copy { width: min(100%, 700px); }
+html[data-theme] #root .hb h1 { max-width: 680px; }
+html[data-theme] #root .hb-action { max-width: 700px; }
+html[data-theme] #root .hb-stats { margin-top: 18px; }
+html[data-theme] #root .hb-stage { width: 100%; gap: 12px; }
+html[data-theme] #root .hb-viewport { width: 100%; max-width: 500px; }
+html[data-theme] #root .hb-card { gap: 10px; padding: 16px; }
+html[data-theme] #root .hb-prod { grid-template-columns: 68px minmax(0, 1fr) auto; gap: 11px; }
+html[data-theme] #root .hb-img { width: 68px; height: 68px; border-radius: 17px; }
+html[data-theme] #root .hb-name b { font-size: 1rem; }
+html[data-theme] #root .hb-name small { font-size: .78rem; }
+html[data-theme] #root .hb-rows { gap: 7px; }
+html[data-theme] #root .hb-rows li { grid-template-columns: 27px minmax(52px, 64px) minmax(0, 1fr) auto; gap: 8px; padding: 7px 9px; border-radius: 13px; }
+html[data-theme] #root .hb-store { font-size: .82rem; }
+html[data-theme] #root .hb-price { font-size: .82rem; }
+html[data-theme] #root .hb-save { padding: 9px 12px; font-size: .85rem; }
+html[data-theme] #root .hb-ctl { gap: 10px; }
+html[data-theme] #root .hb-ctl > button { width: 34px; height: 34px; }
+html[data-theme] #root .hb-dots { gap: 7px; }
+html[data-theme] #root .hb-dots button { width: 8px; height: 8px; }
+html[data-theme] #root .hb-dots button.is-on { width: 26px; }
+
+/* Quick View text appears only while the image is hovered/focused. */
+html[data-theme] .tc-peek { opacity: 0; transform: translate(-50%, 8px); }
+html[data-theme] .tc:hover .tc-peek { opacity: 0; transform: translate(-50%, 8px); }
+html[data-theme] .tc-photo-link:hover .tc-peek,
+html[data-theme] .tc-photo-link:focus-visible .tc-peek { opacity: .92; transform: translate(-50%, 0); }
+
+/* Desktop quick view fits the common three-store comparison without an inner scroll. */
+@media (min-width: 861px) {
+  .pv { max-height: min(92dvh, 860px); grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); }
+  .pv-stage { min-height: 420px; }
+  .pv-scroll { padding: 22px 26px 12px; }
+  .pv-title { margin-top: 12px; }
+  .pv-desc { -webkit-line-clamp: 1; line-clamp: 1; margin-top: 6px; font-size: .9rem; }
+  .pv-price { margin-top: 12px; padding: 12px 16px; }
+  .pv-ladder { margin-top: 10px; padding: 10px; }
+  .pv-ladder ul { gap: 6px; }
+  .pv-row { padding-block: 7px; }
+  .pv-foot { padding: 10px 26px 14px; }
+}
+@media (min-width: 861px) and (min-height: 760px) { .pv-scroll { overflow-y: hidden; } }
+
+@media (max-width: 900px) {
+  html[data-theme] #root .hb { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 26px 22px; }
+  html[data-theme] #root .hb-copy { width: 100%; max-width: none; }
+  html[data-theme] #root .hb-stage { order: 2; justify-items: start; }
+  html[data-theme] #root .hb-viewport { max-width: 560px; }
+}
+
+/* Touchscreens show the hint only during the press. The tap itself opens the preview sheet. */
+@media (hover: none) {
+  html[data-theme] .tc-peek { display: inline-flex !important; opacity: 0; transform: translate(-50%, 8px); }
+  html[data-theme] .tc:hover .tc-peek { opacity: 0; transform: translate(-50%, 8px); }
+  html[data-theme] .tc-photo-link:active .tc-peek { opacity: .92; transform: translate(-50%, 0); }
+}
+
+/* Phones keep the banner compact and omit its carousel entirely. */
+@media (max-width: 767px) {
+  html[data-theme] #root .hb { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 22px 18px 20px; border-radius: 24px; }
+  html[data-theme] #root .hb h1 { margin: 14px 0 9px; font-size: clamp(1.8rem, 8vw, 2.45rem); line-height: 1.04; }
+  html[data-theme] #root .hb-copy > p { max-width: 38ch; font-size: .92rem; line-height: 1.45; }
+  html[data-theme] #root .hb-action { margin-top: 16px; }
+  html[data-theme] #root .hb-stats { display: none; }
+  html[data-theme] #root .hb-stage { display: none !important; }
+}
+
+/* Phone Quick View is a polished bottom sheet with its own contained scroll and fixed actions. */
+@media (max-width: 860px) {
+  .pv-scrim { align-items: end; padding: 0; background: rgba(37, 22, 14, .48); }
+  .pv { width: 100%; height: min(94dvh, 900px); max-height: 94dvh; grid-template-rows: minmax(185px, 27dvh) minmax(0, 1fr); border-radius: 28px 28px 0 0; }
+  .pv-stage { height: clamp(185px, 27dvh, 250px); }
+  .pv-img { height: 72%; max-height: 190px; }
+  .pv-tags { top: 32px; left: 14px; }
+  .pv-body { min-height: 0; overflow: hidden; }
+  .pv-scroll { padding: 16px 15px 12px; }
+  .pv-kicker { gap: 6px; }
+  .pv-cat, .pv-quick { padding-block: 6px; font-size: .68rem; }
+  .pv-title { margin: 10px 0 5px; font-size: clamp(1.3rem, 5.6vw, 1.65rem); }
+  .pv-meta { font-size: .82rem; }
+  .pv-desc { margin-top: 8px; font-size: .88rem; line-height: 1.4; -webkit-line-clamp: 2; line-clamp: 2; }
+  .pv-price { gap: 8px; margin-top: 12px; padding: 12px 14px; border-radius: 18px; }
+  .pv-price strong { font-size: clamp(1.55rem, 7vw, 1.9rem); }
+  .pv-price-label { font-size: .68rem; }
+  .pv-save { padding: 7px 10px; font-size: .78rem; }
+  .pv-ladder { margin-top: 10px; padding: 10px; border-radius: 18px; }
+  .pv-ladder h3 { margin: 0 3px 8px; font-size: .68rem; }
+  .pv-ladder ul { gap: 6px; }
+  .pv-row { gap: 8px; padding: 7px 9px; }
+  .pv-row-name { font-size: .9rem; }
+  .pv-row-price { font-size: .9rem; }
+  .pv-foot { position: relative; z-index: 3; flex: none; gap: 8px; padding: 9px 14px max(14px, env(safe-area-inset-bottom)); background: var(--glass-bg-strong); }
+  .pv-add, .pv-step, .pv-full { min-height: 46px; border-radius: 14px; font-size: .82rem; }
+}
+@media (max-width: 440px) {
+  .pv { height: 96dvh; max-height: 96dvh; grid-template-rows: minmax(165px, 23dvh) minmax(0, 1fr); }
+  .pv-stage { height: clamp(165px, 23dvh, 205px); }
+  .pv-img { height: 70%; max-height: 150px; }
+  .pv-row { gap: 6px; padding-inline: 7px; }
+  .pv-row-name { font-size: .82rem; }
+  .pv-row-price { font-size: .82rem; }
+  .pv-row .pv-diff { display: none; }
+  .pv-ok { width: 21px; height: 21px; }
+  .pv-foot { gap: 6px; padding-inline: 10px; }
+  .pv-full { gap: 5px; padding-inline: 9px; }
+  .pv-full > svg:last-child { width: 15px; }
+}
+@media (max-height: 680px) and (max-width: 860px) {
+  .pv { max-height: 98dvh; grid-template-rows: 150px minmax(0, 1fr); }
+  .pv-stage { height: 150px; }
+  .pv-img { height: 68%; max-height: 112px; }
+  .pv-price { margin-top: 8px; padding-block: 9px; }
+  .pv-ladder { margin-top: 7px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pv-ladder li, .pv-heart, .pv-x, .pv-best, .pv-add, .pv-full { transition: none; }
+}

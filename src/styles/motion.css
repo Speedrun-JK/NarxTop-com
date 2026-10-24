@@ -1,0 +1,226 @@
+/* ==========================================================================
+   MOTION + TYPOGRAPHY LAYER — the one site-wide visual/animation upgrade.
+   Imported after layout.css and BEFORE the phone layers (mobile*.css, phone.css), so phone-only rules still win on phones
+   and nothing here changes laptop/desktop layout: it only adds depth, motion and type polish.
+
+   Rules for everything below
+     - animate transform + opacity only (the single exception is the headline-gradient drift, a paint-only
+       background-position on one element, disabled on phones / reduced motion)
+     - colours, easings, durations come from tokens.css (--ease-*, --dur-*, --mesh-*, --fs-*)
+     - every loop / transition is switched off by html[data-motion="off"] (tokens.css) and, unless the user forced motion
+       on, by prefers-reduced-motion
+   ========================================================================== */
+
+/* ---------- 1. TYPOGRAPHY ---------- */
+:is(h1, h2, h3) { text-wrap: balance; }
+p, li, dd { text-wrap: pretty; }
+:lang(uz) { font-feature-settings: "kern", "liga"; } /* oʻ / gʻ (U+02BB) keep their glyph; no ligature tricks on modifier letters */
+
+html[data-theme] :is(.nt-hero h1, .nt-show-top h2, .ab-hero h1, .ct-hero h1, .plus-hero h1) {
+  font-family: var(--font-display);
+  letter-spacing: var(--track-display);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+html[data-theme] :is(.nt-section-head h2, .nt-detail-info h1, .nt-quick-hello h2) {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  letter-spacing: var(--track-heading);
+  line-height: 1.15;
+}
+html[data-theme] .nt-detail-info h1 { font-size: var(--fs-display); letter-spacing: var(--track-display); }
+html[data-theme] :is(.nt-eyebrow) { letter-spacing: .08em; }
+
+/* animated accent on key headline words */
+@keyframes nt-grad-drift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+html[data-theme] .nt-grad {
+  background-image: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 40%, var(--pink) 70%, var(--accent-2) 100%);
+  background-size: 220% 100%;
+  animation: nt-grad-drift 7s var(--ease-in-out) infinite alternate;
+}
+
+/* numbers keep their width while they count up */
+.nt-stats b, .nt-best-price, .pc-price, .nt-quick-txt b, .nt-linetotal { font-variant-numeric: tabular-nums; }
+
+/* ---------- 2. BANNERS: ambient mesh, parallax, spotlight ---------- */
+:is(.nt-hero, .nt-show, .plus-hero) { isolation: isolate; }
+.plus-hero { overflow: hidden; }
+
+.nt-mesh { position: absolute; inset: 0; z-index: -1; overflow: hidden; border-radius: inherit; pointer-events: none; contain: paint; }
+.nt-mesh i {
+  position: absolute; width: 58%; aspect-ratio: 1; border-radius: 50%;
+  will-change: transform; /* three small layers per banner; cheap radial gradients, no blur filter */
+  animation: nt-mesh-drift var(--dur-ambient) var(--ease-in-out) infinite alternate;
+}
+.nt-mesh i:nth-child(1) { left: -14%; top: -40%; background: radial-gradient(closest-side, var(--mesh-a), transparent); }
+.nt-mesh i:nth-child(2) { right: -16%; top: -10%; background: radial-gradient(closest-side, var(--mesh-b), transparent); animation-delay: -8s; animation-duration: calc(var(--dur-ambient) * 1.2); }
+.nt-mesh i:nth-child(3) { left: 26%; bottom: -60%; background: radial-gradient(closest-side, var(--mesh-c), transparent); animation-delay: -14s; animation-duration: calc(var(--dur-ambient) * .9); }
+@keyframes nt-mesh-drift {
+  from { transform: translate3d(0, calc(var(--py, 0) * -.4px), 0) scale(1); }
+  to   { transform: translate3d(7%, calc(var(--py, 0) * -.4px + 6%), 0) scale(1.14); }
+}
+
+/* Main banners use the cocoa-brown palette with a toasted-amber highlight (tokens: --banner-*). */
+html[data-theme] :is(.nt-hero, .nt-show) {
+  --mesh-a: rgba(var(--banner-glow-rgb), .36);
+  --mesh-b: rgba(var(--banner-hi-rgb), .16);
+  --mesh-c: rgba(var(--banner-glow-rgb), .22);
+}
+html[data-theme] .nt-hero,
+html[data-theme] .nt-hero.is-guest { grid-template-columns: minmax(0, 1fr); border-color: var(--banner-line); box-shadow: 0 30px 70px -34px rgba(var(--banner-shadow-c), .75), inset 0 1px 0 rgba(255, 255, 255, .16); }
+html[data-theme] .nt-hero-copy { max-width: 760px; }
+html[data-theme] .nt-hero.nt-spot,
+html[data-theme] .nt-hero.is-guest.nt-spot {
+  background-color: var(--banner-a);
+  background-image:
+    radial-gradient(520px circle at var(--mx, 72%) var(--my, 20%), rgba(var(--banner-glow-rgb), .26), transparent 46%),
+    radial-gradient(760px 420px at 96% -12%, rgba(var(--banner-hi-rgb), .26), transparent 62%),
+    linear-gradient(135deg, var(--banner-a) 0%, var(--banner-b) 55%, var(--banner-c) 100%);
+  background-size: 100% 100%;
+}
+html[data-theme] .nt-hero h1 { color: var(--banner-text); text-shadow: 0 2px 30px rgba(var(--banner-shadow-c), .45); }
+html[data-theme] .nt-hero .nt-grad { background-image: linear-gradient(100deg, var(--banner-hi-a) 0%, var(--banner-hi-b) 45%, var(--banner-hi-a) 100%); }
+html[data-theme] .nt-hero p, html[data-theme] .nt-hero .nt-stats span, html[data-theme] .nt-hero-trust li { color: var(--banner-sub); }
+html[data-theme] .nt-hero .nt-eyebrow { background: rgba(255, 255, 255, .1); color: var(--banner-hi-a); box-shadow: inset 0 0 0 1px var(--banner-line); }
+html[data-theme] .nt-hero .nt-stats li { background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1px var(--banner-line); }
+html[data-theme] .nt-hero .nt-ss form:focus-within { border-color: var(--banner-hi-a); box-shadow: 0 0 0 5px rgba(var(--banner-hi-rgb), .28), 0 18px 40px -16px rgba(var(--banner-shadow-c), .7); }
+html[data-theme] .nt-hero-trust svg { background: var(--banner-hi-a); color: var(--banner-a); }
+/* guest showcase: same palette, on the page surface */
+html[data-theme] .nt-show.nt-spot { background-image: radial-gradient(560px circle at var(--mx, 15%) var(--my, 90%), rgba(var(--banner-glow-rgb), .18), transparent 46%), radial-gradient(520px 300px at 100% 0%, rgba(var(--banner-hi-rgb), .16), transparent 62%); }
+html[data-theme] .nt-show { border-color: rgba(var(--banner-glow-rgb), .35); }
+html[data-theme] .nt-show::after { background: rgb(var(--banner-glow-rgb)); }
+html[data-theme] .nt-show-top h2 { background: linear-gradient(100deg, var(--text) 40%, var(--banner-c)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+html[data-theme="dark"] .nt-show-top h2 { background: linear-gradient(100deg, var(--text) 40%, rgb(var(--banner-glow-rgb))); -webkit-background-clip: text; background-clip: text; color: transparent; }
+html[data-theme] .nt-steps::before { border-top-color: rgba(var(--banner-glow-rgb), .55); }
+
+/* ---------- 3. BUTTONS ---------- */
+.nt-btn { transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out); }
+.nt-btn:not(:disabled):active { transform: translateY(0) scale(.97); }
+.nt-btn:focus-visible, .pc-link:focus-visible, .nt-icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.nt-btn-primary::after { transition: transform .7s var(--ease-out); } /* shine sweep on hover (shape defined in design.css) */
+
+/* ---------- 4. CARDS AND SURFACES ---------- */
+html[data-theme] .pc { transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+html[data-theme] .pc:hover { box-shadow: var(--shadow-lift); }
+.pc-img img { transition: opacity var(--dur-base) var(--ease-out); }
+.pc-link:active .pc-img { transform: scale(.985); }
+.pc-img { transition: transform var(--dur-fast) var(--ease-out); }
+.pc-heart { transition: transform var(--dur-fast) var(--ease-spring), color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out); }
+.pc-add { transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.pc-add:not(:disabled):hover { transform: translateY(-1px); }
+
+/* cheapest verified price: a slow breathing tint (opacity only) */
+@keyframes nt-best-glow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+.pc-offers li.is-best { position: relative; isolation: isolate; }
+.pc-offers li.is-best::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(90deg, rgba(var(--green-rgb), .22), rgba(var(--green-rgb), 0));
+  opacity: 0; animation: nt-best-glow 3.6s var(--ease-in-out) infinite;
+}
+
+.nt-quick a, .nt-teaser, .nt-step-ico { transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.nt-teaser:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.nt-steps li:hover .nt-step-ico { transform: translateY(-3px) scale(1.06); }
+
+/* ---------- 5. NAVIGATION, SECTIONS, FEEDBACK ---------- */
+/* sticky navbar: the shadow is a pseudo-element that fades in (opacity) once the page scrolls */
+.nt-nav { transition: background-color var(--dur-base) var(--ease-out); }
+.nt-nav::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  box-shadow: var(--shadow-md); opacity: 0; transition: opacity var(--dur-base) var(--ease-out);
+}
+.nt-nav.is-scrolled::after { opacity: 1; }
+html[data-theme] .nt-nav.is-scrolled { box-shadow: none; }
+
+.nt-section-head .nt-link .nt-icon, .nt-link svg { transition: transform var(--dur-base) var(--ease-out); }
+.nt-link:hover svg { transform: translateX(4px); }
+
+/* skeleton: shimmer stays, but softer */
+.nt-skel { opacity: .7; }
+
+/* page arrival: the main column already fades in via framer-motion; keep the product page arrival under 250ms */
+.nt-detail, .nt-detail-info > * { animation: nt-arrive var(--dur-base) var(--ease-out) both; }
+.nt-detail-info > *:nth-child(2) { animation-delay: .03s; }
+.nt-detail-info > *:nth-child(3) { animation-delay: .06s; }
+@keyframes nt-arrive { from { opacity: 0; transform: translate3d(0, 8px, 0); } to { opacity: 1; transform: none; } }
+
+/* ---------- 4b. CARD POLISH (laptop / tablet; phone cards keep their own compact layout) ---------- */
+.pc-img::after { content: ""; position: absolute; inset: 0; background: var(--glass-shine); transform: translateX(-120%); pointer-events: none; transition: transform .9s var(--ease-out); }
+.pc:hover .pc-img::after { transform: translateX(120%); }
+.pc-see svg { transition: transform var(--dur-base) var(--ease-out); }
+.pc:hover .pc-see svg, .pc-link:focus-visible .pc-see svg { transform: translateX(4px); }
+.pc-badges .nt-badge { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.pc-offers li { transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out); }
+@media (min-width: 721px) {
+  html[data-theme] .pc { border-radius: 24px; padding: 10px 10px 12px; gap: 10px; }
+  html[data-theme] .pc .pc-img { border-radius: 17px; }
+  html[data-theme] .pc .pc-title { font-size: 1rem; letter-spacing: var(--track-heading); }
+  html[data-theme] .pc .pc-add { border-radius: 14px; min-height: 42px; font-weight: 700; background: linear-gradient(135deg, var(--accent-2), var(--accent) 50%, var(--accent-strong)); color: var(--on-accent); box-shadow: 0 8px 18px -8px rgba(var(--accent-rgb), .7); }
+  html[data-theme] .pc .pc-add:not(:disabled):hover { box-shadow: 0 12px 24px -8px rgba(var(--accent-rgb), .8); }
+  html[data-theme] .pc .pc-step { border-radius: 14px; }
+}
+
+/* ---------- 4c. CHECKOUT STORE PICKER (components/cart/StoreChoiceModal.jsx) ---------- */
+.sc-bg { z-index: 100; align-items: center; }
+.sc { position: relative; width: min(520px, 100%); max-height: min(90vh, 740px); overflow: auto; display: grid; gap: 18px; padding: clamp(20px, 3vw, 28px); border-radius: var(--radius-lg); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); box-shadow: var(--shadow-lift); }
+.sc-x { position: absolute; top: 12px; right: 12px; width: 40px; min-width: 40px; height: 40px; }
+.sc-head { display: flex; align-items: flex-start; gap: 14px; padding-right: 36px; }
+.sc-ico { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 15px; color: var(--on-accent); background: linear-gradient(135deg, var(--accent-2), var(--accent-strong)); box-shadow: 0 10px 22px -10px rgba(var(--accent-rgb), .8); }
+.sc-head h2 { margin: 0; font-family: var(--font-display); font-size: var(--fs-h3); letter-spacing: var(--track-heading); line-height: 1.2; }
+.sc-head p { margin: 4px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+.sc-list { display: grid; gap: 10px; }
+.sc-opt { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 18px; background: var(--surface); border: 1.5px solid var(--border); cursor: pointer; transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.sc-opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.sc-opt:hover { transform: translateY(-2px); border-color: rgba(var(--accent-rgb), .55); }
+.sc-opt:active { transform: scale(.99); }
+.sc-opt:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sc-opt.is-on { border-color: var(--accent); background: rgba(var(--accent-rgb), .08); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+.sc-mark { display: grid; place-items: center; }
+.sc-txt { display: grid; gap: 2px; min-width: 0; }
+.sc-txt b { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 1rem; }
+.sc-txt small { color: var(--muted); font-size: .8rem; }
+.sc-txt small.is-warn { color: var(--warning); }
+.sc-badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 999px; font: 800 .66rem var(--font-body); font-style: normal; letter-spacing: .02em; color: var(--price-best); background: var(--green-tint); }
+.sc-price { display: grid; justify-items: end; gap: 1px; font-variant-numeric: tabular-nums; }
+.sc-price strong { font-family: var(--font-display); font-size: 1.05rem; }
+.sc-price small { color: var(--muted); font-size: .76rem; font-weight: 600; }
+.sc-opt.is-best .sc-price strong { color: var(--price-best); } /* green = cheapest verified price only */
+.sc-tick { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); color: var(--on-accent); transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-spring); }
+.sc-opt.is-on .sc-tick { background: var(--accent); border-color: var(--accent); transform: scale(1.08); }
+.sc-save { display: flex; align-items: center; gap: 10px; margin: 0; padding: 11px 14px; border-radius: 14px; background: rgba(var(--accent-rgb), .08); font-size: .88rem; color: var(--muted); }
+.sc-save svg { color: var(--accent); flex: none; }
+.sc-save b { margin-left: auto; color: var(--text); font-variant-numeric: tabular-nums; }
+.sc-actions { display: flex; justify-content: flex-end; gap: 10px; }
+@media (max-width: 640px) {
+  .sc-bg { align-items: flex-end; padding: 0; }
+  .sc { width: 100%; max-height: 92vh; border-radius: 24px 24px 0 0; padding: 20px 16px calc(16px + env(safe-area-inset-bottom)); }
+  .sc-actions .nt-btn { flex: 1; min-height: 46px; }
+  .sc-opt { padding: 12px; gap: 10px; }
+}
+
+/* ---------- 5b. SITE-WIDE POLISH ---------- */
+::selection { background: rgba(var(--accent-rgb), .3); }
+:is(input, select, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.nt-nav-links a, .nt-chip, .nt-seg button, .nt-footer a { transition: color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.nt-footer a:hover { transform: translateX(2px); }
+.nt-popover, .nt-drop, .nt-ss-panel { transform-origin: top center; }
+.nc-row { transition: background-color var(--dur-base) var(--ease-out); }
+.nc-opt { transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.nc-opt:hover { transform: translateY(-1px); }
+.toast { border: 1px solid rgba(255, 255, 255, .16); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+/* ---------- 6. SMALL SCREENS: lighter ---------- */
+@media (max-width: 720px) {
+  .nt-mesh i { animation: none; }
+  .nt-mesh i:nth-child(3) { display: none; }
+  html[data-theme] .nt-grad { animation: none; background-size: 100% 100%; }
+  .pc-offers li.is-best::after { animation: none; opacity: .7; }
+}
+
+/* ---------- 7. REDUCED MOTION (system setting, unless the user forced motion on) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion="on"]) :is(.nt-mesh i, .nt-grad, .pc-offers li.is-best::after, .nt-detail, .nt-detail-info > *) { animation: none; }
+}
+html[data-motion="off"] :is(.nt-mesh i, .nt-grad, .pc-offers li.is-best::after, .nt-detail, .nt-detail-info > *) { animation: none; }
+html[data-motion="off"] .pc-offers li.is-best::after { opacity: .7; }
+html[data-motion="off"] :is(.pc-img::after) { transition: none; }

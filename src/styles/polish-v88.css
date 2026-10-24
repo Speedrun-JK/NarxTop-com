@@ -1,0 +1,79 @@
+/* ==========================================================================
+   v88 — (1) the accent word "tejang" is readable on the tinted banner
+         (2) banner tint is lighter (less brown)
+         (3) home page cards + grid + sections polished (light + dark)
+         (4) Plus crown sits centred on top of the logo mark, upright-ish, glowing
+   Imported last (after warm-v87.css).
+   ========================================================================== */
+
+/* ---------------------------------------------- (1) accent word, white theme --- */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child,
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child:nth-child(n+1) {
+  background-image: linear-gradient(95deg, #9a2800 0%, #c13700 48%, #8a4300 100%);
+  filter: drop-shadow(0 1px 0 rgba(255, 238, 216, .55)) drop-shadow(0 8px 14px rgba(150, 50, 0, .22));
+}
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cpath d='M4 17C48 5 120 2 196 11' fill='none' stroke='%23d9480f' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------- (2) banner: a bit less brown --- */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb { background: #e6d0b4; border: 1.5px solid rgba(150, 78, 28, .55); }
+@media (min-width: 768px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-photo::after {
+    background:
+      linear-gradient(90deg, rgba(140, 88, 40, .38) 0%, rgba(140, 88, 40, .32) 30%, rgba(140, 88, 40, .2) 48%, rgba(140, 88, 40, .07) 66%, transparent 82%),
+      linear-gradient(0deg, rgba(118, 80, 48, .1), transparent 30%);
+    background-size: auto; background-position: 0 0; animation: none;
+  }
+}
+@media (max-width: 767px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb { --hb-bg: #e3cbab; }
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb::before { background: linear-gradient(180deg, rgba(139, 92, 56, .12), transparent 60%); }
+}
+
+/* ------------------------------------------------- (3) cards, grid, sections --- */
+html[data-theme] body #root .tc-grid { gap: clamp(14px, 1.6vw, 24px); }
+html[data-theme] body #root .tc {
+  border-width: 1.5px; border-radius: 26px;
+  transition: transform .28s var(--ease-out, ease), box-shadow .28s, border-color .28s;
+}
+html[data-theme] body #root .tc:hover { transform: translateY(-5px); }
+html[data-theme] body #root .tc-photo { border-radius: 20px; }
+html[data-theme="light"] body #root .tc {
+  --fc-line: rgba(95, 55, 28, .5);
+  background: linear-gradient(180deg, #efd8ba 0%, #e6cba6 100%);
+  box-shadow: 0 2px 3px rgba(70, 42, 20, .1), 0 22px 36px -24px rgba(70, 42, 20, .6), inset 0 1px 0 rgba(255, 244, 228, .6);
+}
+html[data-theme="light"] body #root .tc:hover { border-color: rgba(150, 78, 28, .85); box-shadow: 0 2px 3px rgba(70, 42, 20, .12), 0 30px 44px -22px rgba(150, 78, 28, .65), inset 0 1px 0 rgba(255, 244, 228, .7); }
+html[data-theme="light"] body #root .tc-photo { background: radial-gradient(90% 90% at 50% 18%, #f6e8d4, #ebd3b2); border: 1.5px solid rgba(95, 55, 28, .32); }
+html[data-theme="dark"] body #root .tc:hover { border-color: rgba(255, 170, 80, .55); box-shadow: 0 30px 50px -26px rgba(255, 140, 40, .4); }
+
+/* section panels: roomier, with an accent top edge */
+html[data-theme] body #root .nt-home .nt-section-glass { padding: clamp(16px, 2.6vw, 30px); border-radius: 30px; }
+html[data-theme="light"] body #root .nt-home .nt-section-glass { background: linear-gradient(180deg, #ebd3b3, #e2c7a3); box-shadow: var(--w-shadow), inset 0 3px 0 rgba(150, 78, 28, .35); }
+html[data-theme] body #root .nt-home .nt-section-head { margin-bottom: clamp(12px, 1.6vw, 20px); }
+html[data-theme] body #root .nt-home .nt-section-head h2::before { width: 7px; height: 1.15em; border-radius: 5px; background: linear-gradient(180deg, #ff9a2a, #c2410c); }
+html[data-theme] body #root .nt-home > section + section, html[data-theme] body #root .nt-home > div + section { margin-top: clamp(16px, 2vw, 28px); }
+
+/* shortcut tiles under the banner */
+html[data-theme] body #root .nt-home .nt-quick ul { gap: clamp(10px, 1.4vw, 16px); }
+html[data-theme="light"] body #root .nt-home .nt-quick ul li a { border-width: 1.5px; background: linear-gradient(135deg, color-mix(in srgb, var(--tint) 22%, #ebd3b3), #e6cba8 75%); border-color: color-mix(in srgb, var(--tint) 55%, rgba(95, 55, 28, .4)); }
+
+/* daily picks / deals cards */
+html[data-theme="light"] body #root .dp { border: 1.5px solid rgba(95, 55, 28, .45); }
+html[data-theme] body #root .dp-card { border-radius: 22px; }
+
+/* ----------------------------------------------------------------- (4) crown --- */
+html[data-theme] body #root .nt-plus-crown {
+  left: 50%; right: auto; top: calc(var(--mark) * -.5);
+  width: calc(var(--mark) * .84); height: calc(var(--mark) * .67);
+  transform: translateX(-50%) rotate(-8deg); transform-origin: 50% 100%;
+  z-index: 3; pointer-events: none;
+  animation: crown88-float 4.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 calc(var(--mark) * .16) rgba(255, 190, 60, .7)) drop-shadow(0 2px 2px rgba(90, 45, 0, .55));
+}
+html[data-theme="light"] body #root .nt-plus-crown { filter: drop-shadow(0 0 calc(var(--mark) * .12) rgba(230, 150, 20, .5)) drop-shadow(0 2px 2px rgba(90, 45, 0, .5)); }
+@keyframes crown88-float { 0%, 100% { transform: translateX(-50%) rotate(-8deg) translateY(0); } 50% { transform: translateX(-50%) rotate(-5deg) translateY(-1.8px); } }
+html[data-theme] body #root .nt-logo.is-plus { padding-top: calc(var(--mark, 36px) * .12); }
+@media (prefers-reduced-motion: reduce) { html[data-theme] body #root .nt-plus-crown { animation: none !important; } }
+html[data-motion="off"] .nt-plus-crown { animation: none !important; }

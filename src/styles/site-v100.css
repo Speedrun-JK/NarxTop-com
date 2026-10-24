@@ -1,0 +1,154 @@
+/* v100: calmer store UI, stable controls, readable chat and compact theme-aware footer. */
+:root {
+  --nt-radius-control: 10px;
+  --nt-radius-card: 16px;
+  --nt-radius-panel: 20px;
+}
+
+/* Remove decorative flourishes so the products and prices lead the page. */
+html[data-theme] body #root { background-image: none; }
+.nt-ambient, .nt-leaf-hero, .nt-leaf-dp-tr, .nt-leaf-dp-bl, .nf-edge, .nf-mega { display: none !important; }
+html[data-theme] body #root .tc::after,
+html[data-theme] body #root .tc:hover::after,
+html[data-theme] body #root .tc:focus-within::after { display: none !important; animation: none !important; }
+html[data-theme] body #root .tc { border: 1px solid var(--border); border-radius: var(--nt-radius-card); box-shadow: none; }
+html[data-theme] body #root .tc:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(var(--ink-rgb), .08); }
+
+/* A single, restrained radius and stable hit areas across languages. */
+html[data-theme] body #root :is(.nt-btn, .nt-icon-btn, .nt-user-btn, .nt-nav-links > a, .nt-nav-extra > a, .nt-nav-theme) { min-height: 40px; }
+html[data-theme] body #root :is(.nt-btn, .nt-nav-theme, .nt-user-btn) { border-radius: var(--nt-radius-control); white-space: nowrap; }
+html[data-theme] body #root :is(.nt-icon-btn, .nt-nav-actions .nt-seg button) { width: 40px; height: 40px; flex: none; }
+html[data-theme] body #root .nt-nav-actions .nt-seg button { width: 34px; height: 30px; min-height: 30px; padding: 0; }
+html[data-theme] body #root .nt-nav-ico { width: 18px; height: 18px; flex: none; }
+html[data-theme] body #root .nt-nav-links > a { gap: 8px; padding-inline: 10px; white-space: nowrap; }
+html[data-theme] body #root :is(.nt-btn, .nt-icon-btn, .nt-user-btn, .nt-nav-links > a, .nt-nav-extra > a, .nt-nav-theme):focus-visible {
+  outline: 2px solid rgba(var(--accent-rgb), .6);
+  outline-offset: 2px;
+}
+.nt-nav-unread {
+  display: inline-grid;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 5px;
+  place-items: center;
+  border-radius: 999px;
+  background: #d94444;
+  color: #fff;
+  font-size: .66rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Keep search as one field with one focus treatment; align it with the category panel. */
+html[data-theme] body #root .pp-layout { align-items: start; }
+html[data-theme] body #root .pp-layout > .pp-search { align-self: start; margin: 0; padding: 0; transform: none; }
+html[data-theme] body #root .pp-layout > .pcat { align-self: start; margin-top: 0; }
+html[data-theme] body #root .pp-search .nt-ss form { border: 1px solid var(--border); border-radius: var(--nt-radius-control); box-shadow: none; }
+html[data-theme] body #root .pp-search .nt-ss form:hover { border-color: rgba(var(--accent-rgb), .5); }
+html[data-theme] body #root .pp-search .nt-ss form:focus-within { border-color: var(--accent); outline: none; box-shadow: none; }
+html[data-theme] body #root .nt-ss form:focus-within { border-color: var(--accent); outline: none; box-shadow: none; transform: none; }
+html[data-theme] body #root .nt-ss input,
+html[data-theme] body #root .nt-ss input:focus { border: 0; outline: 0; box-shadow: none; }
+html[data-theme] body #root .nt-ss .nt-ss-go { min-height: 42px; border-radius: var(--nt-radius-control); }
+
+/* Product photo and quick preview use one clear edge, with the price easy to scan. */
+html[data-theme] body #root .tc-photo { border: 0; border-radius: 12px; box-shadow: none; }
+html[data-theme] body #root .pv-stage { border-right: 0; background: var(--surface-2); }
+html[data-theme] body #root .pv-stage::before,
+html[data-theme] body #root .pv-stage::after { display: none; }
+html[data-theme] body #root .pv-img {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: none;
+  animation: none;
+}
+html[data-theme] body #root .pv-price { border: 1px solid var(--border); border-radius: var(--nt-radius-card); box-shadow: none; }
+html[data-theme] body #root .pv-ladder { padding: 8px 0 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+html[data-theme] body #root .pv-ladder ul { gap: 0; }
+html[data-theme] body #root .pv-ladder li,
+html[data-theme] body #root .pv-ladder li.is-best { border: 0; border-bottom: 1px solid var(--pv-line); border-radius: 0; background: transparent; box-shadow: none; }
+html[data-theme] body #root .pv-ladder li:hover { transform: none; box-shadow: none; }
+html[data-theme] body #root .pv-row { padding-inline: 6px; }
+html[data-theme] body #root .pv-bar { height: 3px; }
+html[data-theme] body #root .pv-foot { background: var(--surface); }
+html[data-theme] body #root .pv :is(.pv-add, .pv-full, .pv-step) { min-height: 44px; border-radius: var(--nt-radius-control); box-shadow: none; }
+
+/* Cart: a plain item list and a clear total, without nested card decoration. */
+html[data-theme] body #root .nc-panel,
+html[data-theme] body #root .nc-side { border: 1px solid var(--border); border-radius: var(--nt-radius-panel); box-shadow: none; }
+html[data-theme] body #root .nc-side { background: var(--surface); }
+html[data-theme] body #root .nc-row { border-radius: 12px; box-shadow: none; }
+html[data-theme] body #root .nc-row:hover { transform: none; box-shadow: none; }
+html[data-theme] body #root .nc-row .nc-img { border-radius: 10px; box-shadow: none; }
+html[data-theme] body #root .nc-side .nc-opt { border-radius: 12px; box-shadow: none; }
+html[data-theme] body #root .nc-side .nc-opt:hover { transform: none; box-shadow: none; }
+html[data-theme] body #root .nc-side .nc-opt.is-on { box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .5); }
+html[data-theme] body #root .nc-receipt,
+html[data-theme] body #root .nc-details > summary { border-radius: 12px; box-shadow: none; }
+html[data-theme] body #root .nc-receipt.nc-primary-total,
+html[data-theme] body #root .nc-receipt.nc-primary-total::after { background: var(--surface-2); }
+html[data-theme] body #root .nc-receipt.nc-primary-total::after { display: none; }
+html[data-theme] body #root .nc-side .nc-receipt.nc-primary-total dt,
+html[data-theme] body #root .nc-side .nc-receipt.nc-primary-total .nc-total { color: var(--text) !important; }
+html[data-theme] body #root .nc-flow-actions .nt-btn,
+html[data-theme] body #root .nc-side .nt-btn { border-radius: var(--nt-radius-control); box-shadow: none; }
+html[data-theme] body #root :is(.tc-add, .tc-step, .nc-qty, .nc-qty button, .nc-del, .nc-check i, .nt-seeall) { border-radius: var(--nt-radius-control); }
+html[data-theme] body #root .nc-page { height: auto; min-height: 0; }
+html[data-theme] body #root .nc { flex: none; min-height: 0; grid-template-rows: auto; align-items: start; }
+html[data-theme] body #root .nc-panel { overflow: visible; }
+html[data-theme] body #root .nc-body { flex: none; min-height: 0; overflow: visible; }
+html[data-theme] body #root .nc-side { position: sticky; top: 88px; max-height: calc(100dvh - 104px); overflow: auto; }
+html[data-theme] body #root .nc-side-wrap { flex: none; min-height: 0; }
+html[data-theme] body #root .nc-side-scroll { max-height: none; overflow: visible; }
+html[data-theme] body #root .nc-side-wrap > .nt-sbar { display: none; }
+
+/* Message bubbles should size to their text, then wrap at a comfortable reading width. */
+html[data-theme] body #root .stc-message { width: max-content; max-width: min(82%, 560px); }
+html[data-theme] body #root .stc-message-content { width: max-content; max-width: 100%; }
+html[data-theme] body #root .stc-bubble { width: fit-content; max-width: min(100%, 560px); }
+html[data-theme] body #root .stc-bubble p { overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; }
+html[data-theme] body #root .stc-reply-ref { min-width: 0; max-width: 100%; }
+html[data-theme] body #root .stc-reply-ref span { max-width: min(100%, 34ch); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 650px) { html[data-theme] body #root .stc-message { max-width: 95%; } }
+
+/* Compact footer; its background and text follow the active theme. */
+html[data-theme] body #root .nf { padding: 20px var(--nt-gutter, 18px) 12px; }
+html[data-theme] body #root .nf-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--nt-radius-panel);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html[data-theme] body #root .nf-compact { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 15px 20px; }
+html[data-theme] body #root .nf-brand-link { display: inline-flex; flex: none; align-items: center; text-decoration: none; }
+html[data-theme] body #root .nf-links, html[data-theme] body #root .nf-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+html[data-theme] body #root .nf-links a, html[data-theme] body #root .nf-legal a { color: var(--muted); font-size: .78rem; text-decoration: none; }
+html[data-theme] body #root .nf-links a:hover, html[data-theme] body #root .nf-legal a:hover { color: var(--accent); }
+html[data-theme] body #root .nf-card .nt-logo .nt-ab-l.is-narx { color: var(--text); background: none; -webkit-text-fill-color: var(--text); filter: none; }
+html[data-theme] body #root .nf-card .nt-logo .nt-ab-l.is-top { color: var(--accent); background: none; -webkit-text-fill-color: var(--accent); filter: none; animation: none; }
+html[data-theme] body #root .nf-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px 18px; padding: 10px 20px; border-top: 1px solid var(--border); background: var(--surface-2); color: var(--muted); }
+html[data-theme] body #root .nf-bar p { margin: 0; font-size: .72rem; }
+html[data-theme] body #root .nf-top { display: none; }
+html[data-theme] body #root .nf-card::after { display: none; animation: none; }
+
+@media (max-width: 760px) {
+  html[data-theme] body #root .nf-compact { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 16px; }
+  html[data-theme] body #root .nf-links { gap: 8px 14px; }
+  html[data-theme] body #root .nf-bar { align-items: flex-start; flex-direction: column; padding: 10px 16px; }
+  html[data-theme] body #root .nf-legal { gap: 8px 14px; }
+}
+
+@media (max-width: 960px) {
+  html[data-theme] body #root .nc-side { position: static; max-height: none; overflow: visible; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body #root .tc,
+  html[data-theme] body #root .pv-img { animation: none !important; transition: none !important; }
+}

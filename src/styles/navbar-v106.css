@@ -1,0 +1,64 @@
+/* ==========================================================================
+   v106 — MOBILE NAVBAR (<= 860px). Loaded last.
+
+   Phone top bar:   [logo]  ........  [cart] [avatar | Kirish] [burger]
+   Everything else (language, theme, favourites, contact, register, motion) lives in the burger menu.
+
+   Why a new file: navbar-v103.css forced the top-bar language switch to `display:inline-flex` at every width, which
+   re-showed it on phones (design.css had hidden it) and squeezed the logo and the burger out of the bar.
+   ========================================================================== */
+@media (max-width: 860px) {
+  html[data-theme="dark"] body #root .nt-nav { --nm-solid: #1f160f; }
+  html[data-theme="light"] body #root .nt-nav { --nm-solid: #fbf3ea; }
+
+  /* ---- top bar: only what fits comfortably --------------------------------- */
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions > :is(.nt-nav-lang-top, .nt-theme-btn, .nt-fav-btn, .nt-nav-contact, .nt-nav-reg) { display: none; }
+
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-in { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 58px; padding: 7px 9px 7px 14px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo { flex: 0 0 auto; min-width: 0; margin-right: auto; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-logo .nt-ab { display: inline-flex; white-space: nowrap; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 7px; margin-left: auto; min-width: 0; }
+
+  /* round, evenly sized controls with a comfortable tap area */
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn, html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-burger { width: 42px; height: 42px; min-height: 42px; flex: 0 0 auto; border-radius: 14px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-login { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 42px; padding: 0 18px; border-radius: 14px; white-space: nowrap; }
+
+  /* signed in: avatar only (the name is in the profile menu) */
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user { flex: 0 0 auto; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user-btn { position: relative; display: inline-grid; place-items: center; width: 42px; height: 42px; min-height: 42px; padding: 0; border-radius: 14px; overflow: visible; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user-btn .nt-user-name { display: none; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user-btn > em { position: absolute; top: -5px; right: -5px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user .nt-drop { position: absolute; top: calc(100% + 10px); right: 0; left: auto; min-width: 220px; max-width: calc(100vw - 28px); }
+
+  /* ---- burger sheet -------------------------------------------------------- */
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links {
+    left: 0; right: 0; top: 100%; margin-top: 8px; padding: 8px; gap: 3px;
+    align-items: stretch; /* showcase.css centres the items, which shrank the extra rows and the language switch */
+    background: var(--nm-sheet, var(--surface)), var(--nm-solid, var(--surface)); /* opaque: the page never shows through */
+    max-height: calc(100dvh - 92px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links::-webkit-scrollbar { display: none; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a, html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links .nt-nav-theme { width: 100%; min-height: 50px; justify-content: flex-start; text-align: left; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links .nt-nav-theme { display: flex; align-items: center; border: 0; background: transparent; font: inherit; font-size: .92rem; font-weight: 650; cursor: pointer; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links .nt-nav-theme > span, html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-links a > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ---- language: a full-width, three-way switch at the bottom of the menu --- */
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-extra { display: grid; gap: 3px; width: 100%; box-sizing: border-box; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-lang { box-sizing: border-box; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; justify-items: stretch; gap: 10px; margin-top: 6px; padding: 12px 6px 6px; border-top: 1px solid var(--nm-chip-b, var(--border)); }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-nav-lang-label { display: flex; align-items: center; gap: 12px; padding: 0 4px; font-size: .86rem; font-weight: 700; color: var(--nm-soft, var(--muted)); }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-nav-lang-label .nt-nav-ico { display: grid; flex: none; width: 32px; height: 32px; padding: 7px; box-sizing: border-box; place-items: center; border-radius: 11px; color: var(--nm-ico, var(--accent)); background: var(--nm-ico-bg, rgba(var(--accent-rgb), .12)); }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; width: 100%; min-height: 0; padding: 4px; border-radius: 16px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-lang .nt-seg > button { width: 100%; min-width: 0; height: 44px; min-height: 44px; padding: 0; border-radius: 12px; font-size: .88rem; font-weight: 800; letter-spacing: .02em; }
+
+  /* dim page behind the open menu */
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-backdrop { z-index: -1; }
+}
+
+@media (max-width: 380px) {
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-in { padding: 6px 7px 6px 11px; gap: 5px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions { gap: 5px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-actions .nt-icon-btn, html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-burger, html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-user-btn { width: 39px; height: 39px; min-height: 39px; border-radius: 13px; }
+  html[data-theme][data-theme][data-theme][data-theme] body #root .nt-nav .nt-nav-login { min-height: 39px; padding: 0 14px; font-size: .86rem; }
+}

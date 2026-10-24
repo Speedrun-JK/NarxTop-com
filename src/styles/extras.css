@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Features merged from the original NarxTop build, in NarxTop's visual language:
+   "Biggest savings" (.dl-*), legal pages (.lg-*), footer legal links,
+   admin Plus panel (.adm-plus*) and store-logo manager (.adm-logos*).
+   Tokens only — works in light and dark. Imported before the mobile layers.
+   ========================================================================== */
+
+/* ---------- biggest savings ---------- */
+.dl { border-radius: var(--radius-lg); overflow: hidden; }
+.dl-head { width: 100%; display: flex; align-items: center; gap: 14px; padding: 16px clamp(16px, 3vw, 26px); background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.dl-head:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.dl-ico { display: grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 14px; color: #fff; background: linear-gradient(135deg, #ff9a4a, var(--pink)); box-shadow: 0 8px 20px rgba(var(--pink-rgb), .28); }
+.dl-text { display: grid; gap: 1px; min-width: 0; flex: 1; }
+.dl-text h2 { margin: 0; font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -.02em; }
+.dl-text small { color: var(--muted); }
+.dl-count { padding: 3px 11px; border-radius: 999px; font-weight: 800; font-size: .82rem; color: var(--accent); background: rgba(var(--accent-rgb), .13); }
+.dl-chev { color: var(--muted); transition: transform .25s; }
+.dl-chev.is-open { transform: rotate(180deg); }
+.dl-body { overflow: hidden; padding: 0 clamp(12px, 2vw, 22px); }
+.dl-body > * { padding-bottom: 18px; }
+
+/* ---------- legal pages ---------- */
+.lg { display: grid; gap: 18px; max-width: 860px; margin: 0 auto; }
+.lg-head { display: flex; gap: 18px; align-items: flex-start; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius-lg); }
+.lg-ico { display: grid; place-items: center; flex: none; width: 54px; height: 54px; border-radius: 17px; color: var(--on-accent); background: linear-gradient(135deg, var(--accent-2), var(--accent-strong)); box-shadow: 0 10px 26px rgba(var(--accent-rgb), .3); }
+.lg-head h1 { margin: 0 0 6px; font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.3rem); letter-spacing: -.02em; }
+.lg-head p { margin: 0 0 8px; color: var(--muted); line-height: 1.6; }
+.lg-head small { color: var(--muted); }
+.lg-body { display: grid; gap: 26px; padding: clamp(20px, 3vw, 34px); border-radius: var(--radius-lg); }
+.lg-body section { display: grid; gap: 10px; }
+.lg-body h2 { display: flex; align-items: center; gap: 12px; margin: 0; font-family: var(--font-display); font-size: 1.14rem; }
+.lg-body h2 span { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; font-size: .82rem; color: var(--accent); background: rgba(var(--accent-rgb), .13); }
+.lg-body p { margin: 0; color: var(--muted); line-height: 1.7; }
+.lg-body ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.lg-body li { display: grid; grid-template-columns: auto 1fr; gap: 10px; color: var(--muted); line-height: 1.65; }
+.lg-body li .nt-icon { margin-top: 5px; color: var(--price-best); }
+.lg-foot { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; }
+
+/* footer: About / Privacy / Terms row */
+.nf-legal { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.nf-legal a { color: inherit; opacity: .85; text-decoration: none; font-size: .8rem; }
+.nf-legal a:hover { color: var(--accent); opacity: 1; text-decoration: underline; }
+
+/* ---------- admin: Plus panel ---------- */
+.adm-plus { display: grid; gap: 18px; }
+.adm-plus-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+.adm-plus-stats .adm-card { display: grid; gap: 4px; justify-items: start; }
+.adm-plus-stats .nt-icon { color: var(--accent); }
+.adm-plus-stats strong { font: 800 1.9rem/1 var(--font-display); }
+.adm-plus-stats span { color: var(--muted); font-size: .86rem; }
+.adm-plus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; align-items: start; }
+.adm-plus-form { display: grid; gap: 12px; }
+.adm-plus-form .adm-field { display: grid; gap: 6px; }
+.adm-plus-form .adm-field span { font-size: .82rem; font-weight: 700; color: var(--muted); }
+.adm-plus-form textarea { height: auto; padding: 10px 14px; resize: vertical; font: inherit; }
+.adm-plus-form .adm-btn { justify-self: start; }
+.adm-plus-picked { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: var(--adm-r3); border: 1px solid var(--accent); background: rgba(var(--accent-rgb), .07); }
+.adm-plus-picked > div, .adm-plus-found button { display: grid; gap: 1px; text-align: left; }
+.adm-plus-picked small, .adm-plus-found small, .adm-plus-rows small { color: var(--muted); }
+.adm-plus-found { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.adm-plus-found button { width: 100%; padding: 8px 12px; border-radius: var(--adm-r3); border: 1px solid var(--border); background: var(--surface); color: inherit; font: inherit; cursor: pointer; }
+.adm-plus-found button:hover { border-color: var(--accent); }
+.adm-plus-give { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0 8px; }
+.adm-plus-give .adm-select { width: 96px; }
+.adm-plus-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.adm-plus-rows li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--adm-r3); border: 1px solid var(--border); background: var(--surface); }
+.adm-plus-rows li > div { display: grid; gap: 1px; min-width: 0; flex: 1; }
+.adm-plus-rows b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.adm-plus-store { padding: 4px 12px; border-radius: 999px; font-weight: 800; font-size: .8rem; color: var(--accent); background: rgba(var(--accent-rgb), .13); }
+.adm-plus-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--muted); opacity: .5; }
+.adm-plus-dot.is-on { background: var(--price-best); opacity: 1; box-shadow: 0 0 0 4px rgba(var(--green-rgb), .2); }
+.adm-plus-until { display: grid; justify-items: end; font-weight: 700; font-size: .86rem; white-space: nowrap; }
+.adm-gifts > summary { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; }
+.adm-gifts > summary::-webkit-details-marker { display: none; }
+.adm-gifts > summary h3 { flex: 1; }
+.adm-gift-chevron { color: var(--muted); transition: transform .2s; }
+.adm-gifts[open] > summary .adm-gift-chevron { transform: rotate(180deg); }
+.adm-gift-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 0 10px; }
+.adm-gift-tools input { width: min(320px, 100%); min-height: 38px; padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--adm-r3); background: var(--surface-2); color: var(--text); font: .82rem var(--font-body); }
+.adm-plus-rows.adm-gift-rows { gap: 4px; }
+.adm-gift-rows li { min-height: 38px; gap: 8px; padding: 3px 8px; border-radius: 10px; }
+.adm-gift-rows .adm-plus-store { padding: 3px 8px; font-size: .7rem; }
+.adm-gift-rows b { font-size: .8rem; }
+.adm-gift-rows small { font-size: .68rem; }
+.adm-gift-rows .adm-tag { padding: 3px 7px; font-size: .65rem; }
+.adm-gift-rows .adm-icon-btn { width: 34px; height: 34px; flex: none; }
+.adm-gift-pages { display: flex; align-items: center; justify-content: center; gap: 12px; padding-top: 8px; color: var(--muted); font-size: .76rem; }
+@media (max-width: 600px) { .adm-gift-tools { align-items: stretch; flex-direction: column-reverse; } .adm-gift-tools input { width: 100%; } }
+
+/* ---------- admin: store logos ---------- */
+.adm-logo-hint { margin: 0 0 12px; color: var(--muted); font-size: .86rem; line-height: 1.5; }
+.adm-logos { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.adm-logos li { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: var(--adm-r3); border: 1px solid var(--border); background: var(--surface); }
+.adm-logos b { flex: 1; }
+.adm-flip { transform: rotate(180deg); }

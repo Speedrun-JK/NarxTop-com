@@ -1,0 +1,291 @@
+/* ==========================================================================
+   v105 — chat: message spacing, Telegram-sized stickers, sticker/emoji pickers.
+
+   Why the earlier versions broke:
+   • .stc-messages is a scrolling flex column, so every row could SHRINK when the
+     list overflowed. Rows then overlapped the next message.
+   • Sticker boxes sized themselves with `height:100%` inside `height:auto`
+     parents (aspect-ratio + percentage height), so their measured height
+     collapsed to ~0 while the image still painted at full size, on top of
+     whatever came next. The picker grid had the same fault.
+   Fix: rows never shrink, and every sticker/picker box has an EXPLICIT size.
+   ========================================================================== */
+
+/* ---- 1. Message list: rows never shrink, spacing is margin-based ---------- */
+html[data-theme] body #root .stc {
+  --stc-sticker-size: 148px;
+  --stc-gap-in-group: 3px;
+  --stc-gap-new-group: 12px;
+}
+html[data-theme] body #root .stc[data-spacing="compact"] { --stc-gap-in-group: 2px; --stc-gap-new-group: 7px; }
+
+html[data-theme] body #root .stc-messages { gap: 0; }
+html[data-theme] body #root .stc-messages > :is(.stc-message, .stc-day, .stc-loading) { flex: 0 0 auto; }
+html[data-theme] body #root .stc-message {
+  flex: 0 0 auto;
+  min-height: 0;
+  margin-top: var(--stc-gap-in-group);
+}
+html[data-theme] body #root .stc-message.is-group-start,
+html[data-theme] body #root .stc[data-spacing] .stc-message.is-group-start { margin-top: var(--stc-gap-new-group); }
+html[data-theme] body #root .stc-message.is-group-continuation { margin-top: var(--stc-gap-in-group); }
+html[data-theme] body #root .stc-messages > :first-child { margin-top: 0; }
+html[data-theme] body #root .stc-day { margin: 8px 0 2px; padding: 0; }
+/* Breathing room under the last message so the final bubble never hugs the composer. */
+html[data-theme] body #root .stc-messages::after { content: ""; display: block; flex: 0 0 6px; }
+
+/* ---- 2. Stickers in the conversation -------------------------------------- */
+/* Single sticker attachment: a fixed square box, image contained inside. */
+html[data-theme] body #root .stc-attachments:has(> .stc-chat-sticker:only-child),
+html[data-theme] body #root .stc-attachments:has(> .stc-sticker-loading:only-child) {
+  display: block;
+  width: var(--stc-sticker-size);
+  height: var(--stc-sticker-size);
+  max-width: 100%;
+  margin: 0;
+}
+html[data-theme] body #root .stc-photo.stc-chat-sticker,
+html[data-theme] body #root .stc-photo-loading.stc-sticker-loading {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: var(--stc-sticker-size);
+  height: var(--stc-sticker-size);
+  max-width: 100%;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  aspect-ratio: auto;
+  border-radius: 0;
+  background: transparent;
+  cursor: default;
+}
+html[data-theme] body #root .stc-photo.stc-chat-sticker img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px rgba(8, 12, 20, .2));
+  -webkit-user-drag: none;
+  user-select: none;
+}
+html[data-theme="dark"] body #root .stc-photo.stc-chat-sticker img { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .45)); }
+html[data-theme] body #root .stc-photo-loading.stc-sticker-loading {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--border);
+  border-radius: 22px;
+  background: rgba(var(--accent-rgb), .05);
+  color: var(--muted);
+}
+
+/* Sticker-only bubble: no bubble chrome (Telegram style), time pill overlays the corner. */
+html[data-theme] body #root .stc-message.has-sticker-only { margin-top: 8px; margin-bottom: 3px; }
+html[data-theme] body #root .stc-message.has-sticker-only + .stc-message { margin-top: 8px; }
+html[data-theme] body #root .stc-message.has-sticker-only .stc-bubble,
+html[data-theme] body #root .stc-message.has-sticker-only.has-readers .stc-bubble {
+  display: block;
+  min-width: 0;
+  width: var(--stc-sticker-size);
+  max-width: 100%;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html[data-theme] body #root .stc-message.has-sticker-only .stc-bubble-footer {
+  right: 4px;
+  bottom: 4px;
+  min-height: 0;
+  gap: 4px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(14, 18, 26, .58);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: none;
+}
+html[data-theme] body #root .stc-message.has-sticker-only .stc-bubble-footer time,
+html[data-theme] body #root .stc-message.has-sticker-only .stc-sent-status { color: rgba(255, 255, 255, .92); }
+html[data-theme] body #root .stc-message.has-sticker-only .stc-sent-status.is-read { color: #8fd0ff; }
+html[data-theme] body #root .stc-message.has-sticker-only .stc-sent-status-label { display: none; }
+
+/* ---- 3. Shared popover shell (sticker + emoji pickers) -------------------- */
+/* Anchor to the composer instead of the textarea so the popover can never be clipped
+   by, or overlap oddly with, the input; one position works at every width. */
+html[data-theme] body #root .stc-composer { position: relative; }
+html[data-theme] body #root .stc-input-wrap { position: static; }
+
+html[data-theme] body #root :is(.stc-sticker-pop, .stc-emoji-pop) {
+  --pop-bg: var(--surface);
+  --pop-line: var(--border);
+  position: absolute;
+  top: auto;
+  right: 14px;
+  bottom: calc(100% + 8px);
+  left: auto;
+  z-index: 12;
+  box-sizing: border-box;
+  border: 1px solid var(--pop-line);
+  border-radius: 18px;
+  background: var(--pop-bg);
+  color: var(--text);
+  box-shadow: 0 22px 48px -12px rgba(5, 9, 16, .45), 0 2px 8px rgba(5, 9, 16, .14);
+  transform-origin: calc(100% - 22px) 100%;
+  animation: stc-pop-in .16s var(--ease-out, ease-out) both;
+}
+html[data-theme="dark"] body #root :is(.stc-sticker-pop, .stc-emoji-pop) { --pop-bg: #172130; --pop-line: rgba(166, 186, 214, .17); }
+html[data-theme="light"] body #root :is(.stc-sticker-pop, .stc-emoji-pop) { --pop-bg: #ffffff; --pop-line: rgba(68, 89, 115, .16); box-shadow: 0 22px 44px -14px rgba(30, 50, 73, .32), 0 2px 8px rgba(30, 50, 73, .1); }
+@keyframes stc-pop-in { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+
+/* ---- 4. Sticker picker ----------------------------------------------------- */
+html[data-theme] body #root .stc-sticker-pop {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 376px;
+  max-width: calc(100% - 28px);
+  height: min(372px, 54dvh);
+  max-height: none;
+  padding: 0;
+  overflow: hidden;
+}
+html[data-theme] body #root .stc-sticker-pop > header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 10px 10px 15px;
+  border: 0;
+  border-bottom: 1px solid var(--pop-line);
+  background: rgba(var(--accent-rgb), .06);
+}
+html[data-theme] body #root .stc-sticker-pop > header > span { display: grid; min-width: 0; flex: 1; gap: 2px; }
+html[data-theme] body #root .stc-sticker-pop > header b { font: 800 .86rem/1.2 var(--font-display, inherit); letter-spacing: -.01em; }
+html[data-theme] body #root .stc-sticker-pop > header small { overflow: hidden; color: var(--muted); font-size: .7rem; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+html[data-theme] body #root .stc-sticker-pop > header > button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color .14s ease, color .14s ease;
+}
+html[data-theme] body #root .stc-sticker-pop > header > button:hover,
+html[data-theme] body #root .stc-sticker-pop > header > button:focus-visible { background: rgba(var(--accent-rgb), .13); color: var(--accent); outline: none; }
+
+html[data-theme] body #root .stc-sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  align-content: start;
+  gap: 6px;
+  min-height: 0;
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--accent-rgb), .4) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+/* Each cell is a real square (aspect-ratio on the BUTTON); the image is absolutely
+   positioned inside so it can never change the cell's height. */
+html[data-theme] body #root .stc-sticker-grid > button {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: rgba(var(--accent-rgb), .045);
+  cursor: pointer;
+  transition: background-color .14s ease, border-color .14s ease, transform .14s var(--ease-out, ease-out);
+}
+/* Square spacer: gives the cell real content height so the grid ROW tracks size to it
+   (Chromium ignores aspect-ratio when sizing auto grid rows). */
+html[data-theme] body #root .stc-sticker-grid > button::before { content: ""; display: block; width: 100%; padding-top: 100%; }
+html[data-theme] body #root .stc-sticker-grid > button > img {
+  position: absolute;
+  inset: 7px;
+  display: block;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform .16s var(--ease-out, ease-out);
+}
+html[data-theme] body #root .stc-sticker-grid > button:hover:not(:disabled),
+html[data-theme] body #root .stc-sticker-grid > button:focus-visible {
+  border-color: rgba(var(--accent-rgb), .45);
+  background: rgba(var(--accent-rgb), .12);
+  outline: none;
+}
+html[data-theme] body #root .stc-sticker-grid > button:focus-visible { box-shadow: 0 0 0 2px rgba(var(--accent-rgb), .35); }
+html[data-theme] body #root .stc-sticker-grid > button:hover:not(:disabled) > img { transform: scale(1.1) rotate(-2deg); }
+html[data-theme] body #root .stc-sticker-grid > button:active:not(:disabled) { transform: scale(.94); }
+html[data-theme] body #root .stc-sticker-grid > button:disabled { opacity: .5; cursor: progress; }
+html[data-theme] body #root .stc-sticker-trigger.is-on { border-color: rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .13); color: var(--accent); }
+
+/* ---- 5. Emoji picker (matches the sticker picker) -------------------------- */
+html[data-theme] body #root .stc-emoji-pop {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+  width: 340px;
+  max-width: calc(100% - 28px);
+  padding: 8px;
+}
+html[data-theme] body #root .stc-emoji-pop button {
+  display: grid;
+  width: 100%;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  font-size: 1.28rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .12s ease, transform .12s ease;
+}
+html[data-theme] body #root .stc-emoji-pop button:hover,
+html[data-theme] body #root .stc-emoji-pop button:focus-visible { background: rgba(var(--accent-rgb), .14); outline: none; transform: scale(1.12); }
+
+/* ---- 6. Responsive ---------------------------------------------------------- */
+@media (max-width: 760px) {
+  html[data-theme] body #root .stc { --stc-sticker-size: 132px; --stc-gap-new-group: 10px; }
+  html[data-theme] body #root :is(.stc-sticker-pop, .stc-emoji-pop) { right: 10px; left: 10px; width: auto; max-width: none; transform-origin: 50% 100%; }
+  html[data-theme] body #root .stc-sticker-pop { height: min(330px, 48dvh); }
+}
+@media (max-width: 430px) {
+  html[data-theme] body #root .stc { --stc-sticker-size: 124px; }
+  html[data-theme] body #root .stc-sticker-grid { gap: 5px; padding: 8px; }
+  html[data-theme] body #root .stc-sticker-grid > button > img { inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); }
+}
+
+/* ---- 7. Motion + performance preferences ------------------------------------ */
+@media (prefers-reduced-motion: reduce), (update: slow) {
+  html[data-theme] body #root :is(.stc-sticker-pop, .stc-emoji-pop) { animation: none; }
+  html[data-theme] body #root .stc-sticker-grid > button,
+  html[data-theme] body #root .stc-sticker-grid > button > img,
+  html[data-theme] body #root .stc-emoji-pop button { transition: none !important; }
+  html[data-theme] body #root .stc-sticker-grid > button:hover:not(:disabled) > img { transform: none; }
+}
+html[data-performance="low"] body #root :is(.stc-sticker-pop, .stc-emoji-pop) { animation: none; box-shadow: 0 6px 18px rgba(5, 9, 16, .3); }
+html[data-performance="low"] body #root .stc-photo.stc-chat-sticker img { filter: none !important; }
+html[data-performance="low"] body #root .stc-message.has-sticker-only .stc-bubble-footer { -webkit-backdrop-filter: none; backdrop-filter: none; }

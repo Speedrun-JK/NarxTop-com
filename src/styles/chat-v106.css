@@ -1,0 +1,55 @@
+/* v106 — chat: own-message alignment, mic banner, sticker hold-preview, background paste zone. Loaded after chat-v105. */
+
+/* ---- 1. Bubble width: the bubble always fills its wrapper, own messages hug the right edge ------------------------
+   Before: wrapper max 480px but bubble max 440px, so a long own message ended ~40px short of the short ones. */
+html[data-theme] body #root .stc-message { width: fit-content; max-width: min(82%, 520px); }
+html[data-theme] body #root .stc-message-content { width: fit-content; max-width: 100%; }
+html[data-theme] body #root .stc-message.is-own { margin-left: auto; }
+html[data-theme] body #root .stc-message.is-own .stc-message-content { justify-items: end; }
+html[data-theme] body #root .stc-bubble { max-width: 100%; }
+@media (max-width: 760px) {
+  html[data-theme] body #root .stc-message { max-width: 92%; }
+  html[data-theme] body #root .stc-bubble { max-width: 100%; }
+}
+
+/* ---- 2. Microphone banner ---------------------------------------------------------------------------------------- */
+html[data-theme] body #root .stc-mic-banner {
+  display: flex; align-items: center; gap: 10px; margin: 0 12px 8px; padding: 10px 10px 10px 12px;
+  border: 1px solid rgba(var(--accent-rgb), .35); border-radius: 14px; background: rgba(var(--accent-rgb), .1); color: var(--text);
+}
+html[data-theme] body #root .stc-mic-banner.is-denied { border-color: rgba(213, 62, 70, .45); background: rgba(213, 62, 70, .09); }
+html[data-theme] body #root .stc-mic-banner-ico { display: grid; flex: none; width: 34px; height: 34px; place-items: center; border-radius: 11px; background: rgba(var(--accent-rgb), .18); color: var(--accent); }
+html[data-theme] body #root .stc-mic-banner-copy { display: grid; flex: 1; min-width: 0; gap: 2px; }
+html[data-theme] body #root .stc-mic-banner-copy b { font-size: .84rem; }
+html[data-theme] body #root .stc-mic-banner-copy small { color: var(--muted); font-size: .74rem; line-height: 1.35; }
+html[data-theme] body #root .stc-mic-banner-go { flex: none; min-height: 36px; padding: 0 14px; border: 0; border-radius: 11px; background: var(--accent); color: #fff; font-weight: 800; font-size: .8rem; cursor: pointer; }
+html[data-theme] body #root .stc-mic-banner-x { display: grid; flex: none; width: 30px; height: 30px; place-items: center; border: 0; border-radius: 9px; background: transparent; color: var(--muted); cursor: pointer; }
+html[data-theme] body #root .stc-mic-banner-x:hover { background: rgba(var(--accent-rgb), .14); color: var(--accent); }
+@media (max-width: 520px) { html[data-theme] body #root .stc-mic-banner { margin-inline: 8px; flex-wrap: wrap; } html[data-theme] body #root .stc-mic-banner-copy { flex-basis: calc(100% - 90px); } }
+
+/* ---- 3. Sticker hold-preview (Telegram style) -------------------------------------------------------------------- */
+html[data-theme] body #root .stc-sticker-grid > button { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: pan-y; }
+html[data-theme] body #root .stc-sticker-grid > button[aria-disabled="true"] { opacity: .55; cursor: progress; }
+html[data-theme] body #root .stc-sticker-grid > button.is-previewing { border-color: rgba(var(--accent-rgb), .55); background: rgba(var(--accent-rgb), .16); }
+.stc-sticker-preview {
+  position: fixed; inset: 0; z-index: 2147483000; display: grid; place-items: center; pointer-events: none;
+  background: rgba(8, 11, 18, .46); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+  animation: stc-prev-bg .14s ease-out both;
+}
+.stc-sticker-preview img {
+  width: min(78vw, 340px); height: min(78vw, 340px); object-fit: contain; pointer-events: none; -webkit-user-drag: none; user-select: none;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, .5)); animation: stc-prev-img .2s cubic-bezier(.2, 1.2, .4, 1) both;
+}
+@keyframes stc-prev-bg { from { opacity: 0; } to { opacity: 1; } }
+@keyframes stc-prev-img { from { opacity: 0; transform: scale(.55); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .stc-sticker-preview, .stc-sticker-preview img { animation: none; } }
+html[data-motion="off"] .stc-sticker-preview, html[data-motion="off"] .stc-sticker-preview img { animation: none; }
+
+/* ---- 4. Chat settings: paste / choose a picture ------------------------------------------------------------------ */
+html[data-theme] body #root .stc-bg-paste {
+  display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 10px 12px;
+  border: 1.5px dashed rgba(var(--accent-rgb), .45); border-radius: 12px; background: rgba(var(--accent-rgb), .06); color: var(--muted); font-size: .78rem;
+}
+html[data-theme] body #root .stc-bg-paste > span { display: flex; flex: 1; align-items: center; gap: 8px; min-width: 0; }
+html[data-theme] body #root .stc-bg-paste > button { flex: none; min-height: 34px; padding: 0 12px; border: 1px solid rgba(var(--accent-rgb), .4); border-radius: 10px; background: transparent; color: var(--accent); font-weight: 750; font-size: .78rem; cursor: pointer; }
+html[data-theme] body #root .stc-bg-paste > button:hover { background: rgba(var(--accent-rgb), .12); }

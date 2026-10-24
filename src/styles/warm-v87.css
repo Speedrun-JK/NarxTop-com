@@ -1,0 +1,121 @@
+/* ==========================================================================
+   v87 — LIGHT THEME: warm cream surfaces + soft brown borders everywhere (no pure white),
+   and a clearly visible brown tint on the main banner. The dark theme is not touched.
+   Border colour recipe (always the same warm brown, only the opacity changes):
+     rgb(120, 78, 48)  →  .14 dividers · .24 normal borders · .34 inputs/active · .5 outlined buttons
+   Why: some browsers/PCs apply "auto dark mode"; <meta name="color-scheme"> + html.style.colorScheme
+   (index.html) stop that, and these rules replace the remaining hard-coded white backgrounds/borders.
+   Imported last.
+   ========================================================================== */
+html[data-theme="light"][data-theme="light"] {
+  --w-cream: #ecd3b3;        /* cards, inputs, pills (clearly not white) */
+  --w-cream-2: #dfc19d;      /* buttons, chips, hover */
+  --w-sand: #d3b490;         /* banner base */
+  --w-line: rgba(95, 55, 28, .5);
+  --w-line-soft: rgba(95, 55, 28, .3);
+  --w-line-strong: rgba(95, 55, 28, .64);
+  --w-accent-line: rgba(150, 78, 28, .78);
+  --w-shadow: 0 2px 4px rgba(70, 42, 20, .12), 0 14px 30px -14px rgba(70, 42, 20, .4);
+  /* site-wide tokens: deeper tan page, cream cards, visible brown borders */
+  --bg-primary: #d6b996; --bg-secondary: #cba983; --bg: #d6b996;
+  --card-bg: #ecd3b3; --surface: #ecd3b3; --surface-2: #e0c3a0; --surface-rgb: 236, 211, 179;
+  --border: #a37a55; --border-soft: #b99269; --line: rgba(63, 39, 23, .4);
+  --glass-bg: rgba(236, 211, 179, .95); --glass-bg-strong: rgba(236, 211, 179, .99);
+  --glass-border: rgba(95, 55, 28, .6); --glass-edge: rgba(95, 55, 28, .48);
+  --plate-ring: rgba(110, 68, 38, .36);
+  --tc-bg: #e9cfae; --tc-line: #b08c68; --tc-photo: #e2c6a3; --tc-chip: #dcbd98; --tc-row: #e4c8a5; --tc-row-line: #bf9a74;
+}
+html[data-theme="light"] body, html[data-theme="light"] #root { background-color: #d6b996; }
+
+/* ------------------------------------------------ site-wide: replace hard-coded white --- */
+html[data-theme="light"] body #root .nt-nav { background: rgba(236, 211, 179, .97); border: 1px solid var(--w-line); box-shadow: var(--w-shadow); }
+html[data-theme="light"] body #root .nt-nav.is-scrolled { background: #ecd3b3; }
+html[data-theme="light"] body #root :is(.nt-btn-ghost, .nt-chip, .nt-icon-btn, .nt-seg, .nt-user-btn, .nt-heart, .category-button) { background: var(--w-cream-2); border-color: var(--w-line); }
+html[data-theme="light"] body #root .nt-nav .nt-user-btn:hover { background: var(--w-cream); border-color: var(--w-line-strong); }
+html[data-theme="light"] body #root :is(.nt-field-inline input, .nt-field-inline select, .nt-row > input, .nt-toolbar select, .nt-price-range input) { background: var(--w-cream); border-color: var(--w-line-strong); }
+html[data-theme="light"] body #root :is(.nt-section-glass, .nt-toolbar-glass) { background: var(--w-cream); border: 1px solid var(--w-line); }
+html[data-theme="light"] body #root .pc { background: linear-gradient(180deg, #ecd3b3 0%, #e2c6a3 100%); border-color: var(--w-line); }
+html[data-theme="light"] body .pv-ladder { background: rgba(236, 211, 179, .92); border: 1.5px solid var(--w-line-strong); }
+
+/* ----------------------------------------------- MAIN BANNER: noticeable brown tint --- */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb {
+  background: var(--w-sand); border: 2px solid var(--w-accent-line);
+  box-shadow: 0 34px 70px -40px rgba(70, 42, 20, .6), inset 0 1px 0 rgba(255, 244, 230, .75);
+}
+@media (min-width: 768px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-photo::after {
+    background:
+      linear-gradient(90deg, rgba(120, 76, 42, .6) 0%, rgba(120, 76, 42, .52) 30%, rgba(120, 76, 42, .34) 48%, rgba(120, 76, 42, .12) 66%, transparent 82%),
+      linear-gradient(0deg, rgba(118, 80, 48, .14), transparent 32%);
+    background-size: auto; background-position: 0 0; animation: none;
+  }
+}
+/* text on the tint: dark brown, no cream halo (the halo looked smudgy on brown) */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 { color: #1c0f06; text-shadow: 0 1px 0 rgba(255, 238, 220, .35); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:not(:last-child),
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:not(:last-child):nth-child(n+1) { -webkit-text-fill-color: #1c0f06; color: #1c0f06; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child,
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child:nth-child(n+1) { filter: drop-shadow(0 2px 0 rgba(255, 238, 220, .4)) drop-shadow(0 6px 14px rgba(255, 110, 0, .25)); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { color: #26170c; text-shadow: none; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-note { color: #0e6e35; text-shadow: none; }
+
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-eyebrow { background: var(--w-cream); border: 1.5px solid #2fb862; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss form {
+  background: var(--w-cream); border: 1.5px solid var(--w-line-strong);
+  box-shadow: 0 18px 36px -22px rgba(70, 42, 20, .6), 0 0 0 4px rgba(214, 185, 150, .6);
+}
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss input::placeholder { color: #6b5744; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li { background: rgba(236, 211, 179, .95); border: 1px solid var(--w-line); box-shadow: 0 14px 26px -20px rgba(70, 42, 20, .6); }
+
+/* savings card (signed in) */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-card { background: rgba(236, 211, 179, .94); border: 1px solid var(--w-line-strong); box-shadow: 0 34px 70px -34px rgba(70, 42, 20, .65), inset 0 1px 0 rgba(255, 246, 234, .8); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-img { background: #ecd3b3; border: 1px solid var(--w-line); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-rows li + li { border-top: 1px solid var(--w-line-soft); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-bar { background: rgba(120, 78, 48, .12); }
+
+/* signed-out buttons + showcase */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-btn-ghost,
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn-ghost { background: var(--w-cream); border: 1.5px solid rgba(120, 78, 48, .5); color: #2a1708; }
+html[data-theme="light"] body .gs .gs-feats li { background: var(--w-cream); border-color: var(--w-line-strong); }
+html[data-theme="light"] body .gs .gs-card { background: rgba(236, 211, 179, .95); border-color: var(--w-line); }
+html[data-theme="light"] body .gs .gs-steps li { background: rgba(236, 211, 179, .85); border-color: var(--w-line); }
+html[data-theme="light"] body .gs .gs-btn-ghost { background: var(--w-cream); border-color: var(--w-line-strong); }
+
+/* phone banner: warm sand base so the photo fade matches */
+@media (max-width: 767px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb { --hb-bg: #d3b490; }
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb::before {
+    display: block; content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; border-radius: inherit;
+    background: linear-gradient(180deg, rgba(139, 92, 56, .22), rgba(139, 92, 56, .1) 60%, transparent);
+  }
+}
+
+/* ------------------------------------------------ accent colour: visible, never white --- */
+html[data-theme="light"] body #root .nt-nav { border: 1.5px solid var(--w-line-strong); border-bottom-color: var(--w-accent-line); }
+html[data-theme="light"] body #root :is(.nt-btn-ghost, .nt-chip, .nt-icon-btn, .nt-seg, .nt-user-btn, .nt-heart, .category-button) { border: 1.5px solid var(--w-line-strong); }
+html[data-theme="light"] body #root :is(.nt-btn-ghost, .nt-chip, .nt-icon-btn, .nt-user-btn, .category-button):hover { border-color: var(--w-accent-line); background: #ecd3b3; }
+html[data-theme="light"] body #root :is(.nt-section-glass, .nt-toolbar-glass, .pc, .pv, .nt-panel, .nt-table, .adm-card) { border: 1.5px solid var(--w-line); box-shadow: var(--w-shadow); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li { border: 1.5px solid var(--w-line); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-card { border: 1.5px solid var(--w-accent-line); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss form { border: 2px solid var(--w-accent-line); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-eyebrow { background: #ecd3b3; border: 2px solid #1fa653; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-btn-ghost,
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn-ghost { background: #ecd3b3; border: 2px solid var(--w-accent-line); }
+html[data-theme="light"] body .gs { border: 1.5px solid var(--w-accent-line); background: linear-gradient(160deg, #e0c3a0, #d3b490); }
+html[data-theme="light"] body .gs :is(.gs-feats li, .gs-card, .gs-steps li, .gs-btn-ghost) { border: 1.5px solid var(--w-line-strong); }
+/* section headings get a small accent bar so the page is not a flat beige wall */
+html[data-theme="light"] body #root .nt-home .nt-section-head, html[data-theme="light"] body #root .nt-home .nt-sec-head { border-bottom: 2px solid var(--w-line-soft); }
+
+/* ----------------------------------------- leftover pure-white pieces → tan / cream --- */
+html[data-theme="light"] body #root :is(.hb-img, .dp-photo, .nt-ss-thumb) { background: #f0dcc2; border-color: var(--w-line); }
+html[data-theme="light"] body #root .hb-rows li { background: #e4c8a5; border-color: var(--w-line-soft); }
+html[data-theme="light"] body #root :is(.dp-card-body) { background: rgba(228, 200, 165, .85); box-shadow: inset 0 0 0 1px var(--w-line-soft); }
+html[data-theme="light"] body #root .hb .nt-ss form { background: #ecd3b3; }
+html[data-theme="light"] body #root .nt-hero .nt-ss form { background: #ecd3b3; border: 1.5px solid var(--w-line-strong); }
+html[data-theme="light"] body #root :is(.nt-card .nt-best-store, .nt-card .nt-heart, .tc-heart, .nt-eye, .nt-seeall i) { background: #ecd3b3; border-color: var(--w-line-strong); }
+html[data-theme="light"] body .pv { background: linear-gradient(160deg, #ecd3b3, #dec09b); border-color: var(--w-accent-line); }
+html[data-theme="light"] body .pv :is(.pv-img, .pv-price, .pv-ladder, .pv-ladder li, .pv-chip, .pv-best, .pv-heart, .pv-x) { background: rgba(228, 200, 165, .92); border-color: var(--w-line-strong); }
+html[data-theme="light"] body .nt-auth-card .nt-google { background: #ecd3b3; border-color: var(--w-line-strong); }
+html[data-theme="light"] body :is(.nt-drop, .nt-ss-panel, .nt-modal, .cm, .nt-panel) { background-color: #ecd3b3; border-color: var(--w-line-strong); }
+/* soft brown atmosphere on the page itself so large areas are never flat */
+html[data-theme="light"] body #root { background-image: radial-gradient(60% 40% at 10% 0%, rgba(150, 90, 45, .22), transparent 70%), radial-gradient(50% 40% at 100% 30%, rgba(130, 75, 38, .18), transparent 70%); background-attachment: fixed; }

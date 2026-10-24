@@ -1,0 +1,42 @@
+# Builds the Windows app and publishes it as a GitHub Release whenever you push desktop-relevant changes to main.
+# Installed apps (installer version) find the new release and update themselves.
+name: Windows desktop app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "shared/**"
+      - "electron/**"
+      - "build/**"
+      - "index.html"
+      - "vite.config.js"
+      - "package.json"
+      - ".github/workflows/desktop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # lets the workflow create the release
+
+concurrency:
+  group: desktop-release
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      # Every run gets a higher version (1.0.<run number>) so installed apps see it as newer. Not committed back.
+      - run: npm version 1.0.${{ github.run_number }} --no-git-tag-version --allow-same-version
+        shell: bash
+      - run: npm run electron:publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

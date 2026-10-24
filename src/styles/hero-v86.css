@@ -1,0 +1,142 @@
+/* ==========================================================================
+   v86 — MAIN BANNER: readable text + richer look, and a better signed-out (guest) banner.
+   · The "Eng yaxshi narx" badge was removed from the savings card (SavingsCarousel.jsx).
+   · A real scrim sits behind the copy (cream in the white theme, deep brown-black in the dark theme),
+     so the headline, subtitle, stats and note stay readable on top of the photo.
+   · Text is darker/brighter, heavier and gets a soft shadow/halo.
+   · Savings card is more opaque with larger, bolder store names and prices.
+   · Guest (signed-out): bigger headline, wider copy, chunkier buttons, trust chips-style stats.
+   Imported LAST (after guest-v85.css). Selectors use .nt-home x4 to win over v83-v85.
+   ========================================================================== */
+
+/* ------------------------------------------------------------ DESKTOP + TABLET scrim --- */
+@media (min-width: 768px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-photo::after {
+    background:
+      linear-gradient(90deg, rgba(255, 251, 245, .97) 0%, rgba(255, 251, 245, .92) 30%, rgba(255, 249, 240, .7) 46%, rgba(255, 249, 240, .2) 64%, transparent 78%),
+      linear-gradient(0deg, rgba(118, 80, 48, .1), transparent 28%);
+    background-size: auto; background-position: 0 0; animation: none;
+  }
+  html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-photo::after {
+    background:
+      linear-gradient(90deg, rgba(7, 5, 4, .96) 0%, rgba(7, 5, 4, .88) 32%, rgba(7, 5, 4, .6) 50%, rgba(7, 5, 4, .16) 70%, transparent 86%),
+      linear-gradient(0deg, rgba(7, 5, 4, .45), transparent 34%);
+    background-size: auto; background-position: 0 0; animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ eyebrow pill --- */
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-eyebrow { font-weight: 750; letter-spacing: .005em; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-eyebrow { color: #0d2a18; background: #fff; border: 1.5px solid #2fb862; box-shadow: 0 10px 24px -14px rgba(20, 130, 70, .7); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-eyebrow { color: #fff; background: rgba(28, 22, 17, .9); border: 1px solid rgba(255, 190, 100, .38); box-shadow: 0 10px 26px -14px rgba(0, 0, 0, .9); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-eyebrow svg { color: #ffc24f; }
+
+/* -------------------------------------------------------------------- headline --- */
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 { font-weight: 850; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 { color: #140b05; text-shadow: 0 1px 0 rgba(255, 255, 255, .9), 0 0 26px rgba(255, 251, 245, .9); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:not(:last-child),
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:not(:last-child):nth-child(n+1) { -webkit-text-fill-color: #140b05; color: #140b05; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child,
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child:nth-child(n+1) {
+  background-image: linear-gradient(95deg, #f05a00 0%, #ff8a00 45%, #1f9d4d 100%); filter: drop-shadow(0 2px 0 rgba(255, 255, 255, .85)) drop-shadow(0 6px 14px rgba(255, 110, 0, .25));
+}
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 { color: #fff; text-shadow: 0 2px 22px rgba(0, 0, 0, .7); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 .hb-grad .nt-word:last-child {
+  background-image: linear-gradient(100deg, #fff3da 0%, #ffd27a 42%, #ffa23f 100%);
+  filter: drop-shadow(0 0 22px rgba(255, 150, 40, .5)) drop-shadow(0 4px 14px rgba(0, 0, 0, .6));
+}
+
+/* -------------------------------------------------------------------- subtitle --- */
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { font-weight: 550; opacity: 1; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { color: #2a1d12; text-shadow: 0 0 14px rgba(255, 251, 245, .95), 0 1px 0 rgba(255, 255, 255, .7); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { color: rgba(255, 255, 255, .95); text-shadow: 0 1px 14px rgba(0, 0, 0, .8); }
+@media (min-width: 1101px) {
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { font-size: clamp(.98rem, 1.8svh, 1.1rem); }
+}
+
+/* ----------------------------------------------------------------------- search --- */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss form { border: 1.5px solid rgba(255, 122, 20, .35); box-shadow: 0 20px 40px -22px rgba(160, 70, 10, .55), 0 0 0 4px rgba(255, 255, 255, .7); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss input { color: #1b130c; font-weight: 600; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss input::placeholder { color: #6b5a4b; font-weight: 500; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss form { background: rgba(255, 255, 255, .14); border: 1.5px solid rgba(255, 214, 160, .34); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss input { font-weight: 600; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb .nt-ss input::placeholder { color: rgba(255, 255, 255, .78); font-weight: 500; }
+
+/* ------------------------------------------------------------------ stat tiles --- */
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li b { font-weight: 850; }
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li span { font-weight: 650; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li { background: rgba(255, 255, 255, .97); border: 1px solid rgba(80, 50, 25, .12); box-shadow: 0 16px 30px -20px rgba(70, 42, 20, .55); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li b { color: #0d0a07; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li span { color: #3a2e24; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li { background: linear-gradient(160deg, rgba(44, 35, 28, .9), rgba(20, 15, 12, .86)); border: 1px solid rgba(255, 210, 150, .22); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li b { color: #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-stats li span { color: rgba(255, 246, 232, .92); }
+
+/* ------------------------------------------------------------ handwritten note --- */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-note { color: #0e7a3a; text-shadow: 0 0 12px rgba(255, 251, 245, .95), 0 1px 0 #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-note { color: #ffd07a; text-shadow: 0 2px 10px rgba(0, 0, 0, .8); }
+
+/* ------------------------------------------- savings card (signed in): clearer text --- */
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-card { background: rgba(255, 253, 249, .9); border-color: #fff; box-shadow: 0 34px 70px -34px rgba(70, 42, 20, .6), inset 0 1px 0 #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-card { background: linear-gradient(160deg, rgba(40, 33, 28, .86), rgba(16, 13, 11, .8)); border-color: rgba(255, 255, 255, .2); }
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-name b { font-weight: 800; }
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-store,
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-price { font-weight: 750; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-name small { color: #4d4137; font-weight: 600; }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-save { color: #0f6a33; background: rgba(47, 184, 98, .18); border-color: rgba(47, 184, 98, .4); }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-name b { color: #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-name small { color: rgba(255, 255, 255, .8); font-weight: 600; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-store,
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-price { color: #fff; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-save { color: #d4fbe3; background: rgba(47, 209, 108, .2); }
+@media (min-width: 1101px) {
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-store,
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-price { font-size: .88rem; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-name b { font-size: 1.05rem; }
+}
+/* the badge is gone, so the product row no longer needs room for it */
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb-prod { padding-right: 0; }
+
+/* ------------------------------------------------------------------ PHONE --- */
+@media (max-width: 767px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb { --hb-bg: #fbf5ec; }
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb h1 { color: #140b05; }
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { color: #2a1d12; }
+  html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { color: rgba(255, 255, 255, .94); }
+}
+
+/* ================================================================ GUEST (signed out) === */
+@media (min-width: 1101px) {
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest { grid-template-columns: minmax(0, 600px); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-copy { width: min(100%, 600px); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest h1 { font-size: clamp(2.4rem, min(4.3vw, 7svh), 3.9rem); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-copy > p:not(.hb-note) { max-width: 50ch; font-size: clamp(1rem, 1.9svh, 1.14rem); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action { max-width: 600px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-stats { max-width: 600px; }
+}
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn { min-height: 58px; padding: 0 30px; font-size: 1.02rem; }
+html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn-primary { box-shadow: 0 22px 38px -16px rgba(255, 98, 0, .9), 0 0 0 4px rgba(255, 122, 20, .18), inset 0 1px 0 rgba(255, 255, 255, .45); }
+html[data-theme="light"] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn-ghost { color: #2a1708; background: #fff; border: 1.5px solid rgba(130, 84, 48, .5); font-weight: 800; }
+html[data-theme="dark"] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest .hb-action .nt-btn-ghost { color: #fff; background: rgba(255, 255, 255, .16); border: 1.5px solid rgba(255, 214, 160, .7); font-weight: 800; }
+/* guest banner gets a faint warm glow at the right edge instead of the missing savings card */
+@media (min-width: 1101px) {
+  html[data-theme] body #root .nt-home.nt-home.nt-home.nt-home .hb.is-guest::after {
+    background: radial-gradient(50% 80% at 100% 55%, rgba(255, 138, 30, .2), transparent 70%);
+  }
+}
+
+/* ------------------------------------------------ guest showcase (second banner) --- */
+html[data-theme="light"] body .gs .gs-copy p { color: #3b2b1d; font-weight: 550; }
+html[data-theme="dark"] body .gs .gs-copy p { color: rgba(255, 255, 255, .9); font-weight: 500; }
+html[data-theme="dark"] body .gs .gs-copy h2 { text-shadow: none; }
+html[data-theme="light"] body .gs .gs-feats li { color: #2a1b0f; background: #fff; border-color: rgba(130, 84, 48, .3); }
+html[data-theme="dark"] body .gs .gs-feats li { color: #fff; }
+html[data-theme="light"] body .gs .gs-steps b { color: #1c1209; }
+html[data-theme="light"] body .gs .gs-steps small { color: #4a392a; }
+html[data-theme="dark"] body .gs .gs-steps b { color: #fff; }
+html[data-theme="dark"] body .gs .gs-steps small { color: rgba(255, 255, 255, .82); }
+html[data-theme="light"] body .gs .gs-card b { color: #1c1209; }
+html[data-theme="light"] body .gs .gs-card-n { color: #4a392a; }
+html[data-theme="light"] body .gs .gs-card-lock { color: #a63b05; background: rgba(255, 106, 0, .14); }
+html[data-theme="light"] body .gs .gs-note { color: #4a392a; }
+html[data-theme="dark"] body .gs .gs-note { color: rgba(255, 255, 255, .82); }

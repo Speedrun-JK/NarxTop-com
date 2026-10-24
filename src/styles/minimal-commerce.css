@@ -1,0 +1,96 @@
+/* Shared, restrained commerce UI refinements. Keep existing behavior and component layout. */
+:root {
+  --nt-radius-control: 10px;
+  --nt-radius-card: 14px;
+  --nt-radius-panel: 16px;
+}
+
+/* Prefer a quiet page surface over the full-page decorative photo treatment. */
+html[data-theme][data-theme] body::before { background-image: none !important; }
+html[data-theme][data-theme] body #root :is(.nt-nav, .nt-nav::before, .nt-nav::after) { box-shadow: none; }
+html[data-theme][data-theme] body #root .nt-nav::before,
+html[data-theme][data-theme] body #root .nt-nav::after { display: none; }
+html[data-theme][data-theme] body #root :is(.nt-section-glass, .nt-quick, .hb-card) { box-shadow: none; }
+html[data-theme][data-theme] body #root .nt-section-glass { border: 1px solid var(--border); border-radius: var(--nt-radius-panel); background: var(--surface); }
+
+/* Stable hit areas across translations; labels may wrap without changing control dimensions. */
+html[data-theme][data-theme] body #root :is(.nt-icon-btn, .nt-theme-btn, .nt-cart-btn, .nt-fav-btn) { width: 40px; min-width: 40px; height: 40px; flex: 0 0 40px; }
+html[data-theme][data-theme] body #root .nt-nav-actions { min-width: 0; flex-wrap: nowrap; gap: 8px; }
+html[data-theme][data-theme] body #root .nt-nav-actions > .nt-seg { flex: 0 0 auto; }
+html[data-theme][data-theme] body #root .nt-nav-links { min-width: 0; overflow: visible; }
+html[data-theme][data-theme] body #root .nt-nav-links > a { flex: 0 0 auto; }
+html[data-theme][data-theme] body #root .nt-nav-links > a .nt-nav-pill { display: none; }
+html[data-theme][data-theme] body #root .nt-nav-links > a.is-active { background: var(--surface-2); border-radius: var(--nt-radius-control); }
+html[data-theme][data-theme] body #root .nt-nav-links > a.is-active .nt-nav-pill { display: none; }
+html[data-theme][data-theme] body #root .nt-nav-links > a.nt-nav-admin,
+html[data-theme][data-theme] body #root .nt-nav-links > a.nt-nav-chat { visibility: visible; opacity: 1; }
+html[data-theme][data-theme] body #root .nt-nav .nt-seg button { box-sizing: border-box; min-width: 40px; width: 40px; height: 36px; min-height: 36px; padding-inline: 0; }
+
+/* Single quiet focus treatment on the search field, with no second input outline. */
+html[data-theme][data-theme] body #root .nt-ss form,
+html[data-theme][data-theme] body #root .pp-search .nt-ss form { border: 1px solid var(--border); border-radius: var(--nt-radius-control); background: var(--surface); box-shadow: none; transform: none; }
+html[data-theme][data-theme] body #root .nt-ss form:focus-within,
+html[data-theme][data-theme] body #root .pp-search .nt-ss form:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(var(--accent-rgb), .16); }
+html[data-theme][data-theme] body #root .nt-ss input,
+html[data-theme][data-theme] body #root .nt-ss input:focus { min-width: 0; border: 0; outline: 0; box-shadow: none; }
+html[data-theme][data-theme] body #root .nt-kbd { display: none; }
+
+/* Product cards and image previews use one edge and simple, readable information hierarchy. */
+html[data-theme][data-theme] body #root .tc { border: 1px solid var(--border); border-radius: var(--nt-radius-card); background: var(--surface); box-shadow: none; animation: none; }
+html[data-theme][data-theme] body #root .tc:hover,
+html[data-theme][data-theme] body #root .tc:focus-within { transform: none; box-shadow: none; }
+html[data-theme][data-theme] body #root .tc-photo-link img { transition: none; }
+html[data-theme][data-theme] body #root .tc-photo { border: 1px solid var(--border); border-radius: 10px; box-shadow: none; }
+html[data-theme][data-theme] body #root .tc-cat,
+html[data-theme][data-theme] body #root .pc-cat { display: none; }
+html[data-theme][data-theme] body #root .pc { border: 1px solid var(--border); border-radius: var(--nt-radius-card); box-shadow: none; }
+html[data-theme][data-theme] body #root .pc:hover { transform: none; box-shadow: none; }
+html[data-theme][data-theme] body #root .pc-img { border: 1px solid var(--border); border-radius: 10px; box-shadow: none; }
+html[data-theme][data-theme] body #root .pv-img { border: 1px solid var(--border); border-radius: 12px; box-shadow: none; }
+html[data-theme][data-theme] body #root .pv-stage::before,
+html[data-theme][data-theme] body #root .pv-stage::after { display: none; }
+
+/* Cart rows remain easy to scan without nested outlines or layered surfaces. */
+html[data-theme][data-theme] body #root :is(.nc-panel, .nc-side) { border: 1px solid var(--border); border-radius: var(--nt-radius-panel); background: var(--surface); box-shadow: none; }
+html[data-theme][data-theme] body #root .nc-row { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; box-shadow: none; }
+html[data-theme][data-theme] body #root .nc-row:hover { transform: none; box-shadow: none; }
+html[data-theme][data-theme] body #root .nc-img { border: 1px solid var(--border); border-radius: 9px; box-shadow: none; }
+html[data-theme][data-theme] body #root .nc-qty button { min-width: 36px; min-height: 36px; }
+
+/* Compact footer follows the active color theme and stacks naturally on small screens. */
+html[data-theme][data-theme] body #root .nf { padding: 18px var(--nt-gutter, 18px) 12px; }
+html[data-theme][data-theme] body #root .nf-card { border: 1px solid var(--border); border-radius: var(--nt-radius-panel); background: var(--surface); color: var(--text); box-shadow: none; }
+html[data-theme][data-theme] body #root .nf-compact { padding: 12px 16px; }
+html[data-theme][data-theme] body #root .nf-bar { padding: 9px 16px; background: var(--surface-2); }
+html[data-theme][data-theme] body #root .nf-card::before,
+html[data-theme][data-theme] body #root .nf-card::after { display: none; }
+
+/* Shared inputs, dialogs and actions follow the same restrained geometry. */
+html[data-theme][data-theme] body #root :is(.nt-btn, .nt-modal, .nt-dialog, .pv, .nc-row, .nc-qty, .nt-select, .nt-select-trigger) { border-radius: var(--nt-radius-control); }
+html[data-theme][data-theme] body #root :is(.nt-btn, .nt-icon-btn):focus-visible,
+html[data-theme][data-theme] body #root .nt-ss form:focus-within { outline: none; }
+
+@media (max-width: 860px) {
+  html[data-theme][data-theme] body #root .nt-nav { border-radius: var(--nt-radius-panel); }
+  html[data-theme][data-theme] body #root .nt-nav-links { border-radius: var(--nt-radius-panel); }
+  html[data-theme][data-theme] body #root .nt-nav-links > a.nt-nav-admin,
+  html[data-theme][data-theme] body #root .nt-nav-links > a.nt-nav-chat { display: flex; }
+}
+@media (min-width: 861px) and (max-width: 1100px) {
+  html[data-theme][data-theme] body #root .nt-nav-links > a { gap: 5px; padding-inline: 7px; font-size: .8rem; }
+  html[data-theme][data-theme] body #root .nt-nav-actions { gap: 5px; }
+  html[data-theme][data-theme] body #root .nt-nav .nt-seg button { min-width: 34px; width: 34px; }
+}
+@media (min-width: 861px) {
+  html[data-theme][data-theme] body #root .nt-nav-links .nt-nav-admin,
+  html[data-theme][data-theme] body #root .nt-nav-links .nt-nav-chat { display: inline-flex; }
+}
+@media (max-width: 760px) {
+  html[data-theme][data-theme] body #root .nf-compact { align-items: flex-start; flex-direction: column; gap: 10px; }
+  html[data-theme][data-theme] body #root .nf-links,
+  html[data-theme][data-theme] body #root .nf-legal { gap: 8px 12px; }
+  html[data-theme][data-theme] body #root .nc-row { grid-template-columns: 56px minmax(0, 1fr) 36px; gap: 8px; }
+  html[data-theme][data-theme] body #root .nc-price { grid-column: 2; text-align: left; }
+  html[data-theme][data-theme] body #root .nc-qty { grid-column: 2; grid-row: 3; justify-self: start; }
+  html[data-theme][data-theme] body #root .nc-del { grid-column: 3; grid-row: 1; }
+}

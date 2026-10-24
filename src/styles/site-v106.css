@@ -1,0 +1,40 @@
+/* v106 — phone-number gate, boot screen, site-wide polish. Loaded last. */
+
+/* ---- boot screen (shown for the first moments while the session is checked) ---- */
+.nt-boot { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; background: var(--bg, #14100c); }
+.nt-boot > i { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(var(--accent-rgb, 232, 89, 10), .22); border-top-color: var(--accent, #e8590a); animation: nt-boot-spin .8s linear infinite; }
+@keyframes nt-boot-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .nt-boot > i { animation-duration: 2s; } }
+
+/* ---- phone-number gate ---- */
+.nt-pg {
+  position: fixed; inset: 0; z-index: 9500; display: grid; place-items: center; overflow-y: auto; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: radial-gradient(900px 500px at 50% -10%, rgba(var(--accent-rgb, 232, 89, 10), .18), transparent 70%), var(--bg, #14100c);
+}
+.nt-pg-card {
+  display: grid; gap: 14px; width: min(440px, 100%); box-sizing: border-box; padding: 26px 22px 20px;
+  border: 1px solid var(--border, rgba(255, 255, 255, .14)); border-radius: 24px; background: var(--surface, #1d1711);
+  color: var(--text, #fff4e6); box-shadow: 0 30px 70px -24px rgba(0, 0, 0, .65);
+}
+.nt-pg-brand { display: flex; justify-content: center; }
+.nt-pg-ico { display: grid; width: 56px; height: 56px; margin: 0 auto; place-items: center; border-radius: 18px; color: var(--accent, #e8590a); background: rgba(var(--accent-rgb, 232, 89, 10), .14); }
+.nt-pg-title { margin: 0; text-align: center; font: 800 1.3rem/1.2 var(--font-display, inherit); letter-spacing: -.01em; }
+.nt-pg-text { margin: 0 0 4px; text-align: center; color: var(--muted, #b9a995); font-size: .9rem; line-height: 1.5; }
+.nt-pg-error { margin: 0; padding: 9px 12px; border-radius: 10px; background: rgba(213, 62, 70, .12); color: #e5575f; font-size: .84rem; text-align: center; }
+.nt-pg-save { width: 100%; min-height: 50px; margin-top: 2px; font-size: 1rem; }
+.nt-pg-save:disabled { opacity: .55; cursor: not-allowed; }
+.nt-pg-out { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; border: 0; background: transparent; color: var(--muted, #b9a995); font: inherit; font-size: .84rem; cursor: pointer; }
+.nt-pg-out:hover { color: var(--text, #fff4e6); }
+.nt-pg .nt-phone-pop { max-height: min(320px, 50dvh); }
+html[data-theme="light"] .nt-pg-card { box-shadow: 0 30px 70px -28px rgba(65, 40, 23, .4); }
+
+/* ---- site-wide polish (safe, additive) ---- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 84px; }
+body { overflow-x: clip; }
+:where(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 2px solid var(--accent, #e8590a); outline-offset: 2px; }
+@media (max-width: 860px) {
+  input, select, textarea { font-size: max(16px, 1em); } /* iOS Safari zooms into smaller inputs */
+  img, video, svg { max-width: 100%; }
+  html[data-theme] body #root :where(.nt-btn, .nt-icon-btn) { min-height: 44px; }
+}
+@media (hover: none) { html[data-theme] body #root .pc:hover { transform: none; } }

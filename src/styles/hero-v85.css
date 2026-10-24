@@ -1,0 +1,95 @@
+/* ==========================================================================
+   v85d — DESKTOP, WHITE THEME ONLY: the photo was too bright, so the left + centre get a very slight brown tint.
+   It replaces the white wash that sits on the photo layer (.hb-photo::after) and fades out before the basket,
+   so the right side keeps its colours. (The earlier try used .hb::after, which another rule stretches + animates.)
+   ========================================================================== */
+@media (min-width: 1101px) {
+  html[data-theme="light"] body #root .nt-home.nt-home.nt-home .hb-photo::after {
+    background:
+      linear-gradient(90deg, rgba(118, 80, 48, .26) 0%, rgba(118, 80, 48, .22) 34%, rgba(118, 80, 48, .14) 56%, rgba(118, 80, 48, .04) 72%, transparent 84%),
+      linear-gradient(0deg, rgba(118, 80, 48, .08), transparent 30%);
+    background-size: auto; background-position: 0 0; animation: none;
+  }
+}
+
+/* ==========================================================================
+   v85 — PHONE main banner layout (<= 767px). Desktop + tablet rules are untouched.
+   ========================================================================== */
+@media (max-width: 767px) {
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb {
+    --hb-bg: #f4f7f3; --hb-band: clamp(210px, 62vw, 280px);
+    min-height: 0; height: auto; margin-bottom: 18px; border-radius: 26px;
+    padding: 20px 18px calc(var(--hb-band) - 26px);
+    grid-template-columns: minmax(0, 1fr); align-content: start; background: var(--hb-bg);
+  }
+  html[data-theme="dark"] body #root .nt-home.nt-home.nt-home .hb { --hb-bg: #0a0807; }
+
+  /* photo band at the bottom */
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-photo { position: absolute; inset: auto 0 0 0; height: var(--hb-band); z-index: 0; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-photo-box { position: absolute; inset: 0; width: 100%; height: 100%; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-photo-box img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 90% 78%;
+    transform: none; animation: none;
+  }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-photo::after,
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-photo-box::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, var(--hb-bg) 0%, color-mix(in srgb, var(--hb-bg) 70%, transparent) 22%, transparent 58%);
+  }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb::before { display: none; }
+
+  /* copy */
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-copy { position: relative; z-index: 2; width: 100%; max-width: none; align-items: flex-start; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-eyebrow { padding: 6px 12px; font-size: .76rem; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb h1 {
+    margin: 14px 0 10px; max-width: 12ch; font-size: clamp(2.2rem, 11vw, 2.85rem); line-height: 1.02; letter-spacing: -.045em;
+  }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb h1 > span { white-space: normal; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    max-width: 34ch; margin: 0; font-size: .92rem; line-height: 1.5;
+  }
+    html[data-theme="light"] body #root .nt-home.nt-home.nt-home .hb-copy > p:not(.hb-note) { color: #3d4a41; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-action { width: 100%; max-width: none; margin-top: 16px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb .nt-ss form { min-height: 54px; border-radius: 18px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb .nt-ss input { height: 42px; font-size: 16px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-action .nt-btn { justify-content: center; }
+
+  /* tiny trust strip: the three stats as one slim row over the photo fade */
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats {
+    display: flex !important; position: relative; z-index: 2; width: 100%; max-width: none; gap: 6px; margin: 14px 0 0;
+  }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats li { flex: 1 1 0; min-width: 0; flex-direction: column; align-items: flex-start; gap: 6px; padding: 8px 9px; border-radius: 14px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stat-ico { width: 24px; height: 24px; border-radius: 8px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stat-ico svg { width: 13px; height: 13px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats li b { font-size: 1rem; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats li span { font-size: .62rem; line-height: 1.15; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-note,
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stage,
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-fg,
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-glow { display: none !important; }
+
+  /* v85c: extra polish */
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb { box-shadow: 0 30px 56px -34px rgba(20, 12, 6, .6), inset 0 1px 0 rgba(255, 255, 255, .22); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-photo-box::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 120%, rgba(0, 0, 0, .28), transparent 62%);
+  }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-eyebrow { box-shadow: 0 10px 22px -16px rgba(0, 0, 0, .55); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb h1 .hb-grad { filter: drop-shadow(0 6px 14px rgba(255, 122, 20, .18)); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb .nt-ss form { box-shadow: 0 18px 34px -20px rgba(255, 98, 0, .55), 0 0 0 3px rgba(255, 122, 20, .1); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb .nt-ss form:focus-within { box-shadow: 0 18px 38px -18px rgba(255, 98, 0, .75), 0 0 0 4px rgba(255, 122, 20, .24); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats li { box-shadow: 0 12px 24px -18px rgba(20, 12, 6, .6), inset 0 1px 0 rgba(255, 255, 255, .14); }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats li b { letter-spacing: -.02em; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-copy > * { animation: hm85-rise .6s cubic-bezier(.22, 1, .36, 1) both; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-copy > .hb-action { animation-delay: .08s; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-copy > .hb-stats { animation-delay: .16s; }
+}
+@media (max-width: 380px) {
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb { padding-inline: 14px; }
+  html[data-theme] body #root .nt-home.nt-home.nt-home .hb-stats li span { font-size: .58rem; }
+}
+
+@keyframes hm85-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { html[data-theme] body #root .nt-home.nt-home.nt-home .hb-copy > * { animation: none !important; } }
+html[data-motion="off"] .hb-copy > * { animation: none !important; }

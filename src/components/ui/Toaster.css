@@ -1,0 +1,114 @@
+.toaster {
+  position: fixed;
+  top: 84px;
+  right: 20px;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: min(430px, calc(100vw - 36px));
+  pointer-events: none;
+}
+
+.toast {
+  --toast-tone: var(--accent-rgb);
+  position: relative;
+  display: grid;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding: 13px 14px 18px;
+  border: 1px solid rgba(var(--toast-tone), .28);
+  border-radius: 19px;
+  background: linear-gradient(135deg, var(--card-bg), var(--surface-2));
+  color: var(--text);
+  box-shadow: 0 18px 42px rgba(48, 29, 17, .23), 0 2px 8px rgba(var(--ink-rgb), .08);
+  text-align: left;
+  text-decoration: none;
+  pointer-events: auto;
+  animation: toast-in .38s cubic-bezier(.2, 1.2, .4, 1) both, toast-out .3s ease 4.7s forwards;
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
+}
+
+.toast:focus-visible { outline: 3px solid rgba(var(--toast-tone), .55); outline-offset: 3px; }
+.toast a { color: inherit; }
+.toast-countdown { position: absolute; inset: auto 0 0; display: block; height: 4px; overflow: hidden; background: rgba(var(--toast-tone), .12); }
+.toast-countdown > i { display: block; width: 100%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgba(var(--toast-tone), .48), rgb(var(--toast-tone))); transform-origin: left center; animation: toast-progress 5s linear forwards; }
+
+.toast-price-drop { grid-template-columns: 43px minmax(0, 1fr); column-gap: 12px; }
+.toast-price-icon, .toast-account-icon, .toast-simple-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border: 1px solid rgba(var(--toast-tone), .22);
+  border-radius: 15px;
+  background: rgba(var(--toast-tone), .14);
+  color: rgb(var(--toast-tone));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+.toast-price-drop { --toast-tone: 44, 146, 95; }
+.toast-price-icon { grid-row: 1 / span 2; }
+.toast-price-copy { display: grid; gap: 4px; min-width: 0; }
+.toast-kicker { color: rgb(var(--toast-tone)); font-size: .62rem; font-weight: 900; letter-spacing: .09em; line-height: 1.2; text-transform: uppercase; }
+.toast-price-copy > b, .toast-account-copy > b { overflow: hidden; color: var(--text); font-size: .84rem; font-weight: 850; line-height: 1.3; text-overflow: ellipsis; }
+.toast-price-copy > small { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: .72rem; }
+.toast-price-copy > small i { display: inline-flex; align-items: center; gap: 5px; min-width: 0; overflow: hidden; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.toast-price-copy > small i .nt-icon { flex: none; }
+.toast-price-copy > small strong { margin-left: auto; color: #218254; font-size: .86rem; font-weight: 900; white-space: nowrap; }
+.toast-price-action, .toast-account-open { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 6px 10px; border: 1px solid rgba(35, 128, 83, .13); border-radius: 999px; background: linear-gradient(135deg, #319468, #1f704d); color: #fff; font-size: .72rem; font-weight: 850; text-decoration: none; white-space: nowrap; box-shadow: 0 5px 12px rgba(34, 115, 74, .16); transition: transform .18s, filter .18s, box-shadow .18s; }
+.toast-price-action { grid-column: 2; justify-self: start; margin-top: 1px; }
+.toast-price-drop:hover .toast-price-action, .toast-account-notice:hover .toast-account-open { filter: brightness(1.06); transform: translateY(-1px); box-shadow: 0 7px 15px rgba(34, 115, 74, .22); }
+
+.toast-account-notice { grid-template-columns: 43px minmax(0, 1fr); align-items: start; }
+.toast-account-icon { grid-row: 1; }
+.toast-account-copy { display: grid; justify-items: start; gap: 5px; min-width: 0; }
+.toast-account-copy > small { display: -webkit-box; overflow: hidden; color: var(--muted); font-size: .76rem; line-height: 1.4; overflow-wrap: anywhere; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.toast-account-open { margin-top: 2px; background: linear-gradient(135deg, #956849, #70482e); border-color: rgba(var(--toast-tone), .2); }
+.toast-account-notice.is-premium { --toast-tone: 190, 139, 57; background: radial-gradient(ellipse at 100% 0, rgba(216, 171, 91, .2), transparent 48%), linear-gradient(135deg, var(--card-bg), var(--surface-2)); }
+.toast-account-notice.is-premium .toast-account-icon { color: #a77424; background: linear-gradient(145deg, rgba(229, 185, 101, .25), rgba(160, 103, 38, .12)); }
+.toast-account-notice.is-premium .toast-account-open { background: linear-gradient(135deg, #a87837, #75502e); }
+.toast-account-notice.is-success { --toast-tone: 44, 146, 95; }
+.toast-account-notice.is-warning { --toast-tone: 196, 79, 74; }
+.toast-account-notice.is-warning .toast-account-open { background: linear-gradient(135deg, #bb5d55, #8c3937); }
+
+.toast-simple { grid-template-columns: 34px minmax(0, 1fr); min-height: 61px; font-size: .85rem; font-weight: 750; line-height: 1.4; }
+.toast-simple-icon { width: 34px; height: 34px; border-radius: 12px; }
+
+@keyframes toast-in { from { opacity: 0; transform: translate3d(32px, -7px, 0) scale(.975); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+@keyframes toast-out { to { opacity: 0; transform: translate3d(12px, -7px, 0) scale(.985); } }
+@keyframes toast-progress { to { transform: scaleX(0); } }
+
+.confetti-layer { position: fixed; inset: 0; z-index: 2999; overflow: hidden; pointer-events: none; }
+.confetti-piece { position: absolute; top: -40px; animation-name: confetti-fall; animation-timing-function: ease-in; animation-fill-mode: forwards; }
+@keyframes confetti-fall { to { transform: translateY(105vh) rotate(540deg); opacity: .2; } }
+
+@media (max-width: 600px) {
+  .toaster { top: 72px; left: 12px; right: 12px; width: auto; gap: 9px; }
+  .toast { gap: 9px; padding: 11px 12px 17px; border-radius: 17px; }
+  .toast-price-drop, .toast-account-notice { grid-template-columns: 38px minmax(0, 1fr); }
+  .toast-price-icon, .toast-account-icon { width: 38px; height: 38px; border-radius: 13px; }
+  .toast-price-copy > b, .toast-account-copy > b { font-size: .79rem; }
+  .toast-price-copy > small { gap: 6px; font-size: .68rem; }
+  .toast-price-action, .toast-account-open { min-height: 30px; padding: 5px 9px; font-size: .69rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+  .toast-countdown > i { animation-duration: 5s; }
+  .toast-price-action, .toast-account-open { transition: none; }
+}
+
+/* chat message notification: compact, 2 s */
+.toast-chat { grid-template-columns: 44px minmax(0, 1fr); column-gap: 12px; padding: 11px 14px 15px; --toast-tone: 214, 130, 40; border: 1.5px solid rgba(var(--toast-tone), .4); border-radius: 18px; animation: toast-chat-in .22s cubic-bezier(.22, 1, .36, 1) both; }
+.toast-chat-avatar { position: relative; display: grid; width: 44px; height: 44px; place-items: center; overflow: hidden; border: 1.5px solid rgba(var(--toast-tone), .5); border-radius: 50%; background: linear-gradient(145deg, #ffb35a, #e8691a); color: #fff; font-weight: 800; }
+.toast-chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.toast-chat-copy { display: grid; min-width: 0; gap: 1px; line-height: 1.25; }
+.toast-chat-copy .toast-kicker { display: inline-flex; align-items: center; gap: 5px; }
+.toast-chat-copy b { overflow: hidden; font-size: .95rem; text-overflow: ellipsis; white-space: nowrap; }
+.toast-chat-copy small { display: -webkit-box; overflow: hidden; color: var(--muted); font-size: .84rem; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+@keyframes toast-chat-in { from { opacity: 0; transform: translateX(24px) scale(.97); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) { .toaster { top: calc(env(safe-area-inset-top, 0px) + 74px); right: 12px; left: 12px; width: auto; } }

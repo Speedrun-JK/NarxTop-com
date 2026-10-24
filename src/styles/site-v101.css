@@ -1,0 +1,63 @@
+/* v101: compact conversation sizing and consistent controls. Sticker + picker styles live in chat-v105.css. */
+html[data-theme] body #root .stc-message {
+  width: fit-content;
+  max-width: min(82%, 480px);
+}
+html[data-theme] body #root .stc-message-content {
+  width: max-content;
+  max-width: 100%;
+}
+html[data-theme] body #root .stc-bubble {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: min(100%, 440px);
+}
+html[data-theme] body #root .stc-bubble p {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+html[data-theme] body #root .stc-reply-ref b,
+html[data-theme] body #root .stc-reply-ref span,
+html[data-theme] body #root .stc-replying small {
+  max-width: min(22ch, 100%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html[data-theme] body #root .stc-messages {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+/* Let the existing low-power mode trade decorative paint for steadier scrolling. */
+html[data-performance="low"] body #root .stc {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+html[data-performance="low"] body #root .stc-messages {
+  background-image: none !important;
+  background-attachment: scroll;
+}
+html[data-performance="low"] body #root .stc-bubble,
+html[data-performance="low"] body #root .stc-day span,
+html[data-performance="low"] body #root .stc-sticker-pop {
+  box-shadow: none !important;
+}
+
+/* Shared tap feedback keeps the whole site feeling responsive without adding motion. */
+html[data-theme] body #root :is(button, [role="button"]) { -webkit-tap-highlight-color: transparent; }
+html[data-theme] body #root :is(button, [role="button"]):active:not(:disabled) { transform: scale(.985); }
+
+@media (max-width: 760px) {
+  html[data-theme] body #root .stc-message { max-width: 92%; }
+  html[data-theme] body #root .stc-bubble { max-width: min(100%, 440px); }
+}

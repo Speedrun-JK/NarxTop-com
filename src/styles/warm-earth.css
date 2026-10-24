@@ -1,0 +1,87 @@
+/* Warm earthy surfaces across every route, panel, modal and carousel-adjacent UI. */
+html:not([data-theme="dark"]),
+html[data-theme="light"] {
+  --bg-primary: #e8d5c1;
+  --bg-secondary: #ddc5ad;
+  --card-bg: #f5e8d9;
+  --bg: var(--bg-primary);
+  --bg-glow-a: rgba(129, 82, 48, .16);
+  --bg-glow-b: rgba(170, 118, 78, .1);
+  --surface: var(--card-bg);
+  --surface-2: #ead8c5;
+  --surface-rgb: 245, 232, 217;
+  --border: #c8a98c;
+  --border-soft: #d8bea5;
+  --line: rgba(63, 39, 23, .19);
+  --text: #2b1b10;
+  --muted: #634934;
+  --ink-rgb: 43, 27, 16;
+  --accent: #805435;
+  --accent-2: #aa7952;
+  --accent-strong: #654026;
+  --accent-rgb: 128, 84, 53;
+  --glass-bg: rgba(245, 232, 217, .92);
+  --glass-bg-strong: rgba(245, 232, 217, .98);
+  --glass-border: rgba(101, 64, 38, .28);
+  --glass-edge: rgba(101, 64, 38, .22);
+  --glass-shadow: 0 2px 4px rgba(55, 32, 17, .1), 0 12px 28px rgba(55, 32, 17, .12), inset 0 1px 0 rgba(255, 248, 239, .8);
+  --shadow-sm: 0 2px 4px rgba(55, 32, 17, .12), 0 6px 16px rgba(55, 32, 17, .08);
+  --shadow-md: 0 3px 7px rgba(55, 32, 17, .1), 0 18px 40px rgba(55, 32, 17, .18);
+  --plate: linear-gradient(160deg, #f8eee3 0%, #e7d0b9 100%);
+  --plate-ring: rgba(101, 64, 38, .2);
+  --tc-bg: #f4e6d7;
+  --tc-line: #d4bba1;
+  --tc-photo: #efdecc;
+  --tc-chip: #e8d4bf;
+  --tc-chip-text: #62432d;
+  --tc-row: #f1e2d2;
+  --tc-row-line: #d9c0a7;
+}
+
+html[data-theme="light"] body,
+html[data-theme="light"] #root {
+  background-color: var(--bg-primary);
+  color: var(--text);
+}
+
+/* These components previously used hard-coded white backgrounds. */
+html[data-theme="light"] .nt-nav { background: rgba(245, 232, 217, .96); }
+html[data-theme="light"] .nt-nav.is-scrolled { background: #f5e8d9; }
+html[data-theme="light"] body #root .nt-hero .nt-ss form { background: #f2e1cf; border-color: #d4b99d; }
+html[data-theme="light"] body #root .pc { background: linear-gradient(180deg, #f5e8d9 0%, #eddbc8 100%); }
+html[data-theme="light"] body #root .tc-photo { background: radial-gradient(92% 92% at 50% 16%, #f7ebde, rgba(var(--cr), .18)), #eddbc8; }
+html[data-theme="light"] body #root .pv {
+  background: linear-gradient(160deg, #f5e8d9, #ead6c0);
+  border-color: rgba(var(--accent-rgb), .48);
+}
+html[data-theme="light"] body #root .pv-stage {
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgba(190, 137, 91, .28), transparent 70%),
+    radial-gradient(55% 50% at 88% 30%, rgba(166, 107, 70, .2), transparent 70%),
+    linear-gradient(180deg, #ead7c3, #dfc5aa);
+}
+html[data-theme="light"] body #root .pv-img { background: #f3e4d3; border-color: rgba(var(--accent-rgb), .4); }
+html[data-theme="light"] body #root :is(.pv-heart, .pv-x, .pv-chip, .pv-best, .pv-ladder) {
+  background-color: rgba(245, 232, 217, .94);
+  border-color: rgba(var(--accent-rgb), .34);
+}
+html[data-theme="light"] :is(.nt-drop, .nt-ss-panel, .nt-modal, .cm, .adm-drawer, .adm-modal) {
+  background-color: var(--card-bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+html[data-theme="light"] :is(.nt-ss-list, .nt-toolbar-glass, .nt-section-glass, .nt-panel, .adm-side, .adm-card, .nt-cart-side, .nt-detail-info, .nt-table, .nt-chart) {
+  background-color: var(--card-bg);
+}
+html[data-theme="light"] :is(.nt-field-inline input, .nt-field-inline select, .nt-toolbar select, .nt-row > input, .nt-price-range input, .adm-field input, .adm-field select, .adm-field textarea, .adm-select) {
+  background-color: #f8eee3;
+  border-color: var(--border);
+}
+html[data-theme="light"] .nt-modal-bg { background-color: rgba(43, 27, 16, .7); }
+
+.adm-plus-message { margin: 8px 0 12px; }
+.adm-plus-message textarea { width: 100%; min-height: 84px; line-height: 1.5; resize: vertical; }
+
+@media (max-width: 767px) {
+  .adm-plus-message textarea { min-height: 76px; }
+}

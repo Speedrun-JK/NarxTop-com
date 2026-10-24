@@ -1,0 +1,157 @@
+/* ==========================================================================
+   v78 — loaded last. Everything here is additive and scoped:
+   1. Corner shop decorations (cart, %, price tags) next to the leaf sprigs
+   2. Smart Cart: one continuous page (no fixed-height box, no inner scrollers), footer stays in normal flow
+   3. Phones: "Supermarketlar narxlari" heading on one line, slightly smaller category labels (/products)
+   4. NarxTop Premium: compact buttons and a smaller day-countdown ring
+   Selectors use the same `html[data-theme] body #root` prefix as the older layers, so no !important is needed.
+   ========================================================================== */
+
+/* ---------- 1. Corner decorations ---------------------------------------------------------------------------- */
+.nt-deco-field { position: absolute; inset: 0; pointer-events: none; }
+.nt-deco { position: absolute; display: block; height: auto; overflow: visible; pointer-events: none; user-select: none; opacity: .3; translate: -50% -50%; }
+.nt-deco .d-stroke { stroke-linecap: round; stroke-linejoin: round; }
+.nt-deco .d-ink { stroke: var(--leaf-stem, var(--accent-strong)); }
+.nt-deco .d-rose { stroke: var(--pink); }
+.nt-deco .d-wash { fill: rgba(var(--accent-rgb), .08); }
+.nt-deco .d-wash-rose { fill: rgba(var(--pink-rgb), .09); }
+html[data-theme="dark"] .nt-deco { opacity: .24; }
+
+/* phones: the older layer hid the whole ambient background. Keep it, but faint, no blobs, no motion, fewer icons. */
+@media (max-width: 640px) {
+  html[data-theme] body #root .nt-ambient { display: block; }
+  html[data-theme] body #root .nt-ambient i { display: none; }
+  html[data-theme] body #root .nt-ambient .nt-leaf { animation: none; width: 140px; opacity: .13; }
+  html[data-theme] body #root .nt-deco { opacity: .22; scale: .8; }
+  html[data-theme] body #root .nt-deco.is-extra { display: none; }
+}
+
+/* ---------- 2. Smart Cart: one continuous page ---------------------------------------------------------------- */
+/* Root cause: .nc-page had a viewport-based fixed height, and the product list (.nc-body), the stores column
+   (.nc-side / .nc-side-scroll) and, on phones, .nc-panel (max-height) were each their own scroll container. Content was
+   squeezed into a box of its own while the footer followed right behind it, and touches landed in the inner scrollers.
+   Now every block takes its natural height, the page is the only scroller, and the footer simply follows the content. */
+html[data-theme] body #root .nc-page { height: auto; min-height: 0; }
+html[data-theme] body #root .nc { flex: none; grid-template-rows: auto; align-items: start; }
+html[data-theme] body #root .nc-panel,
+html[data-theme] body #root .nc-side { max-height: none; height: auto; overflow: hidden; overflow: clip; overscroll-behavior: auto; }
+html[data-theme] body #root .nc-body { flex: none; min-height: auto; max-height: none; overflow: visible; overscroll-behavior: auto; scrollbar-gutter: auto; }
+html[data-theme] body #root .nc-side-wrap { display: block; flex: none; min-height: auto; }
+html[data-theme] body #root .nc-side-scroll { max-height: none; overflow: visible; overscroll-behavior: auto; padding-right: 2px; }
+html[data-theme] body #root .nc-side-wrap > .nt-sbar { display: none; }
+/* the supermarket boxes never capture a gesture: vertical swipes always go to the page */
+html[data-theme] body #root .nc-ladder-wrap,
+html[data-theme] body #root .nc-ladder { overflow: visible; touch-action: pan-y; }
+@media (hover: none) { html[data-theme] body #root .nc-opt:hover { transform: none; } }
+/* the footer is an ordinary block after <main>, never an overlay */
+.nt-shell:not(.is-fixed) > .nf, .nt-shell:not(.is-fixed) > .nt-footer { position: relative; flex: none; }
+.nt-shell:not(.is-fixed) { overflow: visible; }
+
+/* ---------- 3a. Phones: heading on one line --------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  html[data-theme] body #root .dp-head { gap: 8px; }
+  html[data-theme] body #root .dp-head-ico { width: 34px; height: 34px; border-radius: 11px; }
+  html[data-theme] body #root .dp-head-ico svg { width: 19px; height: 19px; }
+  html[data-theme] body #root .dp-all { width: 34px; height: 34px; }
+  html[data-theme] body #root .dp-head h2 {
+    font-size: clamp(.88rem, 4.5vw, 1.12rem); line-height: 1.2; letter-spacing: -.04em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+}
+
+/* ---------- 3b. Phones: slightly smaller category labels on /products ----------------------------------------------- */
+@media (max-width: 640px) {
+  html[data-theme] body .pcat-list { gap: 6px; }
+  html[data-theme] body .pcat-item { min-height: 38px; padding: 3px 10px 3px 3px; gap: 6px; font-size: .76rem; }
+  html[data-theme] body .pcat-ico { width: 29px; height: 29px; }
+  html[data-theme] body .pcat-ico .nt-icon, html[data-theme] body .pcat-ico svg { width: 16px; height: 16px; }
+  html[data-theme] body .pcat-name { overflow: visible; text-overflow: clip; }
+  html[data-theme] body .pcat-count { min-width: 20px; height: 18px; padding: 0 5px; font-size: .64rem; }
+}
+
+/* ---------- 4. NarxTop Premium: compact buttons + smaller countdown ------------------------------------------------- */
+html[data-theme] body #root :is(.plus, .pm) .nt-btn-lg { min-height: 44px; padding: 0 20px; font-size: .92rem; gap: 8px; }
+html[data-theme] body #root .plus-plan .nt-btn { min-height: 46px; padding: 0 18px; font-size: .92rem; }
+html[data-theme] body #root .plus-actions, html[data-theme] body #root .pm-actions { gap: 10px; }
+html[data-theme] body #root .pm-actions { margin-top: 20px; }
+
+html[data-theme] body #root .pm-hero { gap: clamp(20px, 3vw, 32px); padding: clamp(22px, 3.4vw, 40px); }
+html[data-theme] body #root .pm-clock { width: min(100%, 212px); }
+html[data-theme] body #root .pm-clock-in strong { font-size: clamp(2.7rem, 4.6vw, 3.6rem); }
+html[data-theme] body #root .pm-clock-in small { font-size: .62rem; letter-spacing: .1em; }
+html[data-theme] body #root .pm-clock-in span { margin-top: 0; font-size: .86rem; }
+html[data-theme] body #root .pm-clock-in em { margin-top: 6px; padding: 3px 11px; font-size: .8rem; }
+html[data-theme] body #root .pm-units { gap: 10px; }
+html[data-theme] body #root .pm-units li { padding: 12px 6px; border-radius: 18px; }
+html[data-theme] body #root .pm-units b { font-size: clamp(1.3rem, 2.4vw, 1.8rem); }
+html[data-theme] body #root .pm-units span { font-size: .66rem; }
+
+@media (max-width: 900px) {
+  html[data-theme] body #root .pm-clock { width: min(54vw, 190px); }
+}
+@media (max-width: 480px) {
+  html[data-theme] body #root .pm-hero { padding: 20px 16px; }
+  html[data-theme] body #root .pm-clock { width: min(52vw, 168px); }
+  html[data-theme] body #root .pm-clock-in strong { font-size: 2.5rem; }
+  html[data-theme] body #root .pm-clock-in em { font-size: .74rem; padding: 2px 9px; }
+  html[data-theme] body #root .pm-actions .nt-btn { flex: 1 1 auto; justify-content: center; }
+  html[data-theme] body #root .pm-units li { padding: 10px 4px; }
+}
+
+/* ---------- 5. Pop-ups always paint above the footer ------------------------------------------------------------------ */
+/* Root cause: <main> is a stacking context (position + z-index 1 + framer-motion transform) and pop-ups such as the
+   store chooser are rendered inside it, so their z-index only counts inside <main>. The footer is a later sibling with the
+   same z-index 1, so it was painted over the pop-up. <main> now sits one level above the footer (the navbar, z-index 20,
+   stays above both). The footer stays an ordinary block in the flow. */
+html[data-theme] body #root .nt-shell > .nt-main { z-index: 2; }
+html[data-theme] body #root .nt-shell > .nf,
+html[data-theme] body #root .nt-shell > .nt-footer { z-index: 1; }
+
+/* ---------- 6. Navbar: one frame only ---------------------------------------------------------------------------------- */
+/* The header (.nt-nav, square top corners) and the bar inside it (.nt-nav-in, round) each drew their own border, shadow and
+   glass. The round inner bar is the design, so the outer header is now just a transparent positioning wrapper. Its radius
+   matches the inner bar so the leftover blur (an !important rule elsewhere) can never show a squarer outline. */
+html[data-theme] body #root .nt-nav {
+  border: 0; background: transparent; box-shadow: none; border-radius: 24px;
+}
+html[data-theme] body #root .nt-nav::before,
+html[data-theme] body #root .nt-nav::after { content: none; }
+
+/* ---------- 7. Leaves: veins, light edges, berries ---------------------------------------------------------------------- */
+.nt-leaf .nt-leaf-vein { fill: none; stroke: var(--leaf-stem); stroke-width: 1.2; stroke-linecap: round; opacity: .38; }
+.nt-leaf .nt-leaf-hl { fill: none; stroke: #fff; stroke-width: 1.4; stroke-linecap: round; opacity: .45; }
+.nt-leaf g.nt-leaf-hl { fill: #fff; stroke: none; opacity: .5; }
+.nt-leaf .nt-leaf-berry { fill: var(--pink); opacity: .75; }
+.nt-ambient .nt-leaf { opacity: .3; }
+html[data-theme="dark"] .nt-ambient .nt-leaf { opacity: .22; }
+@media (max-width: 640px) {
+  html[data-theme] body #root .nt-ambient .nt-leaf { width: 150px; opacity: .2; }
+}
+
+/* ---------- 8. Premium: the glowing ring is alive (halo pulse + a light travelling along the ring) -------------------------- */
+.pm-halo { position: absolute; inset: -9%; border-radius: 50%; pointer-events: none; z-index: 0;
+  background: radial-gradient(closest-side, rgba(255, 200, 140, .34), rgba(255, 200, 140, 0) 70%); animation: pm-pulse 3.2s ease-in-out infinite; }
+.pm-hero.is-soon .pm-halo { background: radial-gradient(closest-side, rgba(255, 140, 100, .38), rgba(255, 140, 100, 0) 70%); }
+.pm-orbit { position: absolute; inset: 0; pointer-events: none; z-index: 2; animation: pm-orbit 7s linear infinite; }
+.pm-orbit::before { content: ""; position: absolute; left: 50%; top: 8.2%; width: 7%; aspect-ratio: 1; margin: -3.5% 0 0 -3.5%; border-radius: 50%;
+  background: #fff4e2; box-shadow: 0 0 0 3px rgba(255, 214, 170, .35), 0 0 14px 4px rgba(255, 196, 130, .8); }
+.pm-clock svg { position: relative; z-index: 1; }
+.pm-clock-in { z-index: 3; }
+@keyframes pm-pulse { 0%, 100% { opacity: .55; transform: scale(.96); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes pm-orbit { to { transform: rotate(360deg); } }
+
+/* ---------- 9. Phones: tighter buttons everywhere ------------------------------------------------------------------------ */
+@media (max-width: 640px) {
+  html[data-theme] body #root .nt-btn-lg,
+  html[data-theme] body #root :is(.plus, .pm) .nt-btn-lg { min-height: 40px; padding: 0 14px; font-size: .84rem; gap: 6px; border-radius: 999px; }
+  html[data-theme] body #root .plus-plan .nt-btn { min-height: 42px; padding: 0 14px; font-size: .86rem; }
+  html[data-theme] body #root .nc-side .nc-bought, html[data-theme] body #root .nc-bought { min-height: 46px; font-size: .92rem; border-radius: 16px; }
+  html[data-theme] body #root .co .nc-flow-actions .nt-btn, html[data-theme] body #root .co .nc-flow > .nt-btn,
+  html[data-theme] body #root .sc-actions .nt-btn { min-height: 42px; font-size: .86rem; border-radius: 14px; }
+  html[data-theme] body #root .plus-actions, html[data-theme] body #root .pm-actions { gap: 8px; }
+  html[data-theme] body #root .pm-actions { margin-top: 14px; }
+  html[data-theme] body #root .plus-hero-copy { gap: 6px; }
+  html[data-theme] body #root .pm-copy h1 { font-size: 1.6rem; margin: 12px 0 6px; }
+  html[data-theme] body #root .pm-copy > p { font-size: .9rem; line-height: 1.5; }
+  html[data-theme] body #root .pm-section, html[data-theme] body #root .plus-body { gap: 12px; }
+}
