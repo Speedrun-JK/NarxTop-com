@@ -14,11 +14,12 @@ function readMode() {
 function lowPowerDevice() {
   if (typeof navigator === "undefined") return false;
   const cores = Number(navigator.hardwareConcurrency || 0);
-  const memory = Number(navigator.deviceMemory || 0);
+  const memory = Number(navigator.deviceMemory || 0); // Chromium only; capped at 8, and 4 GB is a normal phone
+  /* Only genuinely weak devices lose animations automatically. The old "<= 4 GB" / "phone with <= 4 cores" rule
+     switched motion off on most ordinary phones (and on iPhones, where Safari under-reports cores). */
   return Boolean(navigator.connection?.saveData)
-    || (memory > 0 && memory <= 4)
-    || (cores > 0 && cores <= 2)
-    || (cores > 0 && cores <= 4 && Boolean(window.matchMedia?.("(max-width: 760px)").matches));
+    || (memory > 0 && memory <= 2)
+    || (memory > 0 && cores > 0 && cores <= 2);
 }
 
 export function MotionPrefsProvider({ children }) {
