@@ -73,7 +73,15 @@ export default function Auth() {
     setTouched({ name: true, email: true, password: true, confirm: true, code: true });
     if (hasErrors) { setShake((n) => n + 1); return; }
     const email = f.email.trim();
-    if (mode === "login") return run(async () => { await signIn({ email, password: f.password }); setStatus("success"); goNext(); });
+    if (mode === "login") return run(async () => {
+      try { await signIn({ email, password: f.password }); }
+      catch (e) {
+        // unconfirmed account: open the "check your email" screen, which has the resend button
+        if (authErrorKey(e) === "auth.err.notConfirmed") { setStatus("idle"); setMsg(""); setConfirmEmail(true); return; }
+        throw e;
+      }
+      setStatus("success"); goNext();
+    });
     if (mode === "signup") return run(async () => {
       await signUp({ name: f.name.trim(), secondName: f.secondName.trim(), email, password: f.password });
       setStatus("success"); setConfirmEmail(true); setCooldown(COOLDOWN);
@@ -81,7 +89,12 @@ export default function Auth() {
     if (recoveryRequested) return run(async () => {
       await resetPassword({ email, code: recoveryCode, password: f.password });
       setStatus("success"); setMsg(t("acc.pwChanged"));
-      timer.current = setTimeout(() => navigate("/auth", { replace: true }), 1800);
+      // back to the sign-in form with the recovery state fully reset (email field unlocked, code/password cleared)
+      timer.current = setTimeout(() => {
+        setMode("login");
+        setF((current) => ({ ...current, password: "", confirm: "" }));
+        setStatus("success"); setMsg(t("acc.pwChanged"));
+      }, 1800);
     });
     return run(async () => { await sendPasswordRecovery(email); setStatus("success"); setMsg(t("auth.resetSent")); setRecoveryRequested(true); setRecoveryCode(""); setF((current) => ({ ...current, password: "", confirm: "" })); setTouched({ email: true }); setCooldown(COOLDOWN); });
   };
@@ -114,6 +127,7 @@ export default function Auth() {
                 <p>{f.email}</p>
                 <button type="button" className="nt-btn nt-btn-ghost" disabled={cooldown > 0 || busy} onClick={resend}>{cooldown > 0 ? t("auth.resendIn", { s: cooldown }) : t("auth.resend")}</button>
                 {status === "error" && <p className="nt-alert is-err" role="alert">{msg}</p>}
+                <button type="button" className="nt-link nt-forgot" onClick={() => setMode("login")}>{t("auth.signIn")}</button>
               </div>
             ) : (
               <motion.form key={shake} animate={shake ? { x: [0, -9, 9, -5, 5, 0] } : {}} transition={{ duration: 0.4 }} onSubmit={submit} noValidate>
@@ -134,7 +148,7 @@ export default function Auth() {
                 )}
                 <Field label={t("auth.email")} type="email" value={f.email} onChange={upd("email")} onBlur={blur("email")} error={show("email")} valid={valid("email")} autoComplete="email" inputMode="email" disabled={recoveryRequested} />
                 {mode === "forgot" && recoveryRequested && <Field label={t("auth.code")} value={recoveryCode} onChange={(e) => setRecoveryCode(e.target.value.replace(/\D/g, "").slice(0, 6))} onBlur={() => setTouched((current) => ({ ...current, code: true }))} error={touched.code ? errors.code : ""} inputMode="numeric" autoComplete="one-time-code" maxLength={6} />}
-                {(mode !== "forgot" || recoveryRequested) && <Field label={mode === "forgot" ? t("acc.newPw") : t("auth.password")} password placeholder={mode === "forgot" ? "" : t("auth.passwordPh")} value={f.password} onChange={upd("password")} onBlur={blur("password")} error={mode === "login" ? show("password") : mode === "forgot" ? show("password") : ""} autoComplete={mode === "login" ? "current-password" : "new-password"} />}
+                {(mode !== "forgot" || recoveryRequested) && <Field label={mode === "forgot" ? t("acc.newPw") : t("auth.password")} password placeholder={mode === "forgot" ? "" : t("auth.passwordPh")} value={f.password} onChange={upd("password")} onBlur={blur("password")} error={show("password")} autoComplete={mode === "login" ? "current-password" : "new-password"} />}
                 {mode === "signup" && f.password && <StrengthMeter strength={strength} />}
                 {mode === "forgot" && recoveryRequested && f.password && <StrengthMeter strength={strength} />}
                 {(mode === "signup" || (mode === "forgot" && recoveryRequested)) && <Field label={t("acc.repeatPw")} password value={f.confirm} onChange={upd("confirm")} onBlur={blur("confirm")} error={show("confirm")} valid={valid("confirm")} autoComplete="new-password" />}

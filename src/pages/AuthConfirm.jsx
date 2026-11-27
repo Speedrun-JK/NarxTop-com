@@ -20,6 +20,14 @@ function wasConfirmedBefore() {
   }
 }
 
+/* One request per one-time link: a second call (React StrictMode re-running the effect, a remount) would find the
+   token already used and show "link expired" although the email was just confirmed. */
+const confirmRequests = new Map();
+function confirmOnce(token, confirmEmail) {
+  if (!confirmRequests.has(token)) confirmRequests.set(token, confirmEmail(token));
+  return confirmRequests.get(token);
+}
+
 function getInitialStatus() {
   if (new URLSearchParams(window.location.search).has("token")) return "verifying";
   // Opened again without a fresh link (back button, refresh, bookmark…)
@@ -61,7 +69,7 @@ export default function AuthConfirm() {
       const token = new URLSearchParams(window.location.search).get("token");
       try {
         if (!token) throw new Error("missing token");
-        await confirmEmail(token);
+        await confirmOnce(token, confirmEmail);
         try { localStorage.setItem(CONFIRMED_KEY, "1"); } catch { /* ignore */ }
         setTarget("/auth");
         window.history.replaceState(null, "", "/auth/confirm");

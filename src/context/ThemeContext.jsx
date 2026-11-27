@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 
 const ThemeContext = createContext(null);
 const STORAGE_KEY = "narxtop_theme";
@@ -99,13 +100,27 @@ export function ThemeProvider({ children }) {
     setTimeout(() => root.classList.remove("theme-anim"), 450);
   }, []);
 
-  const setPreference = useCallback((value) => {
-    if (!PREFERENCES.includes(value)) return;
-    setPreferenceState((current) => {
-      if (current !== value) animateSwitch();
-      return value;
-    });
-  }, [animateSwitch]);
+  /* Switches to `next` with a cross-fade. Where the browser supports View Transitions the whole page fades as one
+     picture; the per-property colour fade alone made light text vanish for a moment on the new light background
+     (backgrounds/gradients switch instantly, text colour fades), which looked like the navbar items disappearing. */
+  const switchTo = useCallback((next) => {
+    if (!PREFERENCES.includes(next) || next === preference) return;
+    const root = document.documentElement;
+    const apply = () => {
+      const resolved = next === "system" ? systemTheme() : next;
+      root.dataset.theme = resolved;
+      root.dataset.themePreference = next;
+      root.style.colorScheme = resolved;
+      setPreferenceState(next);
+    };
+    if (root.dataset.motion !== "off" && typeof document.startViewTransition === "function") {
+      try { document.startViewTransition(() => flushSync(apply)); return; } catch { /* fall back below */ }
+    }
+    animateSwitch();
+    apply();
+  }, [preference, animateSwitch]);
+
+  const setPreference = useCallback((value) => switchTo(value), [switchTo]);
 
   useEffect(() => {
     document.documentElement.dataset.siteAccent = accent;
@@ -122,12 +137,9 @@ export function ThemeProvider({ children }) {
       isDark: theme === "dark",
       isSystem: preference === "system",
       // quick light <-> dark flip (navbar button): always lands on an explicit choice
-      toggleTheme: () => {
-        animateSwitch();
-        setPreferenceState(theme === "dark" ? "light" : "dark");
-      },
+      toggleTheme: () => switchTo(theme === "dark" ? "light" : "dark"),
     }),
-    [theme, preference, setPreference, accent, setAccent, animateSwitch]
+    [theme, preference, setPreference, accent, setAccent, switchTo]
   );
 
   return (

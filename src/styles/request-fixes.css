@@ -62,10 +62,16 @@ html[data-theme] body #root .nt-nav .nt-nav-actions > .nt-nav-lang-top { border:
 @media (max-width: 860px) {
   html[data-theme] body #root .nt-nav { top: env(safe-area-inset-top, 0px) !important; }
   html[data-theme] body #root .nt-nav .nt-nav-actions > .nt-nav-lang-top { display: none !important; }
+  /* on the sign-in / sign-up page itself the navbar "Kirish" link is redundant (the page has its own tabs);
+     without it the bar no longer overflows and pushes the burger off-screen on phones */
+  html[data-theme] body #root .nt-nav.is-guest-auth .nt-nav-actions > .nt-nav-login { display: none !important; }
+  html[data-theme] body #root .nt-nav.is-guest-auth .nt-nav-in { gap: 4px; }
+}
+/* the top-bar language switch on the auth page only where it fits; narrower phones keep it in the burger menu */
+@media (min-width: 381px) and (max-width: 860px) {
   html[data-theme] body #root .nt-nav.is-guest-auth .nt-nav-actions > .nt-nav-lang-top { display: flex !important; flex: 0 0 auto; gap: 2px; padding: 2px; }
   html[data-theme] body #root .nt-nav.is-guest-auth .nt-nav-actions > .nt-nav-lang-top button { width: 31px; min-width: 31px; height: 32px; min-height: 32px; padding: 0; }
   html[data-theme] body #root .nt-nav.is-guest-auth .nt-nav-lang { display: none !important; }
-  html[data-theme] body #root .nt-nav.is-guest-auth .nt-nav-in { gap: 4px; }
 }
 
 /* Larger product photography in the mobile product cards. */
